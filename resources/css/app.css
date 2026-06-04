@@ -4,6 +4,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @import './global.css';
+@import './landing.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -52,7 +53,8 @@
     --spacing-fluid-xl: clamp(2rem, 5vw, 4rem);
 
     /* Motion */
-    --ease-premium: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-elite: cubic-bezier(0.16, 1, 0.3, 1);
     --duration-premium: 300ms;
     --duration-premium-slow: 500ms;
 

@@ -3,9 +3,9 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('pages.ui-kit-preview', [
-        'title' => 'Taklifnoma — Premium UI Kit',
-        'metaDescription' => "To'yingizga raqamli taklifnoma yarating. O'zbekistondagi eng zamonaviy onlayn taklifnoma platformasi.",
+    return view('pages.landing', [
+        'title' => 'Taklifnoma — Premium Raqamli Taklifnomalar',
+        'metaDescription' => "Hayotingizdagi eng go'zal kun uchun mukammal raqamli taklifnomalar. Jonli RSVP, fon musiqasi va premium shablonlar.",
     ]);
 });
 
