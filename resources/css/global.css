@@ -1,0 +1,161 @@
+/*
+ * Taklifnoma — Global Foundation Styles
+ * Mobile-first · GPU-accelerated transitions · Premium glass aesthetic
+ */
+
+@layer base {
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    html {
+        -webkit-text-size-adjust: 100%;
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+    }
+
+    body {
+        min-height: 100dvh;
+        overflow-x: hidden;
+        font-family: var(--font-sans);
+        background-color: var(--color-cream-100);
+        color: var(--color-royal-900);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+    }
+
+    .dark body,
+    body.dark,
+    [data-theme='dark'] body {
+        background-color: var(--color-royal-950);
+        color: var(--color-cream-100);
+    }
+
+    /* Smooth transitions for all interactive elements */
+    a,
+    button,
+    [role='button'],
+    input,
+    select,
+    textarea,
+    summary {
+        transition-property: color, background-color, border-color, opacity, transform, box-shadow;
+        transition-duration: var(--duration-premium, 300ms);
+        transition-timing-function: var(--ease-premium, cubic-bezier(0.4, 0, 0.2, 1));
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+
+        html {
+            scroll-behavior: auto;
+        }
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-luxury-gold);
+        outline-offset: 3px;
+    }
+
+    ::selection {
+        background-color: color-mix(in srgb, var(--color-luxury-gold) 35%, transparent);
+        color: var(--color-royal-900);
+    }
+
+    .dark ::selection {
+        color: var(--color-cream-100);
+    }
+
+    img,
+    video,
+    svg {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+/* Premium scrollbar */
+@layer base {
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-luxury-gold-dark) var(--color-cream-200);
+    }
+
+    .dark * {
+        scrollbar-color: var(--color-luxury-purple-light) var(--color-royal-800);
+    }
+
+    *::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: var(--color-cream-200);
+        border-radius: 9999px;
+    }
+
+    .dark *::-webkit-scrollbar-track {
+        background: var(--color-royal-800);
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background: linear-gradient(
+            180deg,
+            var(--color-luxury-gold),
+            var(--color-luxury-gold-dark)
+        );
+        border-radius: 9999px;
+    }
+
+    .dark *::-webkit-scrollbar-thumb {
+        background: linear-gradient(
+            180deg,
+            var(--color-luxury-purple-light),
+            var(--color-luxury-purple)
+        );
+    }
+
+    *::-webkit-scrollbar-thumb:hover {
+        background: var(--color-luxury-gold-light);
+    }
+}
+
+/* GPU-accelerated utility helpers */
+@layer utilities {
+    .gpu-transform {
+        transform: translateZ(0);
+        will-change: transform;
+    }
+
+    .gpu-opacity {
+        will-change: opacity;
+    }
+
+    .text-balance {
+        text-wrap: balance;
+    }
+
+    .text-pretty {
+        text-wrap: pretty;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+}
