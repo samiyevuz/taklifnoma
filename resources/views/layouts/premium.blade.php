@@ -3,7 +3,18 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#FAF6F0">
+    <meta name="theme-color" content="#FAF6F0" id="meta-theme-color">
+    <script>
+        (function () {
+            var t = sessionStorage.getItem('theme');
+            var d = t === 'dark' || (t === null && matchMedia('(prefers-color-scheme: dark)').matches);
+            if (d) {
+                document.documentElement.classList.add('dark');
+                var m = document.getElementById('meta-theme-color');
+                if (m) m.setAttribute('content', '#0B0B0F');
+            }
+        })();
+    </script>
     <meta name="description" content="{{ $metaDescription ?? 'Raqamli taklifnoma platformasi — O\'zbekiston' }}">
 
     <title>{{ $title ?? config('app.name', 'Taklifnoma') }}</title>

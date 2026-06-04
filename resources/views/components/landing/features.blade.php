@@ -66,17 +66,17 @@
                     </div>
 
                     <div class="mb-6 grid grid-cols-3 gap-3 text-center">
-                        <div class="rounded-xl bg-white/60 p-3 dark:bg-white/5">
-                            <p class="font-serif text-2xl font-bold text-ink" data-rsvp-count="accepted">142</p>
-                            <p class="mt-0.5 text-xs text-ink-muted">Keladi</p>
+                        <div class="rsvp-stat-box rounded-xl p-3">
+                            <p class="font-serif text-2xl font-bold" data-rsvp-count="accepted">142</p>
+                            <p class="mt-0.5 text-xs">Keladi</p>
                         </div>
-                        <div class="rounded-xl bg-white/60 p-3 dark:bg-white/5">
-                            <p class="font-serif text-2xl font-bold text-ink" data-rsvp-count="declined">18</p>
-                            <p class="mt-0.5 text-xs text-ink-muted">Kelmaydi</p>
+                        <div class="rsvp-stat-box rounded-xl p-3">
+                            <p class="font-serif text-2xl font-bold" data-rsvp-count="declined">18</p>
+                            <p class="mt-0.5 text-xs">Kelmaydi</p>
                         </div>
-                        <div class="rounded-xl bg-white/60 p-3 dark:bg-white/5">
-                            <p class="font-serif text-2xl font-bold text-ink" data-rsvp-count="pending">37</p>
-                            <p class="mt-0.5 text-xs text-ink-muted">Kutilmoqda</p>
+                        <div class="rsvp-stat-box rounded-xl p-3">
+                            <p class="font-serif text-2xl font-bold" data-rsvp-count="pending">37</p>
+                            <p class="mt-0.5 text-xs">Kutilmoqda</p>
                         </div>
                     </div>
 

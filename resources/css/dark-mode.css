@@ -1,0 +1,331 @@
+/* ═══════════════════════════════════════════════════════════════
+   Taklifnoma — Dark Mode Optimization
+   Semantic tokens · WCAG contrast · Premium night luxury
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Global dark tokens (cascade to Tailwind color utilities) ─── */
+.dark {
+    color-scheme: dark;
+
+    --color-ink: #f3efe8;
+    --color-ink-soft: #c4bdb4;
+    --color-ink-muted: #8f8880;
+    --color-pearl: #0b0b0f;
+    --color-pearl-deep: #12111a;
+    --color-champagne: #1a1824;
+    --color-rose-mist: #1f1a28;
+
+    --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    --shadow-glass-lg: 0 20px 56px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    --shadow-gold-glow: 0 0 48px rgba(201, 162, 39, 0.18);
+}
+
+.dark body {
+    background-color: #0b0b0f;
+    color: var(--color-ink);
+}
+
+/* Smooth theme crossfade (GPU-friendly) */
+html.theme-transition,
+html.theme-transition * {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.35s;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.theme-transition .ambient-blob,
+html.theme-transition .reveal,
+html.theme-transition .phone-mockup {
+    transition-property: none;
+}
+
+/* ─── Landing page shell ─── */
+.dark .landing-page {
+    --landing-bg: #0b0b0f;
+    --landing-surface: rgba(22, 20, 32, 0.72);
+    --landing-surface-elevated: rgba(30, 27, 42, 0.85);
+    --landing-border: rgba(255, 255, 255, 0.1);
+    --landing-border-strong: rgba(201, 162, 39, 0.22);
+    background-color: var(--landing-bg);
+    background-image:
+        radial-gradient(ellipse 100% 80% at 50% -20%, rgba(91, 45, 142, 0.12), transparent 50%),
+        radial-gradient(ellipse 60% 50% at 100% 50%, rgba(201, 162, 39, 0.06), transparent 45%),
+        radial-gradient(ellipse 50% 40% at 0% 80%, rgba(13, 107, 92, 0.05), transparent 40%);
+    color: var(--color-ink);
+}
+
+/* ─── Ambient blobs (night luxury) ─── */
+.dark .ambient-blob--gold {
+    background: radial-gradient(circle, rgba(201, 162, 39, 0.28) 0%, transparent 68%);
+    opacity: 0.5;
+}
+
+.dark .ambient-blob--rose {
+    background: radial-gradient(circle, rgba(139, 92, 184, 0.22) 0%, transparent 68%);
+    opacity: 0.45;
+}
+
+.dark .ambient-blob--champagne {
+    background: radial-gradient(circle, rgba(91, 45, 142, 0.14) 0%, transparent 65%);
+    opacity: 0.4;
+}
+
+.dark .ambient-blob--slate {
+    background: radial-gradient(circle, rgba(11, 11, 15, 0.8) 0%, transparent 70%);
+    opacity: 0.6;
+}
+
+/* ─── Glass surfaces ─── */
+.dark .glass-luxury {
+    background: rgba(22, 20, 32, 0.72);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow:
+        0 4px 24px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.dark .nav-glass.is-scrolled .nav-glass__inner {
+    background: rgba(15, 14, 23, 0.82);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow:
+        0 8px 40px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.dark .nav-link {
+    color: var(--color-ink-soft);
+}
+
+.dark .nav-link:hover {
+    color: var(--color-ink);
+}
+
+.dark .theme-toggle-btn {
+    color: var(--color-ink-soft);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dark .theme-toggle-btn:hover {
+    color: var(--color-ink);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ─── Hero ─── */
+.dark .hero-gradient-text {
+    background: linear-gradient(135deg, #e8d48b 0%, #d4af37 35%, #f0e0a8 65%, #c9a227 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.dark .hero-title {
+    color: var(--color-cream-50);
+}
+
+.dark .btn-outline-luxury {
+    color: var(--color-ink);
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(201, 162, 39, 0.35);
+}
+
+.dark .btn-outline-luxury:hover {
+    background: rgba(201, 162, 39, 0.12);
+    border-color: var(--color-luxury-gold);
+}
+
+.dark .landing-page .text-luxury-gold-dark {
+    color: var(--color-luxury-gold-light);
+}
+
+/* ─── Template cards ─── */
+.dark .template-card {
+    background: var(--landing-surface);
+    border-color: var(--landing-border);
+    box-shadow:
+        0 4px 24px rgba(0, 0, 0, 0.35),
+        0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.dark .template-card:hover {
+    box-shadow:
+        0 20px 48px rgba(0, 0, 0, 0.45),
+        0 0 0 1px var(--landing-border-strong),
+        var(--shadow-gold-glow);
+}
+
+.dark .template-card__badge {
+    color: #1a1510;
+    background: rgba(232, 212, 139, 0.95);
+    border-color: rgba(201, 162, 39, 0.4);
+}
+
+.dark .template-card__body h3,
+.dark .template-card__body .font-serif {
+    color: var(--color-ink);
+}
+
+.dark .template-card__body p {
+    color: var(--color-ink-muted);
+}
+
+.dark .template-card__quick a {
+    background: rgba(22, 20, 32, 0.95);
+    color: var(--color-ink);
+    border: 1px solid var(--landing-border);
+}
+
+/* ─── Feature cards & RSVP ─── */
+.dark .feature-card {
+    background: var(--landing-surface);
+    border-color: var(--landing-border);
+    box-shadow:
+        0 4px 24px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.dark .feature-card:hover {
+    box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.dark .feature-card h3 {
+    color: var(--color-ink);
+}
+
+.dark .feature-card p {
+    color: var(--color-ink-muted);
+}
+
+.dark .feature-icon {
+    background: linear-gradient(135deg, rgba(201, 162, 39, 0.18), rgba(201, 162, 39, 0.06));
+    border-color: rgba(201, 162, 39, 0.3);
+    color: var(--color-luxury-gold-light);
+}
+
+.dark .rsvp-panel {
+    background: var(--landing-surface-elevated);
+    border-color: var(--landing-border);
+    box-shadow:
+        0 24px 64px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.dark .rsvp-panel h3,
+.dark .rsvp-panel .font-serif {
+    color: var(--color-ink);
+}
+
+.dark .rsvp-stat {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.06);
+}
+
+.dark .rsvp-stat span:first-child {
+    color: var(--color-ink);
+}
+
+.dark .rsvp-bar {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.dark .rsvp-stat-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dark .rsvp-stat-box p:first-child {
+    color: var(--color-ink);
+}
+
+.dark .rsvp-stat-box p:last-child {
+    color: var(--color-ink-muted);
+}
+
+.dark .rsvp-panel .text-ink-soft {
+    color: var(--color-ink-soft);
+}
+
+.dark .text-luxury-emerald {
+    color: var(--color-luxury-emerald-light);
+}
+
+/* ─── Pricing section ─── */
+.dark .pricing-glass {
+    background: var(--landing-surface-elevated);
+    border: 1px solid var(--landing-border);
+    box-shadow:
+        0 24px 64px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.dark .pricing-tier {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark .pricing-tier--featured {
+    background: linear-gradient(to bottom, rgba(201, 162, 39, 0.12), rgba(201, 162, 39, 0.02));
+    border-color: rgba(201, 162, 39, 0.35);
+    box-shadow: var(--shadow-gold-glow);
+}
+
+.dark .pricing-tier p,
+.dark .pricing-tier .font-serif {
+    color: var(--color-ink);
+}
+
+.dark .pricing-tier .text-ink-muted {
+    color: var(--color-ink-muted);
+}
+
+.dark .landing-footer {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ─── Section labels ─── */
+.dark .section-label {
+    color: var(--color-luxury-gold-light);
+}
+
+/* ─── Mobile nav ─── */
+.dark .mobile-nav__backdrop {
+    background: rgba(0, 0, 0, 0.65);
+}
+
+.dark .mobile-nav__panel {
+    background: rgba(11, 11, 15, 0.97);
+    border-left-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark .mobile-nav__panel a {
+    color: var(--color-ink);
+}
+
+.dark .mobile-nav__panel a:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.dark .mobile-nav__panel .border-t {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ─── Phone mockups (enhanced depth in dark) ─── */
+.dark .phone-mockup {
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 0 40px rgba(201, 162, 39, 0.08);
+}
+
+/* ─── Focus ring (dark) ─── */
+.dark :focus-visible {
+    outline-color: var(--color-luxury-gold-light);
+}
+
+.dark ::selection {
+    background-color: rgba(201, 162, 39, 0.35);
+    color: var(--color-cream-50);
+}

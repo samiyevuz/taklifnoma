@@ -12,7 +12,7 @@
                 </svg>
             </div>
             <div class="hidden min-[360px]:block">
-                <span class="font-serif text-base font-semibold tracking-tight text-ink sm:text-lg">Taklifnoma</span>
+                <span class="font-serif text-base font-semibold tracking-tight text-ink dark:text-cream-50 sm:text-lg">Taklifnoma</span>
                 <span class="block text-[0.65rem] font-medium tracking-widest text-luxury-gold-dark uppercase">Premium</span>
             </div>
         </a>
@@ -30,7 +30,7 @@
             <button
                 type="button"
                 id="theme-toggle"
-                class="hidden rounded-full px-3 py-2 text-xs font-medium text-ink-soft glass-luxury sm:inline-flex sm:text-sm"
+                class="theme-toggle-btn hidden rounded-full px-3 py-2 text-xs font-medium text-ink-soft glass-luxury sm:inline-flex sm:text-sm"
                 aria-label="Mavzu rejimini almashtirish"
                 aria-pressed="false"
             >
@@ -49,10 +49,10 @@
                 aria-expanded="false"
                 aria-controls="mobile-nav"
             >
-                <svg class="h-5 w-5 text-ink" id="menu-icon-open" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <svg class="h-5 w-5 text-ink dark:text-cream-100" id="menu-icon-open" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/>
                 </svg>
-                <svg class="hidden h-5 w-5 text-ink" id="menu-icon-close" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <svg class="hidden h-5 w-5 text-ink dark:text-cream-100" id="menu-icon-close" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/>
                 </svg>
             </button>
@@ -71,7 +71,7 @@
             <li><a href="#haqida" class="block rounded-lg px-4 py-3 text-base font-medium text-ink hover:bg-white/50" data-close-mobile-nav>Biz haqimizda</a></li>
         </ul>
         <div class="mt-6 flex flex-col gap-3 border-t border-white/40 pt-6">
-            <button type="button" id="theme-toggle-mobile" class="rounded-full px-4 py-3 text-sm font-medium glass-luxury text-ink-soft">
+            <button type="button" id="theme-toggle-mobile" class="theme-toggle-btn rounded-full px-4 py-3 text-sm font-medium glass-luxury text-ink-soft">
                 Qorong'u rejim
             </button>
             <a href="#boshlash" class="btn-gold-shimmer w-full text-center" data-ripple data-close-mobile-nav>

@@ -1,9 +1,10 @@
 /**
  * Taklifnoma — Premium Landing Interactions
- * GPU: transform + opacity only · cubic-bezier(0.16, 1, 0.3, 1)
+ * Theme system · GPU motion · Accessibility
  */
 
 const ELITE_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
+const THEME_COLORS = { light: '#FAF6F0', dark: '#0B0B0F' };
 
 function initRippleEffect() {
     document.querySelectorAll('[data-ripple]').forEach((button) => {
@@ -22,6 +23,13 @@ function initRippleEffect() {
     });
 }
 
+function updateThemeMeta(dark) {
+    const meta = document.getElementById('meta-theme-color');
+    if (meta) {
+        meta.setAttribute('content', dark ? THEME_COLORS.dark : THEME_COLORS.light);
+    }
+}
+
 function initThemeToggle() {
     const toggles = [
         document.getElementById('theme-toggle'),
@@ -35,18 +43,30 @@ function initThemeToggle() {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const isDark = stored === 'dark' || (stored === null && prefersDark);
 
-    const applyTheme = (dark) => {
+    const applyTheme = (dark, animate = true) => {
+        if (animate) {
+            html.classList.add('theme-transition');
+            window.setTimeout(() => html.classList.remove('theme-transition'), 400);
+        }
+
         html.classList.toggle('dark', dark);
         toggles.forEach((btn) => {
             btn.setAttribute('aria-pressed', String(dark));
             btn.textContent = dark ? "Yorug' rejim" : "Qorong'u rejim";
         });
         sessionStorage.setItem('theme', dark ? 'dark' : 'light');
+        updateThemeMeta(dark);
     };
 
-    applyTheme(isDark);
+    applyTheme(isDark, false);
+
     toggles.forEach((btn) => {
         btn.addEventListener('click', () => applyTheme(!html.classList.contains('dark')));
+    });
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (sessionStorage.getItem('theme') !== null) return;
+        applyTheme(e.matches, true);
     });
 }
 
@@ -54,10 +74,7 @@ function initStickyNav() {
     const nav = document.getElementById('site-nav');
     if (!nav) return;
 
-    const onScroll = () => {
-        nav.classList.toggle('is-scrolled', window.scrollY > 24);
-    };
-
+    const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 24);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
 }
@@ -89,8 +106,7 @@ function initScrollReveal() {
     const elements = document.querySelectorAll('.reveal');
     if (!elements.length) return;
 
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         elements.forEach((el) => el.classList.add('is-visible'));
         return;
     }
@@ -129,7 +145,6 @@ function initSmoothAnchors() {
             e.preventDefault();
             const navHeight = document.getElementById('site-nav')?.offsetHeight ?? 80;
             const top = target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
-
             window.scrollTo({ top, behavior: 'smooth' });
         });
     });
@@ -137,10 +152,7 @@ function initSmoothAnchors() {
 
 function initRsvpPreview() {
     const panel = document.getElementById('rsvp-preview');
-    if (!panel) return;
-
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
+    if (!panel || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const counts = {
         accepted: { el: panel.querySelector('[data-rsvp-count="accepted"]'), base: 142 },
