@@ -72,14 +72,6 @@ class TemplateCatalog
                 'preview_param' => null,
             ],
             [
-                'slug' => 'muchal',
-                'template' => 'muchal-toyi',
-                'visual' => 'template-visual--muchal',
-                'price_amount' => 65000,
-                'preview_route' => null,
-                'preview_param' => null,
-            ],
-            [
                 'slug' => 'iftorlik',
                 'template' => 'iftorlik-premium',
                 'visual' => 'template-visual--iftorlik',

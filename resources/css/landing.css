@@ -756,14 +756,6 @@
         background: linear-gradient(135deg, #faf0d7 0%, #faf6f0 100%);
     }
 
-    .template-visual--muchal .template-card__scene {
-        background: linear-gradient(135deg, #1e1b4b 0%, #4f46e5 55%, #a5b4fc 100%);
-    }
-
-    .template-visual--muchal .template-card__label {
-        background: linear-gradient(135deg, #e0e7ff 0%, #eef2ff 100%);
-    }
-
     .template-visual--iftorlik .template-card__scene {
         background: linear-gradient(135deg, #064e3b 0%, #059669 55%, #6ee7b7 100%);
     }

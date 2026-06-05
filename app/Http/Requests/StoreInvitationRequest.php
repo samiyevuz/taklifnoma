@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Support\BuilderEventProfile;
 use App\Support\TemplateCatalog;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 
 class StoreInvitationRequest extends FormRequest
 {
@@ -22,13 +24,25 @@ class StoreInvitationRequest extends FormRequest
                 $this->merge(['dress_colors' => $decoded]);
             }
         }
+
+        $slug = $this->resolveTemplateSlug();
+        $normalized = BuilderEventProfile::normalizeForStorage($slug, $this->all());
+
+        $this->merge([
+            'groom_name' => $normalized['groom_name'],
+            'bride_name' => $normalized['bride_name'],
+            'profile_meta' => $normalized['profile_meta'],
+        ]);
     }
 
     public function rules(): array
     {
-        return [
+        $slug = $this->resolveTemplateSlug();
+        $rules = [
+            'profile' => ['nullable', 'array'],
+            'profile_meta' => ['nullable', 'array'],
             'groom_name' => ['required', 'string', 'max:80'],
-            'bride_name' => ['required', 'string', 'max:80'],
+            'bride_name' => ['nullable', 'string', 'max:80'],
             'event_type' => ['required', 'string', 'max:100'],
             'event_at' => ['required', 'date'],
             'event_city' => ['nullable', 'string', 'max:100'],
@@ -60,17 +74,55 @@ class StoreInvitationRequest extends FormRequest
                 Rule::in(array_column(TemplateCatalog::definitions(), 'template')),
             ],
         ];
+
+        foreach (BuilderEventProfile::fieldsForSlug($slug) as $field) {
+            $rules["profile.{$field['key']}"] = [
+                $field['required'] ? 'required' : 'nullable',
+                'string',
+                'max:80',
+            ];
+        }
+
+        return $rules;
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator) {
+            $slug = $this->resolveTemplateSlug();
+
+            foreach (BuilderEventProfile::fieldsForSlug($slug) as $field) {
+                if (! $field['required']) {
+                    continue;
+                }
+
+                $value = trim((string) $this->input("profile.{$field['key']}", ''));
+
+                if ($value === '') {
+                    $validator->errors()->add(
+                        "profile.{$field['key']}",
+                        __($field['label']).' majburiy.'
+                    );
+                }
+            }
+        });
     }
 
     public function messages(): array
     {
         return [
-            'groom_name.required' => 'Kuyov ismi majburiy.',
-            'bride_name.required' => 'Kelin ismi majburiy.',
             'event_at.required' => 'Tadbir sanasi majburiy.',
             'venue_name.required' => 'Joy nomi majburiy.',
             'venue_address.required' => 'Manzil majburiy.',
             'invitation_text_1.required' => 'Taklifnoma matni majburiy.',
         ];
+    }
+
+    private function resolveTemplateSlug(): string
+    {
+        $template = (string) $this->input('template', '');
+        $catalog = TemplateCatalog::findByBlade($template);
+
+        return $catalog['slug'] ?? 'nikoh';
     }
 }

@@ -46,11 +46,6 @@
             <path d="M20 22c0-3 1.5-5 4-5s4 2 4 5" stroke="currentColor" stroke-width="1.75"/>
             <path d="M22 14v2M26 14v2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
             @break
-        @case('muchal')
-            <rect x="12" y="14" width="24" height="22" rx="3" stroke="currentColor" stroke-width="1.75"/>
-            <path d="M12 22h24M18 10v4M30 10v4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
-            <path d="M20 30h8" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
-            @break
         @case('iftorlik')
             <path d="M24 10c-8 0-12 6-12 11a12 12 0 1024 0c0-5-4-11-12-11z" stroke="currentColor" stroke-width="1.75"/>
             <path d="M20 18c2 2 4 3 4 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>

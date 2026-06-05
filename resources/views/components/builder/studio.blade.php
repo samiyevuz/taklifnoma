@@ -92,16 +92,7 @@
                         <h2 class="builder-panel-title">{{ __('builder.tab_general') }}</h2>
                         <p class="builder-panel-desc">{{ __('builder.tab_general_desc') }}</p>
 
-                        <div class="builder-grid-2">
-                            <div class="builder-field builder-field--float">
-                                <input type="text" id="groom_name" name="groom_name" value="{{ old('groom_name', $b['groom_name']) }}" placeholder=" " required data-preview-input>
-                                <label for="groom_name">{{ __('builder.groom_name') }}</label>
-                            </div>
-                            <div class="builder-field builder-field--float">
-                                <input type="text" id="bride_name" name="bride_name" value="{{ old('bride_name', $b['bride_name']) }}" placeholder=" " required data-preview-input>
-                                <label for="bride_name">{{ __('builder.bride_name') }}</label>
-                            </div>
-                        </div>
+                        <x-builder.profile-fields :schema="$b['field_schema']" />
 
                         <div class="builder-field builder-field--float mt-4">
                             <input type="text" id="event_type" name="event_type" value="{{ old('event_type', $b['event_type']) }}" placeholder=" " required data-preview-input>
@@ -283,7 +274,7 @@
                     <strong id="checkout-template">{{ $b['template_title'] }}</strong>
                 </div>
                 <div class="builder-checkout-summary__row">
-                    <span>{{ __('builder.checkout_couple') }}</span>
+                    <span id="checkout-subject-label">{{ $b['field_schema']['preview']['review_label'] ?? __('builder.checkout_couple') }}</span>
                     <strong id="checkout-couple"></strong>
                 </div>
                 <div class="builder-checkout-summary__row">

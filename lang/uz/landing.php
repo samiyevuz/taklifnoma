@@ -62,11 +62,6 @@ return [
             'desc' => 'Shampan oltin va iliq krem — har qanday yosh uchun zamonaviy premium taklif.',
             'tag' => 'Chegirma',
         ],
-        'muchal' => [
-            'title' => 'Muchal To\'yi',
-            'desc' => 'Ko\'k va binafsha palitrasi — 12 yosh aylanishi uchun an\'anaviy va zamonaviy uyg\'unlik.',
-            'tag' => null,
-        ],
         'iftorlik' => [
             'title' => 'Iftorlik',
             'desc' => 'To\'q yashil va oltin — Ramazon iftor marosimi uchun nafis va iliq taklifnoma.',

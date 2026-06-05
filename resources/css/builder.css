@@ -802,10 +802,59 @@
     .builder-preview-page .inv-welcome__names,
     .builder-preview-page .inv-welcome__date,
     .builder-preview-page .inv-welcome__ornament,
-    .builder-preview-page .inv-welcome__scroll {
+    .builder-preview-page .inv-welcome__scroll,
+    .builder-preview-page .inv-welcome__tagline,
+    .builder-preview-page .inv-welcome__hosts {
         animation: none;
         opacity: 1;
         transform: none;
+    }
+
+    .builder-preview-page .inv-welcome__hero.hidden {
+        display: none;
+    }
+
+    .builder-preview-page .inv-welcome__names--single {
+        display: block;
+        font-size: clamp(1.65rem, 5vw, 2.15rem);
+        line-height: 1.15;
+        text-align: center;
+    }
+
+    .builder-preview-page .inv-welcome__names--stacked {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.35rem;
+        text-align: center;
+    }
+
+    .builder-preview-page .inv-welcome__stacked-sub {
+        font-size: 0.95em;
+        font-weight: 500;
+        opacity: 0.88;
+    }
+
+    .builder-preview-page .inv-welcome__tagline {
+        margin-top: 0.65rem;
+        font-family: var(--font-serif, Georgia, serif);
+        font-size: 0.95rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.82);
+        text-align: center;
+    }
+
+    .builder-preview-page .inv-welcome__hosts {
+        margin-top: 0.5rem;
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.72);
+        text-align: center;
+    }
+
+    .builder-profile-fields--single {
+        display: grid;
+        grid-template-columns: 1fr;
     }
 
     .builder-preview-page .inv-section {

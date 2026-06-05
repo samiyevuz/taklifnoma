@@ -1,6 +1,6 @@
 /**
  * Taklifnoma — Interactive Invitation Builder Studio
- * Live preview · Stepper · Mobile sheet · Checkout modal
+ * Dynamic event profiles · Live preview · Stepper · Checkout modal
  */
 
 const ELITE_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
@@ -8,6 +8,15 @@ const UZ_MONTHS = [
     '', 'Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun',
     'Iyul', 'Avgust', 'Sentabr', 'Oktabr', 'Noyabr', 'Dekabr',
 ];
+
+const LAYOUT_MODES = {
+    couple: 'couple',
+    couple_bride_first: 'couple_bride_first',
+    child: 'child',
+    celebrant: 'celebrant',
+    graduation: 'graduation',
+    general: 'general',
+};
 
 function pad2(value) {
     return String(value).padStart(2, '0');
@@ -27,6 +36,125 @@ function formatEventTime(value) {
     return `Soat ${pad2(date.getHours())}:${pad2(date.getMinutes())}`;
 }
 
+function createProfileEngine(schema) {
+    const layout = schema?.layout || LAYOUT_MODES.couple;
+    const fields = Array.isArray(schema?.fields) ? schema.fields : [];
+    const preview = schema?.preview || {};
+    const fieldByKey = Object.fromEntries(fields.map((field) => [field.key, field]));
+    const fieldByRole = Object.fromEntries(fields.map((field) => [field.preview, field]));
+
+    const getValue = (form, key) => {
+        const input = form.querySelector(`[data-profile-key="${key}"]`);
+        return input?.value?.trim() || '';
+    };
+
+    const readProfileState = (form) => {
+        const values = {};
+        fields.forEach((field) => {
+            values[field.key] = getValue(form, field.key);
+        });
+        return values;
+    };
+
+    const resolveHero = (values) => {
+        const placeholders = preview.placeholders || {};
+        const primaryField = fieldByRole.primary;
+        const secondaryField = fieldByRole.secondary;
+
+        const primary = values[primaryField?.key] || placeholders.primary || '';
+        const secondary = values[secondaryField?.key] || placeholders.secondary || '';
+
+        if (layout === LAYOUT_MODES.couple_bride_first) {
+            return {
+                primary: values.bride_name || placeholders.primary || 'Kelin',
+                secondary: values.groom_name || placeholders.secondary || 'Kuyov',
+            };
+        }
+
+        if (layout === LAYOUT_MODES.couple) {
+            return {
+                primary: values.groom_name || placeholders.primary || 'Kuyov',
+                secondary: values.bride_name || placeholders.secondary || 'Kelin',
+            };
+        }
+
+        if (layout === LAYOUT_MODES.child) {
+            return {
+                primary: values.child_name || placeholders.primary || 'Bola ismi',
+                secondary: values.hosts || '',
+                tagline: preview.tagline || '',
+            };
+        }
+
+        if (layout === LAYOUT_MODES.celebrant) {
+            return {
+                primary: values.celebrant_name || placeholders.primary || 'Ism',
+                secondary: values.milestone || placeholders.secondary || '',
+                tagline: preview.tagline || '',
+            };
+        }
+
+        if (layout === LAYOUT_MODES.graduation) {
+            return {
+                primary: values.school_name || placeholders.primary || 'Maktab nomi',
+                secondary: values.class_name || placeholders.secondary || 'Sinf / guruh',
+                tagline: preview.tagline || '',
+            };
+        }
+
+        return {
+            primary: values.primary_name || placeholders.primary || 'Mezbon',
+            secondary: values.secondary_name || '',
+        };
+    };
+
+    const buildDisplayTitle = (values) => {
+        const hero = resolveHero(values);
+
+        if (layout === LAYOUT_MODES.child) {
+            return hero.primary;
+        }
+
+        if (layout === LAYOUT_MODES.celebrant || layout === LAYOUT_MODES.graduation) {
+            return [hero.primary, hero.secondary].filter(Boolean).join(' · ');
+        }
+
+        if (layout === LAYOUT_MODES.general) {
+            return [hero.primary, hero.secondary].filter(Boolean).join(' & ');
+        }
+
+        return [hero.primary, hero.secondary].filter(Boolean).join(' & ');
+    };
+
+    const buildReviewRows = (state, rsvpEnabled) => {
+        const hero = resolveHero(state.profile);
+        const rows = [
+            [preview.review_label || 'Asosiy', buildDisplayTitle(state.profile)],
+            ['Sana', `${formatEventDate(state.event_at)} · ${formatEventTime(state.event_at)}`],
+            ['Joy', state.venue_name],
+            ['Manzil', state.venue_address],
+            ['RSVP', rsvpEnabled ? 'Yoqilgan' : 'O\'chirilgan'],
+        ];
+
+        if (layout === LAYOUT_MODES.child && hero.secondary) {
+            rows.splice(1, 0, ['Taklif etuvchilar', hero.secondary]);
+        }
+
+        return rows;
+    };
+
+    return {
+        layout,
+        fields,
+        preview,
+        fieldByKey,
+        readProfileState,
+        resolveHero,
+        buildDisplayTitle,
+        buildReviewRows,
+    };
+}
+
 function initBuilderStudio() {
     const studio = document.getElementById('builder-studio');
     if (!studio) return;
@@ -34,6 +162,8 @@ function initBuilderStudio() {
     const bootstrap = JSON.parse(studio.dataset.bootstrap || '{}');
     const form = document.getElementById('builder-form');
     if (!form) return;
+
+    const profileEngine = createProfileEngine(bootstrap.field_schema || {});
 
     let currentStep = 1;
     const totalSteps = 3;
@@ -61,6 +191,7 @@ function initBuilderStudio() {
     const musicUrlWrap = document.getElementById('music-url-wrap');
     const musicUrlInput = document.getElementById('music_url');
     const reviewList = studio.querySelector('.builder-review__list');
+    const heroBlocks = [...studio.querySelectorAll('[data-preview-layout]')];
 
     const previewMap = {};
     studio.querySelectorAll('[data-preview]').forEach((el) => {
@@ -81,9 +212,28 @@ function initBuilderStudio() {
         });
     };
 
+    const applyPreviewLayout = () => {
+        const layout = profileEngine.layout;
+
+        heroBlocks.forEach((block) => {
+            const layouts = (block.dataset.previewLayout || '').split(/\s+/).filter(Boolean);
+            const active = layouts.includes(layout);
+            block.classList.toggle('hidden', !active);
+        });
+
+        const showConnector = Boolean(profileEngine.preview.show_connector)
+            && [LAYOUT_MODES.couple, LAYOUT_MODES.couple_bride_first].includes(layout);
+
+        togglePreviewBlock('hero_connector', showConnector);
+
+        if (layout === LAYOUT_MODES.general) {
+            const values = profileEngine.readProfileState(form);
+            togglePreviewBlock('hero_connector', Boolean(values.secondary_name));
+        }
+    };
+
     const readFormState = () => ({
-        groom_name: form.groom_name?.value?.trim() || '',
-        bride_name: form.bride_name?.value?.trim() || '',
+        profile: profileEngine.readProfileState(form),
         event_type: form.event_type?.value?.trim() || '',
         event_at: form.event_at?.value || '',
         event_city: form.event_city?.value?.trim() || '',
@@ -169,13 +319,40 @@ function initBuilderStudio() {
 
     const updatePreview = () => {
         const state = readFormState();
+        const hero = profileEngine.resolveHero(state.profile);
+        const layout = profileEngine.layout;
 
-        setPreviewText('groom_name', state.groom_name || 'Kuyov');
-        setPreviewText('bride_name', state.bride_name || 'Kelin');
-        setPreviewText('event_type', state.event_type || 'Nikoh To\'yi');
+        applyPreviewLayout();
+
+        setPreviewText('event_type', state.event_type || bootstrap.template_title || '');
 
         const subtitle = [formatEventDate(state.event_at), state.event_city].filter(Boolean).join(' · ');
         setPreviewText('welcome_subtitle', subtitle);
+
+        if (layout === LAYOUT_MODES.child || layout === LAYOUT_MODES.celebrant) {
+            setPreviewText('hero_primary_single', hero.primary);
+            setPreviewText('hero_tagline', hero.tagline || '');
+
+            if (layout === LAYOUT_MODES.child) {
+                setPreviewText('hero_hosts', hero.secondary ? `${hero.secondary} nomidan` : '');
+            } else {
+                setPreviewText('hero_hosts', hero.secondary || '');
+            }
+
+            togglePreviewBlock('hero_hosts_wrap', Boolean(hero.secondary));
+        } else if (layout === LAYOUT_MODES.graduation) {
+            setPreviewText('hero_primary_stacked', hero.primary);
+            setPreviewText('hero_secondary_stacked', hero.secondary);
+            setPreviewText('hero_tagline_graduation', hero.tagline || '');
+        } else {
+            setPreviewText('hero_primary', hero.primary);
+            setPreviewText('hero_secondary', hero.secondary);
+
+            if (layout === LAYOUT_MODES.general) {
+                togglePreviewBlock('hero_secondary', Boolean(hero.secondary));
+                togglePreviewBlock('hero_connector', Boolean(hero.secondary));
+            }
+        }
 
         setPreviewText('invitation_text_1', state.invitation_text_1);
         setPreviewText('invitation_text_2', state.invitation_text_2);
@@ -202,7 +379,11 @@ function initBuilderStudio() {
         const panel = studio.querySelector(`.builder-step[data-step="${step}"]`);
         if (!panel) return true;
 
-        const required = [...panel.querySelectorAll('input[required], textarea[required]')];
+        const required = [
+            ...panel.querySelectorAll('input[required], textarea[required]'),
+            ...panel.querySelectorAll('[data-profile-required]'),
+        ];
+
         let valid = true;
 
         required.forEach((field) => {
@@ -244,13 +425,7 @@ function initBuilderStudio() {
         if (!reviewList) return;
 
         const state = readFormState();
-        const rows = [
-            ['Juftlik', `${state.groom_name} & ${state.bride_name}`],
-            ['Sana', `${formatEventDate(state.event_at)} · ${formatEventTime(state.event_at)}`],
-            ['Joy', state.venue_name],
-            ['Manzil', state.venue_address],
-            ['RSVP', rsvpEnabled ? 'Yoqilgan' : 'O\'chirilgan'],
-        ];
+        const rows = profileEngine.buildReviewRows(state, rsvpEnabled);
 
         reviewList.innerHTML = rows.map(([label, value]) => `
             <div class="builder-review__row">
@@ -265,7 +440,7 @@ function initBuilderStudio() {
         const couple = document.getElementById('checkout-couple');
         const event = document.getElementById('checkout-event');
 
-        if (couple) couple.textContent = `${state.groom_name} & ${state.bride_name}`;
+        if (couple) couple.textContent = profileEngine.buildDisplayTitle(state.profile);
         if (event) event.textContent = `${formatEventDate(state.event_at)} · ${state.venue_name}`;
 
         checkoutModal?.classList.add('is-open');

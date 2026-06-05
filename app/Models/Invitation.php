@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\BuilderEventProfile;
 use App\Support\MusicUrlNormalizer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,6 +24,7 @@ class Invitation extends Model
         'status',
         'groom_name',
         'bride_name',
+        'profile_meta',
         'event_type',
         'event_at',
         'event_city',
@@ -44,6 +46,7 @@ class Invitation extends Model
         return [
             'event_at' => 'datetime',
             'dress_colors' => 'array',
+            'profile_meta' => 'array',
             'map_lat' => 'float',
             'map_lng' => 'float',
             'published_at' => 'datetime',
@@ -76,7 +79,12 @@ class Invitation extends Model
 
     public function coupleTitle(): string
     {
-        return "{$this->groom_name} & {$this->bride_name}";
+        return $this->displayTitle();
+    }
+
+    public function displayTitle(): string
+    {
+        return BuilderEventProfile::displayTitle($this);
     }
 
     public function defaultMusicUrl(): string

@@ -30,7 +30,6 @@ return [
         'nahor' => ['title' => 'Morning Pilaf', 'desc' => 'Blue and lavender tones — a modern invitation for a morning feast.', 'tag' => null],
         'fotiha' => ['title' => 'Engagement (Fotiha)', 'desc' => 'Gold and pink patterns — a romantic premium design for engagement.', 'tag' => 'Popular'],
         'birthday' => ['title' => 'Birthday', 'desc' => 'Champagne gold and warm cream — modern premium invitation.', 'tag' => 'Sale'],
-        'muchal' => ['title' => 'Muchal Celebration', 'desc' => 'Blue and violet palette — tradition meets modern style for the 12-year cycle.', 'tag' => null],
         'iftorlik' => ['title' => 'Iftar Gathering', 'desc' => 'Deep green and gold — an elegant Ramadan iftar invitation.', 'tag' => null],
         'aqiyqa' => ['title' => 'Aqeeqah', 'desc' => 'Cream and beige tones — a heartfelt template for a newborn ceremony.', 'tag' => null],
         'bitiruv' => ['title' => 'Graduation Night', 'desc' => 'Navy and gold — a formal premium invitation for graduation.', 'tag' => null],

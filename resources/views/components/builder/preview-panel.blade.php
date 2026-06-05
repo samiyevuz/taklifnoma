@@ -20,11 +20,36 @@
                                     </svg>
                                 </div>
                                 <p class="inv-welcome__pre" data-preview="event_type"></p>
-                                <h1 class="inv-welcome__names">
-                                    <span data-preview="groom_name"></span>
-                                    <span class="inv-welcome__amp">&</span>
-                                    <span data-preview="bride_name"></span>
-                                </h1>
+
+                                {{-- Dual hero: couple / qiz / general --}}
+                                <div class="inv-welcome__hero" data-preview-layout="couple couple_bride_first general">
+                                    <h1 class="inv-welcome__names inv-welcome__names--dual">
+                                        <span data-preview="hero_primary"></span>
+                                        <span class="inv-welcome__amp" data-preview="hero_connector">&</span>
+                                        <span data-preview="hero_secondary"></span>
+                                    </h1>
+                                </div>
+
+                                {{-- Single hero: sunnat / beshik / birthday / yubiley --}}
+                                <div class="inv-welcome__hero hidden" data-preview-layout="child celebrant">
+                                    <h1 class="inv-welcome__names inv-welcome__names--single">
+                                        <span data-preview="hero_primary_single"></span>
+                                    </h1>
+                                    <p class="inv-welcome__tagline" data-preview="hero_tagline"></p>
+                                    <p class="inv-welcome__hosts hidden" data-preview="hero_hosts_wrap">
+                                        <span data-preview="hero_hosts"></span>
+                                    </p>
+                                </div>
+
+                                {{-- Stacked hero: bitiruv --}}
+                                <div class="inv-welcome__hero hidden" data-preview-layout="graduation">
+                                    <h1 class="inv-welcome__names inv-welcome__names--stacked">
+                                        <span data-preview="hero_primary_stacked"></span>
+                                        <span class="inv-welcome__stacked-sub" data-preview="hero_secondary_stacked"></span>
+                                    </h1>
+                                    <p class="inv-welcome__tagline" data-preview="hero_tagline_graduation"></p>
+                                </div>
+
                                 <p class="inv-welcome__date" data-preview="welcome_subtitle"></p>
                                 <button type="button" class="inv-welcome__scroll" tabindex="-1" aria-hidden="true">
                                     <span>{{ __('invitation.open_invitation') }}</span>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreInvitationRequest;
 use App\Models\Invitation;
 use App\Services\InvitationService;
+use App\Support\BuilderEventProfile;
 use App\Support\InvitationDefaults;
 use App\Support\TemplateCatalog;
 use Illuminate\Http\RedirectResponse;
@@ -24,8 +25,15 @@ class InvitationBuilderController extends Controller
 
         $defaults = InvitationDefaults::demoAttributes();
         unset($defaults['slug'], $defaults['status'], $defaults['published_at']);
+        $slug = $catalogTemplate['slug'] ?? 'nikoh';
         $defaults['template'] = $catalogTemplate['template'] ?? 'nikoh-premium';
         $defaults['event_type'] = $catalogTemplate['title'] ?? 'Nikoh To\'yi';
+        $normalized = BuilderEventProfile::normalizeForStorage($slug, [
+            'profile' => BuilderEventProfile::demoProfile($slug),
+        ]);
+        $defaults['groom_name'] = $normalized['groom_name'];
+        $defaults['bride_name'] = $normalized['bride_name'];
+        $defaults['profile_meta'] = $normalized['profile_meta'];
 
         return view('builder.create', [
             'title' => 'Taklifnoma Yaratish — Builder',
@@ -56,7 +64,7 @@ class InvitationBuilderController extends Controller
         $this->authorize('update', $invitation);
 
         return view('builder.edit', [
-            'title' => 'Tahrirlash — '.$invitation->coupleTitle(),
+            'title' => 'Tahrirlash — '.$invitation->displayTitle(),
             'invitation' => $invitation,
             'stats' => $invitation->rsvpStats(),
             'bootstrap' => $this->builderBootstrap($invitation),
@@ -69,8 +77,11 @@ class InvitationBuilderController extends Controller
             ?? ($invitation ? TemplateCatalog::findByBlade($invitation->template) : null)
             ?? TemplateCatalog::find('nikoh');
         $source = $invitation ?? (object) ($defaults ?? InvitationDefaults::demoAttributes());
+        $slug = $template['slug'] ?? 'nikoh';
 
         return [
+            'template_slug' => $slug,
+            'field_schema' => BuilderEventProfile::bootstrapSchema($slug, $source),
             'groom_name' => $source->groom_name ?? '',
             'bride_name' => $source->bride_name ?? '',
             'event_type' => $source->event_type ?? 'Nikoh To\'yi',
