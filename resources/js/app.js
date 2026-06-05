@@ -57,8 +57,17 @@ function initThemeToggle() {
         toggles.forEach((btn) => {
             const labelDark = btn.dataset.themeLabelDark || 'Dark mode';
             const labelLight = btn.dataset.themeLabelLight || 'Light mode';
+            const iconOnly = btn.dataset.themeIconOnly === 'true';
+
             btn.setAttribute('aria-pressed', String(dark));
-            btn.textContent = dark ? labelLight : labelDark;
+            btn.setAttribute('aria-label', dark ? labelLight : labelDark);
+
+            if (iconOnly) {
+                btn.querySelector('.theme-icon-moon')?.classList.toggle('hidden', dark);
+                btn.querySelector('.theme-icon-sun')?.classList.toggle('hidden', !dark);
+            } else {
+                btn.textContent = dark ? labelLight : labelDark;
+            }
         });
         sessionStorage.setItem('theme', dark ? 'dark' : 'light');
         updateThemeMeta(dark);
@@ -83,6 +92,43 @@ function initStickyNav() {
     const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 24);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
+}
+
+function initLocaleDropdown() {
+    const dropdowns = document.querySelectorAll('[data-locale-dropdown]');
+    if (!dropdowns.length) return;
+
+    const closeAll = (except = null) => {
+        dropdowns.forEach((dropdown) => {
+            if (dropdown === except) return;
+
+            dropdown.classList.remove('is-open');
+            const trigger = dropdown.querySelector('.locale-dropdown__trigger');
+            const menu = dropdown.querySelector('.locale-dropdown__menu');
+            trigger?.setAttribute('aria-expanded', 'false');
+            menu?.setAttribute('hidden', '');
+        });
+    };
+
+    dropdowns.forEach((dropdown) => {
+        const trigger = dropdown.querySelector('.locale-dropdown__trigger');
+        const menu = dropdown.querySelector('.locale-dropdown__menu');
+        if (!trigger || !menu) return;
+
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const willOpen = !dropdown.classList.contains('is-open');
+            closeAll(willOpen ? dropdown : null);
+            dropdown.classList.toggle('is-open', willOpen);
+            trigger.setAttribute('aria-expanded', String(willOpen));
+            menu.toggleAttribute('hidden', !willOpen);
+        });
+    });
+
+    document.addEventListener('click', () => closeAll());
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeAll();
+    });
 }
 
 function initMobileNav() {
@@ -410,6 +456,7 @@ function initFavorites() {
 document.addEventListener('DOMContentLoaded', () => {
     initRippleEffect();
     initThemeToggle();
+    initLocaleDropdown();
     initStickyNav();
     initMobileNav();
     initScrollReveal();

@@ -9,7 +9,7 @@
                 </h1>
                 <p class="mt-5 max-w-xl text-fluid-body text-ink-soft text-pretty text-center lg:text-left">{{ __('landing.hero_desc') }}</p>
                 <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center lg:justify-start">
-                    <a href="{{ auth()->check() ? route('builder.create') : route('login') }}" class="btn-gold-shimmer btn-shine w-full sm:w-auto" data-ripple id="boshlash">
+                    <a href="{{ auth()->check() ? route('builder.create') : '#shablonlar' }}" class="btn-gold-shimmer btn-shine w-full sm:w-auto" data-ripple id="boshlash">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
                         {{ __('landing.hero_cta_start') }}
                     </a>

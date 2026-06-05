@@ -32,7 +32,7 @@
                 </div>
             </div>
 
-            <a href="{{ auth()->check() ? route('builder.create') : route('login') }}" class="btn-gold-shimmer btn-shine mt-8 inline-flex sm:mt-10" data-ripple>
+            <a href="{{ auth()->check() ? route('builder.create') : '#shablonlar' }}" class="btn-gold-shimmer btn-shine mt-8 inline-flex sm:mt-10" data-ripple>
                 {{ __('landing.pricing_cta') }}
             </a>
         </div>

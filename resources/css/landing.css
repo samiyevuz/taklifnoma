@@ -343,6 +343,77 @@
         box-shadow: 0 0 36px rgba(201, 162, 39, 0.5);
     }
 
+    .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    @media (min-width: 640px) {
+        .nav-actions {
+            gap: 0.625rem;
+        }
+    }
+
+    .nav-icon-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 9999px;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        background: rgba(255, 255, 255, 0.35);
+        backdrop-filter: blur(12px);
+        color: var(--color-ink-soft);
+        transition: all 0.35s var(--ease-elite);
+    }
+
+    .nav-icon-btn:hover {
+        color: var(--color-ink);
+        border-color: var(--color-luxury-gold);
+    }
+
+    .dark .nav-icon-btn {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.1);
+        color: var(--color-cream-200);
+    }
+
+    .nav-icon-btn__icon {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .nav-login-link {
+        padding: 0.45rem 0.9rem;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--color-ink-soft);
+        border-radius: 9999px;
+        transition: color 0.35s var(--ease-elite), background 0.35s var(--ease-elite);
+    }
+
+    .nav-login-link:hover {
+        color: var(--color-ink);
+        background: rgba(255, 255, 255, 0.35);
+    }
+
+    .nav-user-pill {
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.35rem 0.75rem 0.35rem 0.35rem;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        text-decoration: none;
+        transition: border-color 0.35s var(--ease-elite);
+    }
+
+    .nav-user-pill:hover {
+        border-color: var(--color-luxury-gold);
+    }
+
     /* ─── Hero ─── */
     .hero-title {
         font-family: var(--font-serif);
@@ -824,6 +895,16 @@
 
     .dark .mobile-nav__panel {
         background: rgba(15, 14, 23, 0.95);
+    }
+
+    .mobile-nav__panel .locale-dropdown {
+        flex: 1;
+    }
+
+    .mobile-nav__panel .locale-dropdown__menu {
+        left: 0;
+        right: 0;
+        min-width: 100%;
     }
 
     .section-label {
