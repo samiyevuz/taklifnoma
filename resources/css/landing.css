@@ -803,33 +803,35 @@
         display: flex;
         align-items: flex-end;
         padding: 1.35rem;
-        background: linear-gradient(145deg, #2a2420 0%, #6b5a4e 55%, #d4c4b0 100%);
+        background: #2a2420;
     }
 
-    .template-card__grain {
+    .template-card__cover {
         position: absolute;
         inset: 0;
-        opacity: 0.12;
-        background-image: radial-gradient(circle at 20% 20%, white 0.5px, transparent 0.5px);
-        background-size: 20px 20px;
-        pointer-events: none;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        transition: transform 0.7s var(--ease-elite);
     }
 
-    .template-card__glow {
+    .template-card:hover .template-card__cover {
+        transform: scale(1.06);
+    }
+
+    .template-card__photo-overlay {
         position: absolute;
-        top: -20%;
-        right: -10%;
-        width: 55%;
-        height: 70%;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.18);
-        filter: blur(28px);
+        inset: 0;
+        background:
+            linear-gradient(to top, rgba(12, 10, 8, 0.82) 0%, rgba(12, 10, 8, 0.28) 48%, rgba(12, 10, 8, 0.38) 100%),
+            linear-gradient(135deg, rgba(0, 0, 0, 0.18) 0%, transparent 55%);
         pointer-events: none;
-        transition: transform 0.65s var(--ease-elite);
+        transition: opacity 0.45s var(--ease-elite);
     }
 
-    .template-card:hover .template-card__glow {
-        transform: scale(1.15) translate(-4%, 4%);
+    .template-card:hover .template-card__photo-overlay {
+        opacity: 0.92;
     }
 
     .template-card__hero-content {
@@ -912,49 +914,13 @@
         transform: translateY(0);
     }
 
-    .template-card__hero.template-visual--nikoh {
-        background: linear-gradient(145deg, #1a1218 0%, #4a2c3d 42%, #9a6b5c 78%, #e8d4c4 100%);
-    }
-
-    .template-card__hero.template-visual--qiz {
-        background: linear-gradient(145deg, #241530 0%, #6b3d7a 45%, #d48aae 80%, #f8e8ef 100%);
-    }
-
-    .template-card__hero.template-visual--sunnat {
-        background: linear-gradient(145deg, #6b2f12 0%, #d97706 46%, #fbbf24 82%, #fff7ed 100%);
-    }
-
-    .template-card__hero.template-visual--beshik {
-        background: linear-gradient(145deg, #14352a 0%, #2d6a4f 46%, #74c69d 82%, #e8fff3 100%);
-    }
-
-    .template-card__hero.template-visual--yubiley {
-        background: linear-gradient(145deg, #5c1238 0%, #be185d 46%, #f472b6 82%, #fdf2f8 100%);
-    }
-
-    .template-card__hero.template-visual--nahor {
-        background: linear-gradient(145deg, #102a43 0%, #2563eb 46%, #60a5fa 82%, #eff6ff 100%);
-    }
-
-    .template-card__hero.template-visual--fotiha {
-        background: linear-gradient(145deg, #3b1347 0%, #7e22ce 46%, #c084fc 82%, #faf5ff 100%);
-    }
-
-    .template-card__hero.template-visual--birthday {
-        background: linear-gradient(145deg, #2a1f12 0%, #92710c 46%, #e8c468 82%, #fffbeb 100%);
-    }
-
-    .template-card__hero.template-visual--iftorlik {
-        background: linear-gradient(145deg, #064e3b 0%, #059669 46%, #34d399 82%, #ecfdf5 100%);
-    }
-
-    .template-card__hero.template-visual--aqiyqa {
-        background: linear-gradient(145deg, #44403c 0%, #78716c 46%, #d6d3d1 82%, #fafaf9 100%);
-    }
-
-    .template-card__hero.template-visual--bitiruv {
-        background: linear-gradient(145deg, #0f172a 0%, #1d4ed8 46%, #60a5fa 82%, #f8fafc 100%);
-    }
+    .template-card__hero.template-visual--nikoh .template-card__cover { object-position: center 40%; }
+    .template-card__hero.template-visual--qiz .template-card__cover { object-position: center 35%; }
+    .template-card__hero.template-visual--sunnat .template-card__cover { object-position: center 30%; }
+    .template-card__hero.template-visual--beshik .template-card__cover { object-position: center 45%; }
+    .template-card__hero.template-visual--nahor .template-card__cover { object-position: center 55%; }
+    .template-card__hero.template-visual--iftorlik .template-card__cover { object-position: center 50%; }
+    .template-card__hero.template-visual--aqiyqa .template-card__cover { object-position: center 50%; }
 
     .template-card__actions {
         position: absolute;

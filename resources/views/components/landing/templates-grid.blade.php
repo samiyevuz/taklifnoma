@@ -51,8 +51,16 @@
 
                     <a href="{{ $previewUrl }}" class="template-card__preview-link" aria-label="{{ __('landing.quick_preview') }}: {{ $template['title'] }}">
                         <div class="template-card__hero {{ $template['visual'] }}">
-                            <div class="template-card__grain" aria-hidden="true"></div>
-                            <div class="template-card__glow" aria-hidden="true"></div>
+                            @if ($template['cover_url'] ?? null)
+                                <img
+                                    src="{{ $template['cover_url'] }}"
+                                    alt="{{ $template['title'] }}"
+                                    class="template-card__cover"
+                                    loading="lazy"
+                                    decoding="async"
+                                >
+                            @endif
+                            <div class="template-card__photo-overlay" aria-hidden="true"></div>
                             <div class="template-card__hero-content">
                                 <div class="template-card__icon-ring">
                                     <x-landing.template-icon :slug="$template['slug']" />
