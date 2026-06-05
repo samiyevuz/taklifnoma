@@ -202,12 +202,46 @@ class TemplateVariantCatalog
 
     private static function enrich(array $variant, string $familySlug): array
     {
+        $theme = $variant['theme'] ?? 'premium';
+
         $variant['family_slug'] = $familySlug;
         $variant['price'] = number_format($variant['price_amount'], 0, '.', ' ').' '.__('landing.currency');
         $variant['cover_url'] = isset($variant['cover_image']) && $variant['cover_image'] !== ''
             ? asset($variant['cover_image'])
             : null;
+        $plan = PlanEntitlements::forTheme($theme);
+
+        $variant['animation'] = $plan['animation'];
+        $variant['tier_level'] = self::tierLevelForTheme($theme);
+        $variant['cover_focus'] = self::coverFocusForTheme($theme);
+        $variant['entitlements'] = $plan;
+        $variant['features'] = PlanEntitlements::featureLabels($theme);
+        $variant['guest_limit'] = $plan['guest_limit'];
+        $variant['guest_limit_label'] = PlanEntitlements::guestLimitLabel($plan['guest_limit']);
 
         return $variant;
     }
+
+    private static function tierLevelForTheme(string $theme): int
+    {
+        return match ($theme) {
+            'classic' => 1,
+            'premium' => 2,
+            'luxury' => 3,
+            'royal' => 4,
+            default => 2,
+        };
+    }
+
+    private static function coverFocusForTheme(string $theme): string
+    {
+        return match ($theme) {
+            'classic' => 'center 25%',
+            'premium' => 'center 40%',
+            'luxury' => 'center 15%',
+            'royal' => 'center 30%',
+            default => 'center 40%',
+        };
+    }
+
 }

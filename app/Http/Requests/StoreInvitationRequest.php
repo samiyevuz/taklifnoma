@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Support\BuilderEventProfile;
 use App\Support\TemplateCatalog;
+use App\Support\PlanEntitlements;
 use App\Support\TemplateVariantCatalog;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -72,6 +73,7 @@ class StoreInvitationRequest extends FormRequest
             'publish' => ['sometimes', 'boolean'],
             'template_slug' => ['nullable', 'string', Rule::in(TemplateCatalog::slugs())],
             'template_variant' => ['nullable', 'string', 'max:80'],
+            'custom_domain' => ['nullable', 'string', 'max:120', 'regex:/^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}$/i'],
             'template' => [
                 'nullable',
                 'string',
@@ -116,6 +118,19 @@ class StoreInvitationRequest extends FormRequest
 
                 if (! $variant) {
                     $validator->errors()->add('template_variant', 'Tanlangan shablon varianti noto\'g\'ri.');
+                }
+            }
+
+            foreach (PlanEntitlements::validatePayload($this->all(), $this->route('invitation')) as $field => $message) {
+                $validator->errors()->add($field, $message);
+            }
+
+            if ($this->filled('custom_domain')) {
+                $domain = strtolower($this->input('custom_domain'));
+                $appHost = parse_url(config('app.url'), PHP_URL_HOST);
+
+                if ($appHost && $domain === strtolower($appHost)) {
+                    $validator->errors()->add('custom_domain', 'Asosiy platforma domenidan foydalanib bo\'lmaydi.');
                 }
             }
         });

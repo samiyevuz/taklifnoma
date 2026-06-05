@@ -97,7 +97,9 @@ return [
         ['q' => 'Mehmonlar RSVP javobini qanday beradi?', 'a' => 'Har bir taklifnoma ichida "Kelaman" / "Kelolmayman" tugmalari mavjud. Javoblar jonli panelingizda real vaqtda yangilanadi va Excel formatida eksport qilish mumkin.'],
         ['q' => 'Mobil telefonda ham yaxshi ko\'rinadimi?', 'a' => 'Ha. Barcha shablonlar 320px ekrandan boshlab to\'liq optimallashtirilgan. iPhone SE, Android budget qurilmalar va planshetlarda mukammal ishlaydi.'],
         ['q' => 'Fon musiqasini o\'zgartirish mumkinmi?', 'a' => 'Premium va VIP paketlarda 20+ litsenziyalangan fon musiqalari kutubxonasidan tanlash yoki o\'z audio faylingizni yuklash imkoniyati mavjud.'],
-        ['q' => 'To\'lov qanday amalga oshiriladi?', 'a' => 'Payme, Click va bank kartalari orqali xavfsiz to\'lov. Bepul rejimda 30 mehmon va 1 shablon bilan platformani sinab ko\'rishingiz mumkin.'],
+        ['q' => 'To\'lov qanday amalga oshiriladi?', 'a' => 'Payme, Click va bank kartalari orqali xavfsiz to\'lov. Classic tarifda 30 mehmon, Premium — 200, Luxury — 500, Royal VIP — cheksiz mehmon.'],
+        ['q' => '"30 mehmon" qanday hisoblanadi?', 'a' => 'RSVP orqali "Kelaman" deb javob bergan mehmonlar soni hisoblanadi (kattalar + bolalar). Limit to\'lganda yangi RSVP qabul qilinmaydi, lekin havolani ko\'rish mumkin.'],
+        ['q' => 'Maxsus domen qanday ishlaydi?', 'a' => 'Royal VIP tarifda o\'z domeningizni (masalan nikoh.ism.uz) ulashingiz mumkin. DNS sozlamalarida CNAME ni platformaga yo\'naltirasiz — taklifnoma shu domen orqali ochiladi.'],
         ['q' => 'Taklifnomani tahrirlash yoki bekor qilish mumkinmi?', 'a' => 'Albatta. Yaratilgan taklifnomani istalgan vaqtda tahrirlashingiz, mehmonlar ro\'yxatini yangilashingiz va havolani o\'chirishingiz mumkin.'],
     ],
 
@@ -110,9 +112,9 @@ return [
     'pricing_tier_vip' => 'VIP',
     'pricing_free' => 'Bepul',
     'pricing_recommended' => 'Tavsiya',
-    'pricing_starter_desc' => '30 mehmon · 1 shablon',
-    'pricing_premium_desc' => 'Cheksiz mehmon · RSVP · Musiqa',
-    'pricing_vip_desc' => 'Maxsus domen · Dizayner yordami',
+    'pricing_starter_desc' => '30 mehmon · Asosiy shablon',
+    'pricing_premium_desc' => '200 mehmon · Musiqa · Maxsus havola',
+    'pricing_vip_desc' => 'Cheksiz mehmon · Maxsus domen · VIP',
     'pricing_cta' => 'Hoziroq Boshlash',
 
     'footer_tagline' => 'O\'zbekistondagi eng nafis raqamli taklifnoma platformasi. To\'y, uzatish va maxsus tadbirlar uchun premium tajriba.',

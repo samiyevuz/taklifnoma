@@ -16,12 +16,17 @@ class RsvpDashboardService
             ? (int) round(($stats['attending'] / $totalResponses) * 100)
             : 0;
 
+        $guestLimit = $invitation->resolvedGuestLimit();
+
         return [
             'invitation_id' => $invitation->id,
             'event_title' => $invitation->displayTitle().' — '.$invitation->event_type,
             'attending' => $stats['attending'],
             'declined' => $stats['declined'],
             'total_guests' => (int) $stats['total_guests'],
+            'guest_limit' => $guestLimit,
+            'remaining_guest_slots' => $invitation->remainingGuestSlots(),
+            'plan_tier' => $invitation->plan_tier,
             'total_responses' => $totalResponses,
             'confirmation_rate' => $confirmationRate,
             'recent' => $this->recentResponses($invitation, $recentLimit),

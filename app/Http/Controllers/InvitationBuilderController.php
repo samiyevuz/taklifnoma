@@ -10,6 +10,7 @@ use App\Services\Rsvp\RsvpDashboardService;
 use App\Support\BuilderEventProfile;
 use App\Support\InvitationDefaults;
 use App\Support\TemplateCatalog;
+use App\Support\PlanEntitlements;
 use App\Support\TemplateVariantCatalog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -127,6 +128,11 @@ class InvitationBuilderController extends Controller
             'currency' => __('landing.currency'),
             'template_title' => $selectedVariant['title'] ?? $template['title'] ?? 'Nikoh To\'yi Premium',
             'template_blade' => $selectedVariant['blade'] ?? $template['template'] ?? 'nikoh-premium',
+            'plan_tier' => $selectedVariant['entitlements']['tier'] ?? $invitation?->plan_tier,
+            'plan_entitlements' => $selectedVariant['entitlements'] ?? PlanEntitlements::forTheme('premium'),
+            'guest_limit' => $selectedVariant['guest_limit'] ?? null,
+            'guest_limit_label' => $selectedVariant['guest_limit_label'] ?? '',
+            'custom_domain' => $invitation?->custom_domain ?? '',
             'music_presets' => InvitationDefaults::musicPresets(),
             'default_music_url' => asset('audio/romantic-wedding.mp3'),
             'payments' => [

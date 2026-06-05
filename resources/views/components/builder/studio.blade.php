@@ -235,15 +235,22 @@
                             </div>
                         </div>
 
-                        @if ($invitation)
-                            <div class="builder-field builder-field--float mt-4">
-                                <div class="builder-slug-field">
-                                    <span class="builder-slug-prefix">/i/</span>
-                                    <input type="text" id="slug" name="slug" value="{{ old('slug', $invitation->slug) }}" pattern="[a-z0-9\-]+" placeholder=" ">
-                                </div>
-                                <label for="slug">{{ __('builder.slug') }}</label>
+                        <div class="builder-field builder-field--float mt-4" id="builder-slug-wrap">
+                            <div class="builder-slug-field">
+                                <span class="builder-slug-prefix">/l/</span>
+                                <input type="text" id="slug" name="slug" value="{{ old('slug', $b['slug'] ?? '') }}" pattern="[a-z0-9\-]+" placeholder=" ">
                             </div>
-                        @endif
+                            <label for="slug">{{ __('builder.slug') }}</label>
+                            <p class="builder-field-hint" id="builder-slug-hint">{{ __('builder.slug_plan_hint') }}</p>
+                        </div>
+
+                        <div class="builder-field builder-field--float mt-4 hidden" id="builder-custom-domain-wrap">
+                            <input type="text" id="custom_domain" name="custom_domain" value="{{ old('custom_domain', $b['custom_domain'] ?? '') }}" placeholder=" " inputmode="url" autocomplete="off">
+                            <label for="custom_domain">{{ __('builder.custom_domain') }}</label>
+                            <p class="builder-field-hint">{{ __('builder.custom_domain_hint') }}</p>
+                        </div>
+
+                        <div class="builder-plan-notice glass-luxury mt-4" id="builder-plan-notice" aria-live="polite"></div>
 
                         <div class="builder-review glass-luxury mt-6" id="builder-review">
                             <h3 class="builder-review__title">{{ __('builder.review_title') }}</h3>

@@ -10,9 +10,17 @@ class InvitationViewController extends Controller
 {
     public function show(Request $request, string $slug): View
     {
-        $invitation = InvitationResolver::findPublic($slug);
+        return $this->render(InvitationResolver::findPublic($slug));
+    }
 
-        return view('templates.nikoh-premium', [
+    public function render($invitation): View
+    {
+        $blade = $invitation->template ?: 'nikoh-premium';
+        $view = view()->exists("templates.{$blade}")
+            ? "templates.{$blade}"
+            : 'templates.nikoh-premium';
+
+        return view($view, [
             'invitation' => $invitation,
             'title' => $invitation->coupleTitle().' — '.$invitation->event_type,
             'metaDescription' => $invitation->coupleTitle().' '.$invitation->event_type.' taklifnomasi.',

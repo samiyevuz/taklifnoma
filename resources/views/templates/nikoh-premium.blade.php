@@ -6,28 +6,30 @@
         id="invitation-app"
         data-invitation-slug="{{ $invitation->slug }}"
     >
-        <button
-            type="button"
-            class="inv-music"
-            id="inv-music"
-            aria-label="{{ __('invitation.music_play') }}"
-            aria-pressed="false"
-        >
-            <div class="inv-music__disk">
-                <svg class="inv-music__icon" id="inv-music-icon-play" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M8 5v14l11-7z"/>
-                </svg>
-                <svg class="inv-music__icon hidden" id="inv-music-icon-pause" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
-                </svg>
-            </div>
-        </button>
-        <audio
-            id="inv-audio"
-            src="{{ $invitation->resolvedMusicUrl() }}"
-            loop
-            preload="metadata"
-        ></audio>
+        @if ($invitation->allowsMusic() && filled($invitation->resolvedMusicUrl()))
+            <button
+                type="button"
+                class="inv-music"
+                id="inv-music"
+                aria-label="{{ __('invitation.music_play') }}"
+                aria-pressed="false"
+            >
+                <div class="inv-music__disk">
+                    <svg class="inv-music__icon" id="inv-music-icon-play" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg class="inv-music__icon hidden" id="inv-music-icon-pause" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+                    </svg>
+                </div>
+            </button>
+            <audio
+                id="inv-audio"
+                src="{{ $invitation->resolvedMusicUrl() }}"
+                loop
+                preload="metadata"
+            ></audio>
+        @endif
 
         <div class="fixed top-4 left-4 z-[210]"><x-ui.locale-switcher /></div>
 
@@ -136,10 +138,18 @@
                     <p class="inv-section-label">{{ __('invitation.rsvp') }}</p>
                     <h2 id="inv-rsvp-title" class="inv-section-title">{{ __('invitation.rsvp_title') }}</h2>
 
+                    @php
+                        $appHost = parse_url(config('app.url'), PHP_URL_HOST);
+                        $rsvpUrl = $appHost && request()->getHost() !== $appHost
+                            ? url('/rsvp')
+                            : route('rsvp.store', $invitation->slug);
+                        $guestLimit = $invitation->resolvedGuestLimit();
+                    @endphp
                     <form
                         class="inv-rsvp-form inv-glass"
                         id="inv-rsvp-form"
-                        data-rsvp-url="{{ route('rsvp.store', $invitation->slug) }}"
+                        data-rsvp-url="{{ $rsvpUrl }}"
+                        @if ($guestLimit) data-guest-limit="{{ $guestLimit }}" @endif
                         novalidate
                     >
                         @csrf

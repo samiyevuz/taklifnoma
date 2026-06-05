@@ -31,6 +31,8 @@ function formatVariantPrice(amount, currency = "so'm") {
 }
 
 const VARIANT_THEME_CLASSES = ['inv-theme--classic', 'inv-theme--premium', 'inv-theme--luxury', 'inv-theme--royal'];
+const VARIANT_ANIM_CLASSES = ['inv-anim--basic', 'inv-anim--enhanced', 'inv-anim--cinematic', 'inv-anim--vip'];
+const PHONE_TIER_CLASSES = ['builder-phone--tier-1', 'builder-phone--tier-2', 'builder-phone--tier-3', 'builder-phone--tier-4'];
 
 function formatEventDate(value) {
     if (!value) return '';
@@ -243,6 +245,14 @@ function initBuilderStudio() {
     const checkoutPrice = document.getElementById('checkout-price');
     const checkoutTemplate = document.getElementById('checkout-template');
     const previewPage = document.getElementById('builder-preview');
+    const previewPhone = document.getElementById('builder-phone');
+    const previewPhoneScreen = document.getElementById('builder-phone-screen');
+    const previewCover = document.getElementById('builder-preview-cover');
+    const previewParticles = document.getElementById('builder-preview-particles');
+    const previewTierRibbon = document.getElementById('builder-preview-tier-ribbon');
+    const variantFeatures = document.getElementById('builder-variant-features');
+    let previewRevealObserver = null;
+    let previewParallaxBound = false;
 
     const previewMap = {};
     studio.querySelectorAll('[data-preview]').forEach((el) => {
@@ -560,13 +570,143 @@ function initBuilderStudio() {
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-+|-+$/g, '') || 'taklifnoma';
 
-    const applyVariant = (index) => {
+    const renderPreviewParticles = (animationTier) => {
+        if (!previewParticles) return;
+
+        const count = animationTier === 'vip' ? 14 : animationTier === 'cinematic' ? 9 : 0;
+        previewParticles.innerHTML = count
+            ? Array.from({ length: count }, (_, index) => (
+                `<span class="builder-preview-particle" style="--p-i:${index};--p-x:${8 + (index * 6.5) % 84}%;--p-y:${6 + (index * 11) % 88}%;--p-d:${0.4 + (index % 5) * 0.35}s"></span>`
+            )).join('')
+            : '';
+    };
+
+    const replayWelcomeEntrance = () => {
+        const welcome = previewPage?.querySelector('.inv-welcome');
+        if (!welcome) return;
+
+        welcome.classList.remove('is-entering');
+        void welcome.offsetWidth;
+        welcome.classList.add('is-entering');
+    };
+
+    const resetPreviewScrollReveals = () => {
+        if (!previewPage) return;
+
+        previewPage.querySelectorAll('.inv-reveal').forEach((element) => {
+            element.classList.remove('is-visible');
+        });
+    };
+
+    const initPreviewScrollReveal = () => {
+        if (!previewPage || !previewPhoneScreen) return;
+
+        if (previewRevealObserver) {
+            previewRevealObserver.disconnect();
+        }
+
+        resetPreviewScrollReveals();
+
+        previewRevealObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            },
+            {
+                root: previewPhoneScreen,
+                threshold: 0.18,
+                rootMargin: '0px 0px -12px 0px',
+            }
+        );
+
+        previewPage.querySelectorAll('.inv-reveal').forEach((element) => {
+            previewRevealObserver.observe(element);
+        });
+    };
+
+    const syncPreviewParallax = () => {
+        if (!previewPhoneScreen || !previewCover || !previewPage) return;
+
+        const animationTier = VARIANT_ANIM_CLASSES.find((cls) => previewPage.classList.contains(cls))
+            ?.replace('inv-anim--', '') || 'enhanced';
+
+        if (!['cinematic', 'vip'].includes(animationTier)) {
+            previewCover.style.transform = '';
+            return;
+        }
+
+        const scrollTop = previewPhoneScreen.scrollTop;
+        const scale = animationTier === 'vip' ? 1.14 : 1.08;
+        previewCover.style.transform = `translate3d(0, ${scrollTop * 0.28}px, 0) scale(${scale})`;
+    };
+
+    const bindPreviewParallax = () => {
+        if (!previewPhoneScreen || previewParallaxBound) return;
+
+        previewPhoneScreen.addEventListener('scroll', syncPreviewParallax, { passive: true });
+        previewParallaxBound = true;
+    };
+
+    const buildPlanNotice = (entitlements) => {
+        const limit = entitlements.guest_limit === null || entitlements.guest_limit === undefined
+            ? 'cheksiz'
+            : entitlements.guest_limit;
+
+        switch (entitlements.tier) {
+            case 'classic':
+                return `Classic tarif: ${limit} mehmon. Fon musiqasi va maxsus havola yo'q.`;
+            case 'luxury':
+                return `Luxury tarif: ${limit} mehmongacha. Kinematik animatsiyalar va musiqa mavjud.`;
+            case 'royal':
+                return 'Royal VIP: cheksiz mehmon, maxsus domen va VIP effektlar.';
+            default:
+                return `Premium tarif: ${limit} mehmongacha. Musiqa va maxsus havola mavjud.`;
+        }
+    };
+
+    const syncPlanEntitlements = (entitlements = {}) => {
+        const slugInput = document.getElementById('slug');
+        const slugWrap = document.getElementById('builder-slug-wrap');
+        const customDomainWrap = document.getElementById('builder-custom-domain-wrap');
+        const planNotice = document.getElementById('builder-plan-notice');
+        const musicPresetField = musicPreset?.closest('.builder-field');
+        const allowsMusic = Boolean(entitlements.music_enabled);
+
+        if (slugInput) {
+            slugInput.disabled = !entitlements.custom_slug;
+        }
+        slugWrap?.classList.toggle('is-locked', !entitlements.custom_slug);
+
+        customDomainWrap?.classList.toggle('hidden', !entitlements.custom_domain);
+
+        musicPresetField?.classList.toggle('hidden', !allowsMusic);
+        musicUrlWrap?.classList.toggle('hidden', !allowsMusic || musicPreset?.value === 'upload');
+        musicFileWrap?.classList.toggle('hidden', !allowsMusic || musicPreset?.value !== 'upload');
+
+        if (!allowsMusic) {
+            if (musicUrlInput) musicUrlInput.value = '';
+            if (musicPreset) musicPreset.value = musicPreset.options[0]?.value || '';
+        }
+
+        if (planNotice) {
+            planNotice.textContent = buildPlanNotice(entitlements);
+        }
+    };
+
+    const applyVariant = (index, { replay = true } = {}) => {
         if (!variants.length) return;
 
         const safeIndex = ((index % variants.length) + variants.length) % variants.length;
         variantIndex = safeIndex;
         const variant = variants[safeIndex];
         const priceLabel = variant.price || formatVariantPrice(variant.price_amount, bootstrap.currency);
+        const animationTier = variant.animation || 'enhanced';
+        const tierLevel = Number(variant.tier_level) || 2;
+        const coverUrl = variant.cover_url || coverPreviewUrl || '';
+        const features = Array.isArray(variant.features) ? variant.features : [];
 
         if (templateVariantInput) templateVariantInput.value = variant.id || '';
         if (templateBladeInput) templateBladeInput.value = variant.blade || '';
@@ -578,12 +718,40 @@ function initBuilderStudio() {
             variantBadge.textContent = badge;
             variantBadge.classList.toggle('hidden', !badge);
         }
+        if (variantFeatures) {
+            variantFeatures.innerHTML = features.map((feature) => (
+                `<span class="builder-variant-feature">${feature}</span>`
+            )).join('');
+        }
         if (checkoutPrice) checkoutPrice.textContent = priceLabel;
         if (checkoutTemplate) checkoutTemplate.textContent = variant.title || bootstrap.template_title || '';
 
         if (previewPage) {
-            previewPage.classList.remove(...VARIANT_THEME_CLASSES);
+            previewPage.classList.remove(...VARIANT_THEME_CLASSES, ...VARIANT_ANIM_CLASSES);
             previewPage.classList.add(`inv-theme--${variant.theme || 'premium'}`);
+            previewPage.classList.add(`inv-anim--${animationTier}`);
+        }
+
+        if (previewPhone) {
+            previewPhone.classList.remove(...PHONE_TIER_CLASSES);
+            previewPhone.classList.add(`builder-phone--tier-${tierLevel}`);
+        }
+
+        if (previewCover) {
+            previewCover.style.backgroundImage = coverUrl ? `url("${coverUrl}")` : '';
+            previewCover.style.backgroundPosition = variant.cover_focus || 'center 40%';
+        }
+
+        renderPreviewParticles(animationTier);
+
+        if (previewTierRibbon) {
+            const ribbonLabel = animationTier === 'vip'
+                ? 'VIP'
+                : animationTier === 'cinematic'
+                    ? 'LUXURY'
+                    : '';
+            previewTierRibbon.textContent = ribbonLabel;
+            previewTierRibbon.classList.toggle('hidden', !ribbonLabel);
         }
 
         variantDots?.querySelectorAll('[data-variant-dot]').forEach((dot, dotIndex) => {
@@ -594,6 +762,18 @@ function initBuilderStudio() {
         const showNav = variants.length > 1;
         variantPrev?.toggleAttribute('hidden', !showNav);
         variantNext?.toggleAttribute('hidden', !showNav);
+
+        syncPlanEntitlements(variant.entitlements || {});
+
+        if (replay) {
+            if (previewPhoneScreen) {
+                previewPhoneScreen.scrollTop = 0;
+            }
+            resetPreviewScrollReveals();
+            initPreviewScrollReveal();
+            replayWelcomeEntrance();
+            syncPreviewParallax();
+        }
     };
 
     const initVariantCarousel = () => {
@@ -625,6 +805,7 @@ function initBuilderStudio() {
         variantPrev?.addEventListener('click', () => applyVariant(variantIndex - 1));
         variantNext?.addEventListener('click', () => applyVariant(variantIndex + 1));
         applyVariant(variantIndex);
+        bindPreviewParallax();
     };
 
     const openCheckout = () => {
@@ -849,6 +1030,9 @@ function initBuilderStudio() {
                 if (coverPreview) {
                     coverPreview.src = reader.result;
                     coverPreview.classList.remove('hidden');
+                }
+                if (previewCover) {
+                    previewCover.style.backgroundImage = `url("${reader.result}")`;
                 }
             };
             reader.readAsDataURL(file);

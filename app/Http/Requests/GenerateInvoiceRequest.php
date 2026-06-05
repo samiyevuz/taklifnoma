@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\PaymentInvoice;
 use App\Support\BuilderEventProfile;
 use App\Support\TemplateCatalog;
+use App\Support\PlanEntitlements;
 use App\Support\TemplateVariantCatalog;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -50,6 +51,7 @@ class GenerateInvoiceRequest extends FormRequest
             ])],
             'template_slug' => ['required', 'string', Rule::in(TemplateCatalog::slugs())],
             'template_variant' => ['nullable', 'string', 'max:80'],
+            'custom_domain' => ['nullable', 'string', 'max:120', 'regex:/^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}$/i'],
             'invitation_id' => ['nullable', 'integer', 'exists:invitations,id'],
             'profile' => ['nullable', 'array'],
             'profile_meta' => ['nullable', 'array'],
@@ -123,6 +125,10 @@ class GenerateInvoiceRequest extends FormRequest
                 if (! $variant) {
                     $validator->errors()->add('template_variant', 'Tanlangan shablon varianti noto\'g\'ri.');
                 }
+            }
+
+            foreach (PlanEntitlements::validatePayload($this->all()) as $field => $message) {
+                $validator->errors()->add($field, $message);
             }
         });
     }

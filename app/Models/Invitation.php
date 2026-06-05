@@ -6,6 +6,7 @@ use App\Models\PaymentInvoice;
 use App\Support\BuilderEventProfile;
 use App\Support\InvitationEventData;
 use App\Support\MusicUrlNormalizer;
+use App\Support\PlanEntitlements;
 use App\Support\TemplateCatalog;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -34,6 +35,9 @@ class Invitation extends Model
         'template',
         'template_slug',
         'template_variant',
+        'plan_tier',
+        'guest_limit',
+        'custom_domain',
         'status',
         'groom_name',
         'bride_name',
@@ -69,6 +73,7 @@ class Invitation extends Model
             'published_at' => 'datetime',
             'expires_at' => 'datetime',
             'rsvp_enabled' => 'boolean',
+            'guest_limit' => 'integer',
         ];
     }
 
@@ -102,6 +107,7 @@ class Invitation extends Model
                 'profile_meta', 'event_at', 'event_city', 'venue_name', 'venue_address',
                 'map_lat', 'map_lng', 'invitation_text_1', 'invitation_text_2',
                 'family_signature', 'music_url', 'cover_image', 'dress_colors', 'rsvp_enabled', 'template', 'template_variant',
+                'plan_tier', 'guest_limit', 'custom_domain',
             ])) {
                 $invitation->event_data = InvitationEventData::fromInvitation($invitation);
             }
@@ -159,11 +165,6 @@ class Invitation extends Model
     public function defaultMusicUrl(): string
     {
         return asset('audio/romantic-wedding.mp3');
-    }
-
-    public function resolvedMusicUrl(): string
-    {
-        return MusicUrlNormalizer::normalize($this->music_url) ?? $this->defaultMusicUrl();
     }
 
     public function hasCustomMusic(): bool
@@ -237,9 +238,71 @@ class Invitation extends Model
         return [
             'attending' => (clone $responses)->where('is_attending', true)->count(),
             'declined' => (clone $responses)->where('is_attending', false)->count(),
-            'total_guests' => (clone $responses)->where('is_attending', true)
+            'total_guests' => (int) ((clone $responses)->where('is_attending', true)
                 ->selectRaw('SUM(adults_count + children_count) as total')
-                ->value('total') ?? 0,
+                ->value('total') ?? 0),
         ];
+    }
+
+    public function entitlements(): array
+    {
+        return PlanEntitlements::forInvitation($this);
+    }
+
+    public function resolvedGuestLimit(): ?int
+    {
+        if ($this->guest_limit !== null) {
+            return (int) $this->guest_limit;
+        }
+
+        return PlanEntitlements::forInvitation($this)['guest_limit'];
+    }
+
+    public function currentGuestCount(): int
+    {
+        return (int) $this->rsvpStats()['total_guests'];
+    }
+
+    public function remainingGuestSlots(): ?int
+    {
+        $limit = $this->resolvedGuestLimit();
+
+        if ($limit === null) {
+            return null;
+        }
+
+        return max(0, $limit - $this->currentGuestCount());
+    }
+
+    public function canAcceptGuestCount(int $adults, int $children): bool
+    {
+        $limit = $this->resolvedGuestLimit();
+
+        if ($limit === null) {
+            return true;
+        }
+
+        $incoming = max(0, $adults) + max(0, $children);
+
+        return ($this->currentGuestCount() + $incoming) <= $limit;
+    }
+
+    public function allowsMusic(): bool
+    {
+        return (bool) $this->entitlements()['music_enabled'];
+    }
+
+    public function allowsCustomDomain(): bool
+    {
+        return (bool) $this->entitlements()['custom_domain'];
+    }
+
+    public function resolvedMusicUrl(): string
+    {
+        if (! $this->allowsMusic()) {
+            return '';
+        }
+
+        return MusicUrlNormalizer::normalize($this->music_url) ?? $this->defaultMusicUrl();
     }
 }

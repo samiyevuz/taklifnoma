@@ -19,6 +19,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\InvitationBuilderController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\InvitationViewController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RsvpController;
@@ -28,13 +29,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
 
-Route::get('/', function () {
-    return view('pages.landing', [
-        'title' => __('landing.meta_title'),
-        'metaDescription' => __('landing.meta_description'),
-        'favoriteSlugs' => auth()->check() ? auth()->user()->favoriteSlugs() : [],
-    ]);
-});
+Route::get('/', LandingController::class);
+Route::post('/rsvp', [RsvpController::class, 'storeFromDomain']);
 
 Route::get('/ui-kit', function () {
     return view('pages.ui-kit-preview', [

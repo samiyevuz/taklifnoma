@@ -6,6 +6,7 @@ use App\Models\Invitation;
 use App\Models\PaymentInvoice;
 use App\Models\User;
 use App\Services\InvitationService;
+use App\Support\PlanEntitlements;
 use App\Support\TemplateVariantCatalog;
 use Illuminate\Support\Facades\DB;
 
@@ -22,6 +23,8 @@ class PaymentCheckoutService
             $provider = $payload['payment_provider'];
             $templateSlug = $payload['template_slug'] ?? 'nikoh';
             $variantId = $payload['template_variant'] ?? null;
+            $variant = TemplateVariantCatalog::find($templateSlug, $variantId);
+            $plan = PlanEntitlements::forTheme($variant['theme'] ?? PlanEntitlements::TIER_PREMIUM);
             $amount = TemplateVariantCatalog::resolvePrice($templateSlug, $variantId);
 
             $invitation = $this->resolveInvitation($user, $payload);
@@ -35,6 +38,8 @@ class PaymentCheckoutService
                 'amount_tiyin' => $amountTiyin,
                 'currency' => config('payments.currency', 'UZS'),
                 'template_slug' => $templateSlug,
+                'template_variant' => $variant['id'] ?? $variantId,
+                'plan_tier' => $plan['tier'],
                 'status' => PaymentInvoice::STATUS_PENDING,
             ]);
 

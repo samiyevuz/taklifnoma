@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Invitation;
 use App\Support\InvitationEventData;
 use App\Support\TemplateCatalog;
+use App\Support\PlanEntitlements;
 use App\Support\TemplateVariantCatalog;
 use Illuminate\Support\Str;
 
@@ -118,7 +119,7 @@ class InvitationService
             $data['template'] = $variant['blade'];
         }
 
-        return $data;
+        return PlanEntitlements::applyPlanToPayload($data);
     }
 
     private function slugExists(string $slug, ?int $exceptId = null): bool

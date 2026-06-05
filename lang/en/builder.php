@@ -63,6 +63,7 @@ return [
     'variant_next' => 'Next template',
     'variant_choose' => 'Choose template variant',
     'variant_price_label' => 'Selected template price',
+    'variant_features' => 'Template features',
     'preview_fab' => 'Preview look',
     'close_preview' => 'Close preview',
     'review_title' => 'Final review',

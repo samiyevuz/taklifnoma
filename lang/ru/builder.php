@@ -63,6 +63,7 @@ return [
     'variant_next' => 'Следующий шаблон',
     'variant_choose' => 'Выбор варианта шаблона',
     'variant_price_label' => 'Цена выбранного шаблона',
+    'variant_features' => 'Возможности шаблона',
     'preview_fab' => 'Проверить вид',
     'close_preview' => 'Закрыть предпросмотр',
     'review_title' => 'Итоговая проверка',

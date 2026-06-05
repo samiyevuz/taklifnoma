@@ -33,6 +33,8 @@ class PaymentInvoice extends Model
         'amount_tiyin',
         'currency',
         'template_slug',
+        'template_variant',
+        'plan_tier',
         'status',
         'provider_state',
         'paid_at',
