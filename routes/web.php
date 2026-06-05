@@ -14,3 +14,10 @@ Route::get('/ui-kit', function () {
         'title' => 'Premium UI Kit Preview — Taklifnoma',
     ]);
 });
+
+Route::get('/invite/nikoh-premium', function () {
+    return view('templates.nikoh-premium', [
+        'title' => 'Ali & Vali — Nikoh To\'yi',
+        'metaDescription' => 'Ali va Vali nikoh to\'yi taklifnomasi. 22 Sentabr 2026, Toshkent.',
+    ]);
+});
