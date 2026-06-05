@@ -83,7 +83,26 @@
         </div>
         <div class="builder-field mt-4">
             <label for="family_signature">Oila imzosi</label>
-            <input type="text" id="family_signature" name="family_signature" value="{{ old('family_signature', $data->family_signature ?? '') }}" placeholder="Ali & Vali oilalari">
+            <input type="text" id="family_signature" name="family_signature" value="{{ old('family_signature', $data->family_signature ?? '') }}" placeholder="Farhod & Shirin oilalari">
+        </div>
+    </fieldset>
+
+    {{-- Musiqa --}}
+    <fieldset class="builder-section glass-luxury rounded-2xl p-6">
+        <legend class="builder-section__title font-serif text-xl font-semibold text-ink mb-4">Fon musiqasi</legend>
+        <div class="builder-field">
+            <label for="music_url">MP3 havola</label>
+            <input
+                type="url"
+                id="music_url"
+                name="music_url"
+                value="{{ old('music_url', $data->music_url ?? '') }}"
+                placeholder="https://saytingiz.uz/music/qoshiq.mp3"
+            >
+            <p class="mt-2 text-xs text-ink-muted leading-relaxed">
+                To'g'ridan-to'g'ri <strong>.mp3</strong> fayl havolasi kiriting. YouTube va Spotify ishlamaydi.
+                Bo'sh qoldirsangiz — romantik pianino fon musiqasi avtomatik qo'yiladi.
+            </p>
         </div>
     </fieldset>
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\MusicUrlNormalizer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
@@ -59,6 +60,21 @@ class Invitation extends Model
     public function coupleTitle(): string
     {
         return "{$this->groom_name} & {$this->bride_name}";
+    }
+
+    public function defaultMusicUrl(): string
+    {
+        return asset('audio/romantic-wedding.mp3');
+    }
+
+    public function resolvedMusicUrl(): string
+    {
+        return MusicUrlNormalizer::normalize($this->music_url) ?? $this->defaultMusicUrl();
+    }
+
+    public function hasCustomMusic(): bool
+    {
+        return filled($this->music_url);
     }
 
     public function eventIsoString(): string

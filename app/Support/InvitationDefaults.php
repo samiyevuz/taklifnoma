@@ -17,11 +17,11 @@ class InvitationDefaults
     public static function demoAttributes(): array
     {
         return [
-            'slug' => 'ali-vali',
+            'slug' => 'farhod-shirin',
             'template' => 'nikoh-premium',
             'status' => 'published',
-            'groom_name' => 'Ali',
-            'bride_name' => 'Vali',
+            'groom_name' => 'Farhod',
+            'bride_name' => 'Shirin',
             'event_type' => 'Nikoh To\'yi',
             'event_at' => '2026-09-22 18:00:00',
             'event_city' => 'Toshkent',
@@ -31,7 +31,7 @@ class InvitationDefaults
             'map_lng' => 69.240562,
             'invitation_text_1' => 'Hurmatli mehmon! Hayotimizning eng muborak kunida — nikoh to\'yimizda bizni sharaf bilan quvvatlashishingizni chin qalbdan so\'raymiz.',
             'invitation_text_2' => 'Sizning iliq tilaklaringiz va qatnashuvingiz biz uchun eng katta baxt. Marosimimizda sizni kutib qolamiz.',
-            'family_signature' => 'Ali & Vali oilalari',
+            'family_signature' => 'Farhod & Shirin oilalari',
             'dress_colors' => self::dressColors(),
             'published_at' => now(),
         ];

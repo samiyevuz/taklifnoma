@@ -27,6 +27,7 @@ class StoreInvitationRequest extends FormRequest
             'invitation_text_1' => ['required', 'string', 'max:1000'],
             'invitation_text_2' => ['nullable', 'string', 'max:1000'],
             'family_signature' => ['nullable', 'string', 'max:150'],
+            'music_url' => ['nullable', 'string', 'max:500'],
             'slug' => [
                 'nullable',
                 'string',

@@ -21,7 +21,7 @@ Route::get('/ui-kit', function () {
 Route::get('/i/{slug}', [InvitationViewController::class, 'show'])->name('invitation.show');
 Route::post('/i/{slug}/rsvp', [RsvpController::class, 'store'])->name('rsvp.store');
 
-Route::redirect('/invite/nikoh-premium', '/i/ali-vali');
+Route::redirect('/invite/nikoh-premium', '/i/farhod-shirin');
 
 Route::prefix('builder')->name('builder.')->group(function () {
     Route::get('/create', [InvitationBuilderController::class, 'create'])->name('create');

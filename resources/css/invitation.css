@@ -96,6 +96,20 @@
         color: white;
     }
 
+    .inv-music.is-loading .inv-music__disk {
+        animation: inv-disk-spin 1.2s linear infinite;
+        opacity: 0.7;
+    }
+
+    .inv-music.is-error {
+        border-color: rgba(220, 38, 38, 0.35);
+        box-shadow: 0 8px 24px rgba(220, 38, 38, 0.15);
+    }
+
+    .inv-music.is-error .inv-music__disk {
+        background: conic-gradient(from 0deg, #dc2626, #f87171, #b91c1c, #dc2626);
+    }
+
     /* ─── Section 1: Welcome cover ─── */
     .inv-welcome {
         min-height: 100dvh;

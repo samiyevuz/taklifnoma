@@ -75,7 +75,7 @@
 
                         <div class="template-card__quick">
                             <a
-                                href="{{ $template['slug'] === 'nikoh' ? route('invitation.show', 'ali-vali') : route('builder.create') }}"
+                                href="{{ $template['slug'] === 'nikoh' ? route('invitation.show', 'farhod-shirin') : route('builder.create') }}"
                                 class="inline-flex items-center gap-2 rounded-full bg-white/95 px-5 py-2.5 text-sm font-semibold text-ink shadow-lg transition-transform duration-300 hover:scale-105"
                                 style="transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1)"
                             >

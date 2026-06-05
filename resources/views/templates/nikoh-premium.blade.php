@@ -22,11 +22,12 @@
                 </svg>
             </div>
         </button>
-        @if ($invitation->music_url)
-            <audio id="inv-audio" loop preload="none">
-                <source src="{{ $invitation->music_url }}" type="audio/mpeg">
-            </audio>
-        @endif
+        <audio
+            id="inv-audio"
+            src="{{ $invitation->resolvedMusicUrl() }}"
+            loop
+            preload="metadata"
+        ></audio>
 
         <main class="invitation-content" id="main-content">
             <section class="inv-welcome" id="inv-welcome" aria-label="Xush kelibsiz">

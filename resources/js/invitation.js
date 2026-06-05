@@ -244,41 +244,63 @@ function initSubmitRipple() {
     });
 }
 
-function createAmbientSynth() {
-    let ctx = null;
-    const nodes = [];
+const MUSIC_TARGET_VOLUME = 0.42;
 
-    return {
-        start() {
-            if (ctx) return;
-            ctx = new AudioContext();
-            [196, 246.94, 293.66].forEach((freq) => {
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.value = freq;
-                gain.gain.value = 0.018;
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start();
-                nodes.push(osc);
-            });
-        },
-        stop() {
-            nodes.forEach((osc) => {
-                try {
-                    osc.stop();
-                } catch {
-                    /* already stopped */
-                }
-            });
-            nodes.length = 0;
-            if (ctx) {
-                ctx.close();
-                ctx = null;
+function fadeAudioVolume(audio, target, duration = 1400) {
+    return new Promise((resolve) => {
+        const start = audio.volume;
+        const diff = target - start;
+        if (Math.abs(diff) < 0.01 || duration <= 0 || prefersReducedMotion()) {
+            audio.volume = target;
+            resolve();
+            return;
+        }
+
+        const started = performance.now();
+        const step = (now) => {
+            const progress = Math.min(1, (now - started) / duration);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            audio.volume = Math.max(0, Math.min(1, start + diff * eased));
+            if (progress < 1) {
+                requestAnimationFrame(step);
+            } else {
+                resolve();
             }
-        },
-    };
+        };
+        requestAnimationFrame(step);
+    });
+}
+
+function waitForAudioReady(audio, timeout = 12000) {
+    if (audio.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
+        return Promise.resolve();
+    }
+
+    return new Promise((resolve, reject) => {
+        const cleanup = () => {
+            clearTimeout(timer);
+            audio.removeEventListener('canplaythrough', onReady);
+            audio.removeEventListener('loadeddata', onReady);
+            audio.removeEventListener('error', onError);
+        };
+        const onReady = () => {
+            cleanup();
+            resolve();
+        };
+        const onError = () => {
+            cleanup();
+            reject(new Error('audio-load-failed'));
+        };
+        const timer = setTimeout(() => {
+            cleanup();
+            reject(new Error('audio-load-timeout'));
+        }, timeout);
+
+        audio.addEventListener('canplaythrough', onReady, { once: true });
+        audio.addEventListener('loadeddata', onReady, { once: true });
+        audio.addEventListener('error', onError, { once: true });
+        audio.load();
+    });
 }
 
 function initMusicPlayer() {
@@ -287,11 +309,13 @@ function initMusicPlayer() {
     const iconPlay = document.getElementById('inv-music-icon-play');
     const iconPause = document.getElementById('inv-music-icon-pause');
 
-    if (!btn) return;
+    if (!btn || !audio) return;
 
     let isPlaying = false;
-    let useSynth = false;
-    const synth = createAmbientSynth();
+    let fadeToken = 0;
+
+    audio.volume = 0;
+    audio.loop = true;
 
     const setPlaying = (playing) => {
         isPlaying = playing;
@@ -305,33 +329,48 @@ function initMusicPlayer() {
         iconPause?.classList.toggle('hidden', !playing);
     };
 
-    const stopAll = () => {
-        audio?.pause();
-        synth.stop();
+    const showMusicError = () => {
+        btn.classList.add('is-error');
+        btn.classList.remove('is-loading');
+        btn.setAttribute(
+            'aria-label',
+            "Musiqa yuklanmadi. To'g'ridan-to'g'ri MP3 havola kiriting."
+        );
+    };
+
+    const stopMusic = async () => {
+        const token = ++fadeToken;
+        await fadeAudioVolume(audio, 0, 700);
+        if (token !== fadeToken) return;
+        audio.pause();
         setPlaying(false);
     };
 
-    audio?.addEventListener('error', () => {
-        useSynth = true;
-    });
-
     btn.addEventListener('click', async () => {
         if (isPlaying) {
-            stopAll();
+            await stopMusic();
             return;
         }
 
+        btn.classList.remove('is-error');
+        btn.classList.add('is-loading');
+
         try {
-            if (!useSynth && audio?.querySelector('source')?.src) {
-                await audio.play();
-                setPlaying(true);
-            } else {
-                throw new Error('fallback');
-            }
-        } catch {
-            useSynth = true;
-            synth.start();
+            await waitForAudioReady(audio);
+            audio.currentTime = 0;
+            await audio.play();
+
+            const token = ++fadeToken;
+            await fadeAudioVolume(audio, MUSIC_TARGET_VOLUME);
+            if (token !== fadeToken) return;
+
+            btn.classList.remove('is-loading');
             setPlaying(true);
+        } catch {
+            audio.pause();
+            audio.volume = 0;
+            setPlaying(false);
+            showMusicError();
         }
     });
 }

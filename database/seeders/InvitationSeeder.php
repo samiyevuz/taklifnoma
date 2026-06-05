@@ -10,8 +10,10 @@ class InvitationSeeder extends Seeder
 {
     public function run(): void
     {
+        Invitation::query()->where('slug', 'ali-vali')->delete();
+
         Invitation::query()->updateOrCreate(
-            ['slug' => 'ali-vali'],
+            ['slug' => 'farhod-shirin'],
             InvitationDefaults::demoAttributes()
         );
     }
