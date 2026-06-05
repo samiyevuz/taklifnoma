@@ -25,8 +25,11 @@ class InvitationBuilderController extends Controller
 
     public function store(StoreInvitationRequest $request): RedirectResponse
     {
+        $data = $request->validated();
+        $data['user_id'] = $request->user()->id;
+
         $invitation = $this->invitationService->create(
-            $request->validated(),
+            $data,
             $request->boolean('publish')
         );
 
@@ -39,6 +42,8 @@ class InvitationBuilderController extends Controller
 
     public function edit(Invitation $invitation): View
     {
+        $this->authorize('update', $invitation);
+
         return view('builder.edit', [
             'title' => 'Tahrirlash — '.$invitation->coupleTitle(),
             'invitation' => $invitation,
@@ -48,6 +53,8 @@ class InvitationBuilderController extends Controller
 
     public function update(StoreInvitationRequest $request, Invitation $invitation): RedirectResponse
     {
+        $this->authorize('update', $invitation);
+
         $publish = $request->has('publish')
             ? $request->boolean('publish')
             : null;

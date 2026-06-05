@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\MusicUrlNormalizer;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
@@ -16,6 +17,7 @@ class Invitation extends Model
     public const TEMPLATE_NIKOH_PREMIUM = 'nikoh-premium';
 
     protected $fillable = [
+        'user_id',
         'slug',
         'template',
         'status',
@@ -47,9 +49,22 @@ class Invitation extends Model
         ];
     }
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function rsvpResponses(): HasMany
     {
         return $this->hasMany(RsvpResponse::class);
+    }
+
+    public function statusLabel(): string
+    {
+        return match ($this->status) {
+            self::STATUS_PUBLISHED => 'Nashr qilingan',
+            default => 'Qoralama',
+        };
     }
 
     public function isPublished(): bool

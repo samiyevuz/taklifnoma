@@ -16,6 +16,7 @@
         })();
     </script>
     <meta name="description" content="{{ $metaDescription ?? 'Raqamli taklifnoma platformasi — O\'zbekiston' }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ $title ?? config('app.name', 'Taklifnoma') }}</title>
 

@@ -1,38 +1,8 @@
 @php
-    $templates = [
-        [
-            'slug' => 'nikoh',
-            'visual' => 'template-visual--nikoh',
-            'title' => 'Nikoh To\'y',
-            'desc' => 'Oltin naqshlar, klassik serif va romantik fon — to\'yingiz uchun eng hashamatli shablon.',
-            'price' => '89 000 so\'m',
-            'tag' => 'Eng mashhur',
-        ],
-        [
-            'slug' => 'qiz',
-            'visual' => 'template-visual--qiz',
-            'title' => 'Qiz Uzatish',
-            'desc' => 'Nozik pushti va binafsha tonlar — an\'anaviy marosim uchun zamonaviy nafosat.',
-            'price' => '79 000 so\'m',
-            'tag' => 'Yangi',
-        ],
-        [
-            'slug' => 'sunnat',
-            'visual' => 'template-visual--sunnat',
-            'title' => 'Sunnat To\'yi',
-            'desc' => 'Yashil va marvarid palitrasi — oilaviy bayram uchun iliq va yorqin dizayn.',
-            'price' => '69 000 so\'m',
-            'tag' => null,
-        ],
-        [
-            'slug' => 'birthday',
-            'visual' => 'template-visual--birthday',
-            'title' => 'Tug\'ilgan Kun',
-            'desc' => 'Shampan oltin va iliq krem — har qanday yosh uchun zamonaviy premium taklif.',
-            'price' => '59 000 so\'m',
-            'tag' => 'Chegirma',
-        ],
-    ];
+    use App\Support\TemplateCatalog;
+
+    $templates = TemplateCatalog::all();
+    $favoriteSlugs = $favoriteSlugs ?? (auth()->check() ? auth()->user()->favoriteSlugs() : []);
 @endphp
 
 <section id="shablonlar" class="relative py-16 sm:py-20 lg:py-28" aria-labelledby="templates-heading">
@@ -50,11 +20,32 @@
 
         <div class="mt-12 grid grid-cols-1 gap-6 min-[400px]:grid-cols-2 lg:grid-cols-4 lg:gap-6">
             @foreach ($templates as $index => $template)
+                @php
+                    $isFavorited = in_array($template['slug'], $favoriteSlugs, true);
+                    $previewUrl = $template['preview_route'] && $template['preview_param']
+                        ? route($template['preview_route'], $template['preview_param'])
+                        : (auth()->check() ? route('builder.create') : route('login'));
+                @endphp
                 <article
                     class="template-card reveal {{ $index > 0 ? 'reveal-delay-' . min($index, 4) : '' }}"
                     aria-label="{{ $template['title'] }} shabloni"
                 >
-                    <div class="template-card__visual">
+                    <div class="template-card__visual relative">
+                        <button
+                            type="button"
+                            class="favorite-btn {{ $isFavorited ? 'is-active' : '' }}"
+                            data-favorite-btn
+                            data-template-slug="{{ $template['slug'] }}"
+                            data-login-url="{{ route('login') }}"
+                            data-auth="{{ auth()->check() ? '1' : '0' }}"
+                            aria-label="{{ $isFavorited ? 'Yoqtirganlardan olib tashlash' : 'Yoqtirganlarga saqlash' }}"
+                            aria-pressed="{{ $isFavorited ? 'true' : 'false' }}"
+                        >
+                            <svg viewBox="0 0 24 24" fill="{{ $isFavorited ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            </svg>
+                        </button>
+
                         <div class="template-card__visual-inner {{ $template['visual'] }}">
                             <div class="template-card__pattern"></div>
                             <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
@@ -75,7 +66,7 @@
 
                         <div class="template-card__quick">
                             <a
-                                href="{{ $template['slug'] === 'nikoh' ? route('invitation.show', 'farhod-shirin') : route('builder.create') }}"
+                                href="{{ $previewUrl }}"
                                 class="inline-flex items-center gap-2 rounded-full bg-white/95 px-5 py-2.5 text-sm font-semibold text-ink shadow-lg transition-transform duration-300 hover:scale-105"
                                 style="transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1)"
                             >
@@ -93,7 +84,7 @@
                         <p class="mt-2 text-sm leading-relaxed text-ink-muted line-clamp-2">{{ $template['desc'] }}</p>
                         <div class="mt-4 flex items-center justify-between">
                             <span class="text-sm font-bold text-luxury-gold-dark">{{ $template['price'] }}</span>
-                            <a href="{{ route('builder.create') }}" class="text-sm font-semibold text-ink hover:text-luxury-gold-dark transition-colors" style="transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1)">
+                            <a href="{{ auth()->check() ? route('builder.create') : route('login') }}" class="text-sm font-semibold text-ink hover:text-luxury-gold-dark transition-colors" style="transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1)">
                                 Tanlash →
                             </a>
                         </div>

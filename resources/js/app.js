@@ -350,6 +350,61 @@ function initRsvpPreview() {
     observer.observe(panel);
 }
 
+function initFavorites() {
+    const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
+
+    document.querySelectorAll('[data-favorite-btn]').forEach((btn) => {
+        btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (btn.dataset.auth !== '1') {
+                window.location.href = btn.dataset.loginUrl || '/login';
+                return;
+            }
+
+            const slug = btn.dataset.templateSlug;
+            const isActive = btn.classList.contains('is-active');
+            const url = isActive ? `/favorites/${slug}` : `/favorites/${slug}`;
+            const method = isActive ? 'DELETE' : 'POST';
+
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(url, {
+                    method,
+                    headers: {
+                        Accept: 'application/json',
+                        'X-CSRF-TOKEN': csrf || '',
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                });
+
+                if (!response.ok) throw new Error('favorite-failed');
+
+                const data = await response.json();
+                const favorited = Boolean(data.favorited);
+                const icon = btn.querySelector('svg');
+
+                btn.classList.toggle('is-active', favorited);
+                btn.setAttribute('aria-pressed', String(favorited));
+                btn.setAttribute(
+                    'aria-label',
+                    favorited ? 'Yoqtirganlardan olib tashlash' : 'Yoqtirganlarga saqlash'
+                );
+
+                if (icon) {
+                    icon.setAttribute('fill', favorited ? 'currentColor' : 'none');
+                }
+            } catch {
+                /* silent */
+            } finally {
+                btn.disabled = false;
+            }
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initRippleEffect();
     initThemeToggle();
@@ -361,4 +416,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initTestimonialsSlider();
     initFaqAccordion();
     initRsvpPreview();
+    initFavorites();
 });

@@ -37,7 +37,17 @@
                 Qorong'u rejim
             </button>
 
-            <a href="{{ route('builder.create') }}" class="btn-nav-cta btn-shine hidden sm:inline-flex" data-ripple>
+            @auth
+                <a href="{{ route('account.dashboard') }}" class="hidden items-center gap-2 rounded-full glass-luxury px-3 py-2 sm:inline-flex">
+                    <span class="account-avatar !w-7 !h-7 !text-xs">{{ auth()->user()->initials() }}</span>
+                    <span class="text-sm font-medium text-ink max-w-[8rem] truncate">{{ auth()->user()->name }}</span>
+                </a>
+            @else
+                <a href="{{ route('login') }}" class="hidden text-sm font-semibold text-ink-soft hover:text-ink sm:inline-flex">Kirish</a>
+                <a href="{{ route('register') }}" class="hidden btn-outline-luxury text-sm sm:inline-flex">Ro'yxatdan o'tish</a>
+            @endauth
+
+            <a href="{{ auth()->check() ? route('builder.create') : route('login') }}" class="btn-nav-cta btn-shine hidden sm:inline-flex" data-ripple>
                 Taklifnoma Yaratish
             </a>
 
@@ -69,14 +79,28 @@
             <li><a href="#xizmatlar" class="block rounded-lg px-4 py-3 text-base font-medium text-ink hover:bg-white/50" data-close-mobile-nav>Xizmatlar</a></li>
             <li><a href="#narxlar" class="block rounded-lg px-4 py-3 text-base font-medium text-ink hover:bg-white/50" data-close-mobile-nav>Narxlar</a></li>
             <li><a href="#haqida" class="block rounded-lg px-4 py-3 text-base font-medium text-ink hover:bg-white/50" data-close-mobile-nav>Biz haqimizda</a></li>
+            @auth
+                <li><a href="{{ route('account.dashboard') }}" class="block rounded-lg px-4 py-3 text-base font-medium text-ink hover:bg-white/50" data-close-mobile-nav>Kabinet</a></li>
+                <li><a href="{{ route('account.orders') }}" class="block rounded-lg px-4 py-3 text-base font-medium text-ink hover:bg-white/50" data-close-mobile-nav>Zakazlarim</a></li>
+                <li><a href="{{ route('account.favorites') }}" class="block rounded-lg px-4 py-3 text-base font-medium text-ink hover:bg-white/50" data-close-mobile-nav>Yoqtirganlar</a></li>
+            @else
+                <li><a href="{{ route('login') }}" class="block rounded-lg px-4 py-3 text-base font-medium text-ink hover:bg-white/50" data-close-mobile-nav>Kirish</a></li>
+                <li><a href="{{ route('register') }}" class="block rounded-lg px-4 py-3 text-base font-medium text-ink hover:bg-white/50" data-close-mobile-nav>Ro'yxatdan o'tish</a></li>
+            @endauth
         </ul>
         <div class="mt-6 flex flex-col gap-3 border-t border-white/40 pt-6">
             <button type="button" id="theme-toggle-mobile" class="theme-toggle-btn rounded-full px-4 py-3 text-sm font-medium glass-luxury text-ink-soft">
                 Qorong'u rejim
             </button>
-            <a href="{{ route('builder.create') }}" class="btn-gold-shimmer btn-shine w-full text-center" data-ripple data-close-mobile-nav>
+            <a href="{{ auth()->check() ? route('builder.create') : route('login') }}" class="btn-gold-shimmer btn-shine w-full text-center" data-ripple data-close-mobile-nav>
                 Taklifnoma Yaratish
             </a>
+            @auth
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn-outline-luxury w-full">Chiqish</button>
+                </form>
+            @endauth
         </div>
     </nav>
 </div>
