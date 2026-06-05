@@ -1241,7 +1241,16 @@
     .faq-item {
         border-radius: 1.25rem;
         overflow: hidden;
+        list-style: none;
         transition: box-shadow 0.4s var(--ease-elite);
+    }
+
+    .faq-item summary {
+        list-style: none;
+    }
+
+    .faq-item summary::-webkit-details-marker {
+        display: none;
     }
 
     .faq-item.is-open {
@@ -1260,6 +1269,12 @@
         border: none;
         cursor: pointer;
         font-size: 0.9375rem;
+        color: inherit;
+    }
+
+    .faq-trigger:focus-visible {
+        outline: 2px solid var(--color-luxury-gold);
+        outline-offset: -2px;
     }
 
     .faq-icon {

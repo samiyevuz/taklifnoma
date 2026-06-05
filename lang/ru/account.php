@@ -8,6 +8,7 @@ return [
     'orders' => 'Мои заказы',
     'favorites' => 'Избранное',
     'profile' => 'Профиль',
+    'back_to_site' => 'На сайт',
     'stats_orders' => 'Всего заказов',
     'stats_published' => 'Опубликовано',
     'stats_favorites' => 'Избранное',

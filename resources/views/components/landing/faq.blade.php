@@ -8,19 +8,25 @@
             <p class="mt-4 text-fluid-body text-ink-soft">{{ __('landing.faq_desc') }}</p>
         </div>
 
-        <div class="mx-auto mt-12 max-w-3xl space-y-3">
+        <div class="faq-accordion mx-auto mt-12 max-w-3xl" id="faq-accordion">
             @foreach ($faqs as $index => $faq)
-                <details class="faq-item reveal {{ $index > 0 ? 'reveal-delay-' . min($index, 4) : '' }}" {{ $index === 0 ? 'open' : '' }}>
-                    <summary class="faq-item__question">
-                        <span>{{ $faq['q'] }}</span>
-                        <svg class="faq-item__icon h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <path stroke-linecap="round" d="M19 9l-7 7-7-7"/>
-                        </svg>
-                    </summary>
-                    <div class="faq-item__answer">
-                        <p>{{ $faq['a'] }}</p>
+                <div class="faq-item glass-luxury reveal {{ $index === 0 ? 'is-open' : '' }} {{ $index > 0 ? 'reveal-delay-' . min($index, 4) : '' }}">
+                    <button
+                        type="button"
+                        class="faq-trigger"
+                        aria-expanded="{{ $index === 0 ? 'true' : 'false' }}"
+                    >
+                        <span class="font-medium text-ink">{{ $faq['q'] }}</span>
+                        <span class="faq-icon" aria-hidden="true">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" d="M12 5v14M5 12h14"/>
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-panel" aria-hidden="{{ $index === 0 ? 'false' : 'true' }}">
+                        <p class="text-sm leading-relaxed text-ink-soft">{{ $faq['a'] }}</p>
                     </div>
-                </details>
+                </div>
             @endforeach
         </div>
     </div>

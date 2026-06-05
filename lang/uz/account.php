@@ -8,6 +8,7 @@ return [
     'orders' => 'Zakazlarim',
     'favorites' => 'Yoqtirganlar',
     'profile' => 'Profil',
+    'back_to_site' => 'Saytga o\'tish',
     'stats_orders' => 'Jami zakazlar',
     'stats_published' => 'Nashr qilingan',
     'stats_favorites' => 'Yoqtirganlar',

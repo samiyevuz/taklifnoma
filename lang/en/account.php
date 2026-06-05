@@ -8,6 +8,7 @@ return [
     'orders' => 'My Orders',
     'favorites' => 'Favorites',
     'profile' => 'Profile',
+    'back_to_site' => 'Back to site',
     'stats_orders' => 'Total orders',
     'stats_published' => 'Published',
     'stats_favorites' => 'Favorites',
