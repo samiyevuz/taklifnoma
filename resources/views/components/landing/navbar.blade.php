@@ -48,7 +48,7 @@
             </button>
 
             @auth
-                <a href="{{ route('account.dashboard') }}" class="nav-user-pill hidden md:inline-flex">
+                <a href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : route('account.dashboard') }}" class="nav-user-pill hidden md:inline-flex">
                     <span class="account-avatar !w-7 !h-7 !text-xs">{{ auth()->user()->initials() }}</span>
                     <span class="text-sm font-medium text-ink max-w-[7rem] truncate">{{ auth()->user()->name }}</span>
                 </a>
@@ -89,8 +89,12 @@
             <li><a href="#narxlar" class="mobile-nav__link" data-close-mobile-nav>{{ __('nav.pricing') }}</a></li>
             <li><a href="#haqida" class="mobile-nav__link" data-close-mobile-nav>{{ __('nav.about') }}</a></li>
             @auth
-                <li><a href="{{ route('account.dashboard') }}" class="mobile-nav__link" data-close-mobile-nav>{{ __('nav.cabinet') }}</a></li>
-            @endif
+                @if(auth()->user()->isAdmin())
+                    <li><a href="{{ route('admin.dashboard') }}" class="mobile-nav__link" data-close-mobile-nav>{{ __('admin.nav.dashboard') }}</a></li>
+                @else
+                    <li><a href="{{ route('account.dashboard') }}" class="mobile-nav__link" data-close-mobile-nav>{{ __('nav.cabinet') }}</a></li>
+                @endif
+            @endauth
         </ul>
 
         <div class="mobile-nav__footer">

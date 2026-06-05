@@ -7,14 +7,19 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\PaymentInvoice;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'phone', 'password', 'telegram_chat_id', 'telegram_notifications_enabled', 'telegram_linked_at'])]
+#[Fillable(['name', 'email', 'phone', 'password', 'role', 'telegram_chat_id', 'telegram_notifications_enabled', 'telegram_linked_at'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
+    public const ROLE_USER = 'user';
+
+    public const ROLE_ADMIN = 'admin';
+
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
@@ -26,6 +31,16 @@ class User extends Authenticatable
             'telegram_notifications_enabled' => 'boolean',
             'telegram_linked_at' => 'datetime',
         ];
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function paymentInvoices(): HasMany
+    {
+        return $this->hasMany(PaymentInvoice::class);
     }
 
     public function hasTelegramLinked(): bool

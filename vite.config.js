@@ -11,6 +11,7 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/builder.js',
                 'resources/js/invitation.js',
+                'resources/js/admin.js',
             ],
             refresh: true,
             fonts: [

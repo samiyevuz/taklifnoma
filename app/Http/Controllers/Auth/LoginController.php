@@ -30,6 +30,12 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('account.dashboard'));
+        $user = Auth::user();
+
+        return redirect()->intended(
+            $user && $user->isAdmin()
+                ? route('admin.dashboard')
+                : route('account.dashboard')
+        );
     }
 }

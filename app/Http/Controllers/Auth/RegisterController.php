@@ -21,7 +21,10 @@ class RegisterController extends Controller
 
     public function store(RegisterRequest $request): RedirectResponse
     {
-        $user = User::create($request->validated());
+        $user = User::create([
+            ...$request->validated(),
+            'role' => User::ROLE_USER,
+        ]);
 
         event(new Registered($user));
 

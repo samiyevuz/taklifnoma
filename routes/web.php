@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\InvitationController as AdminInvitationController;
+use App\Http\Controllers\Admin\PaymentController as AdminPaymentController;
+use App\Http\Controllers\Admin\RsvpController as AdminRsvpController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Account\DashboardController;
 use App\Http\Controllers\Account\FavoriteController;
 use App\Http\Controllers\Account\OrderController;
@@ -75,6 +80,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/favorites/{templateSlug}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
 
     Route::post('/payments/invoice', [PaymentController::class, 'generateInvoice'])->name('payments.invoice.generate');
+
+    Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/', AdminDashboardController::class)->name('dashboard');
+        Route::get('/stats', [AdminDashboardController::class, 'stats'])->name('stats');
+        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+        Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
+        Route::get('/invitations', [AdminInvitationController::class, 'index'])->name('invitations.index');
+        Route::get('/invitations/{invitation}', [AdminInvitationController::class, 'show'])->name('invitations.show');
+        Route::patch('/invitations/{invitation}/status', [AdminInvitationController::class, 'updateStatus'])->name('invitations.status');
+        Route::delete('/invitations/{invitation}', [AdminInvitationController::class, 'destroy'])->name('invitations.destroy');
+        Route::get('/rsvps', [AdminRsvpController::class, 'index'])->name('rsvps.index');
+        Route::get('/payments', [AdminPaymentController::class, 'index'])->name('payments.index');
+    });
 
     Route::prefix('builder')->name('builder.')->group(function () {
         Route::get('/create', [InvitationBuilderController::class, 'create'])->name('create');
