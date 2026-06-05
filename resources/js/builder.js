@@ -466,13 +466,30 @@ function initBuilderStudio() {
         `).join('');
     };
 
+    const slugifyPreview = (value) => value
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'taklifnoma';
+
     const openCheckout = () => {
         const state = readFormState();
         const couple = document.getElementById('checkout-couple');
         const event = document.getElementById('checkout-event');
+        const url = document.getElementById('checkout-url');
+        const alert = document.getElementById('checkout-alert');
+        const title = profileEngine.buildDisplayTitle(state.profile);
+        const slugPreview = slugifyPreview(title);
 
-        if (couple) couple.textContent = profileEngine.buildDisplayTitle(state.profile);
+        if (couple) couple.textContent = title;
         if (event) event.textContent = `${formatEventDate(state.event_at)} · ${state.venue_name}`;
+        if (url) url.textContent = `${bootstrap.payments?.site_host || 'taklifnoma.net'}/l/${slugPreview}`;
+        if (alert) {
+            alert.textContent = '';
+            alert.classList.add('hidden');
+            alert.classList.remove('is-success');
+        }
 
         checkoutModal?.classList.add('is-open');
         checkoutModal?.setAttribute('aria-hidden', 'false');
@@ -560,6 +577,124 @@ function initBuilderStudio() {
         el.addEventListener('click', closeCheckout);
     });
 
+    const initPaymentMethodCards = () => {
+        checkoutModal?.querySelectorAll('[data-payment-card]').forEach((card) => {
+            const input = card.querySelector('.payment-method-card__input');
+
+            const sync = () => {
+                checkoutModal.querySelectorAll('[data-payment-card]').forEach((item) => {
+                    item.classList.toggle('is-selected', item.querySelector('.payment-method-card__input')?.checked);
+                });
+            };
+
+            input?.addEventListener('change', sync);
+            card.addEventListener('click', () => {
+                if (!input) return;
+                input.checked = true;
+                sync();
+            });
+
+            sync();
+        });
+    };
+
+    const initiatePayment = async () => {
+        if (!validateStep(1) || !validateStep(2)) {
+            closeCheckout();
+            setStep(1);
+            return;
+        }
+
+        const payBtn = document.getElementById('checkout-pay-btn');
+        const alert = document.getElementById('checkout-alert');
+        const provider = checkoutModal?.querySelector('input[name="payment_provider"]:checked')?.value;
+
+        if (!provider) {
+            if (alert) {
+                alert.textContent = 'To\'lov usulini tanlang.';
+                alert.classList.remove('hidden', 'is-success');
+            }
+            return;
+        }
+
+        if (!bootstrap.payments?.generate_url) {
+            if (alert) {
+                alert.textContent = 'To\'lov tizimi sozlanmagan.';
+                alert.classList.remove('hidden', 'is-success');
+            }
+            return;
+        }
+
+        syncDressColors();
+        syncRsvp();
+
+        const formData = new FormData(form);
+        formData.append('payment_provider', provider);
+
+        if (payBtn) payBtn.disabled = true;
+
+        try {
+            const response = await fetch(bootstrap.payments.generate_url, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: formData,
+            });
+
+            const payload = await response.json();
+
+            if (!response.ok || !payload?.success) {
+                const message = payload?.message
+                    || Object.values(payload?.errors || {}).flat().join(' ')
+                    || 'To\'lovni boshlashda xatolik yuz berdi.';
+                throw new Error(message);
+            }
+
+            const redirectUrl = payload?.data?.redirect_url;
+
+            if (!redirectUrl) {
+                throw new Error('To\'lov havolasi yaratilmadi.');
+            }
+
+            if (payload?.data?.invitation_id) {
+                let hidden = form.querySelector('#invitation_id');
+                if (!hidden) {
+                    hidden = document.createElement('input');
+                    hidden.type = 'hidden';
+                    hidden.name = 'invitation_id';
+                    hidden.id = 'invitation_id';
+                    form.appendChild(hidden);
+                }
+                hidden.value = payload.data.invitation_id;
+
+                if (payload?.data?.form_action) {
+                    form.action = payload.data.form_action;
+                    let method = form.querySelector('input[name="_method"]');
+                    if (!method) {
+                        method = document.createElement('input');
+                        method.type = 'hidden';
+                        method.name = '_method';
+                        form.appendChild(method);
+                    }
+                    method.value = 'PUT';
+                }
+            }
+
+            window.location.href = redirectUrl;
+        } catch (error) {
+            if (alert) {
+                alert.textContent = error.message || 'To\'lovni boshlashda xatolik yuz berdi.';
+                alert.classList.remove('hidden', 'is-success');
+            }
+            if (payBtn) payBtn.disabled = false;
+        }
+    };
+
+    document.getElementById('checkout-pay-btn')?.addEventListener('click', initiatePayment);
+
     checkoutModal?.querySelectorAll('[data-checkout-action]').forEach((btn) => {
         btn.addEventListener('click', () => {
             if (!validateStep(1) || !validateStep(2)) {
@@ -568,9 +703,11 @@ function initBuilderStudio() {
                 return;
             }
 
-            submitForm(btn.dataset.checkoutAction === 'publish');
+            submitForm(false);
         });
     });
+
+    initPaymentMethodCards();
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {

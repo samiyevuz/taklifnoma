@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\InvitationBuilderController;
 use App\Http\Controllers\InvitationViewController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RsvpController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,10 @@ Route::get('/i/{slug}', [InvitationViewController::class, 'show']);
 Route::post('/l/{slug}/rsvp', [RsvpController::class, 'store'])->name('rsvp.store');
 Route::post('/i/{slug}/rsvp', [RsvpController::class, 'store']);
 
+Route::post('/payments/webhooks/payme', [PaymentController::class, 'handlePaymeWebhook'])->name('payments.webhooks.payme');
+Route::post('/payments/webhooks/click', [PaymentController::class, 'handleClickWebhook'])->name('payments.webhooks.click');
+Route::get('/payments/return', [PaymentController::class, 'return'])->name('payments.return');
+
 Route::redirect('/invite/nikoh-premium', '/i/farhod-shirin');
 
 Route::middleware('guest')->group(function () {
@@ -57,6 +62,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/favorites/{templateSlug}', [FavoriteController::class, 'store'])->name('favorites.store');
     Route::delete('/favorites/{templateSlug}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
+
+    Route::post('/payments/invoice', [PaymentController::class, 'generateInvoice'])->name('payments.invoice.generate');
 
     Route::prefix('builder')->name('builder.')->group(function () {
         Route::get('/create', [InvitationBuilderController::class, 'create'])->name('create');

@@ -111,6 +111,11 @@ class InvitationBuilderController extends Controller
             'template_blade' => $template['template'] ?? 'nikoh-premium',
             'music_presets' => InvitationDefaults::musicPresets(),
             'default_music_url' => asset('audio/romantic-wedding.mp3'),
+            'payments' => [
+                'generate_url' => route('payments.invoice.generate'),
+                'return_url' => route('payments.return'),
+                'site_host' => parse_url(config('app.url'), PHP_URL_HOST) ?: 'taklifnoma.net',
+            ],
         ];
     }
 

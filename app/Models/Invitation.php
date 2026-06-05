@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\PaymentInvoice;
 use App\Support\BuilderEventProfile;
 use App\Support\InvitationEventData;
 use App\Support\MusicUrlNormalizer;
@@ -113,6 +114,11 @@ class Invitation extends Model
     public function rsvpResponses(): HasMany
     {
         return $this->hasMany(RsvpResponse::class);
+    }
+
+    public function paymentInvoices(): HasMany
+    {
+        return $this->hasMany(PaymentInvoice::class);
     }
 
     public function statusLabel(): string

@@ -81,6 +81,10 @@
                 <input type="hidden" name="rsvp_enabled" id="rsvp_enabled" value="1">
                 <input type="hidden" name="publish" id="publish_flag" value="0">
                 <input type="hidden" name="template" value="{{ old('template', $b['template_blade'] ?? 'nikoh-premium') }}">
+                <input type="hidden" name="template_slug" id="template_slug" value="{{ $b['template_slug'] ?? 'nikoh' }}">
+                @if ($invitation)
+                    <input type="hidden" name="invitation_id" id="invitation_id" value="{{ $invitation->id }}">
+                @endif
 
                 {{-- STEP 1: General --}}
                 <div class="builder-step is-active" data-step="1">
@@ -260,15 +264,18 @@
 
     <div class="builder-checkout-modal" id="builder-checkout-modal" aria-hidden="true">
         <div class="builder-checkout-modal__backdrop" data-close-checkout></div>
-        <div class="builder-checkout-modal__dialog" role="dialog" aria-labelledby="checkout-title">
+        <div class="builder-checkout-modal__dialog builder-checkout-modal__dialog--premium" role="dialog" aria-labelledby="checkout-title">
             <button type="button" class="builder-checkout-modal__close" data-close-checkout aria-label="{{ __('builder.close_checkout') }}">
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
             </button>
-            <p class="section-label mb-2">{{ __('builder.checkout_label') }}</p>
-            <h2 id="checkout-title" class="font-serif text-2xl font-semibold text-ink">{{ __('builder.checkout_title') }}</h2>
-            <p class="mt-2 text-sm text-ink-soft">{{ __('builder.checkout_desc') }}</p>
 
-            <div class="builder-checkout-summary glass-luxury mt-6">
+            <div class="builder-checkout-modal__hero">
+                <p class="section-label mb-2">{{ __('builder.checkout_label') }}</p>
+                <h2 id="checkout-title" class="font-serif text-2xl font-semibold text-ink">{{ __('builder.checkout_title') }}</h2>
+                <p class="mt-2 text-sm text-ink-soft">{{ __('builder.checkout_desc') }}</p>
+            </div>
+
+            <div class="builder-checkout-summary glass-luxury mt-5">
                 <div class="builder-checkout-summary__row">
                     <span>{{ __('builder.checkout_template') }}</span>
                     <strong id="checkout-template">{{ $b['template_title'] }}</strong>
@@ -276,6 +283,10 @@
                 <div class="builder-checkout-summary__row">
                     <span id="checkout-subject-label">{{ $b['field_schema']['preview']['review_label'] ?? __('builder.checkout_couple') }}</span>
                     <strong id="checkout-couple"></strong>
+                </div>
+                <div class="builder-checkout-summary__row">
+                    <span>{{ __('builder.checkout_url') }}</span>
+                    <strong id="checkout-url" class="builder-checkout-summary__url"></strong>
                 </div>
                 <div class="builder-checkout-summary__row">
                     <span>{{ __('builder.checkout_event') }}</span>
@@ -287,11 +298,47 @@
                 </div>
             </div>
 
-            <div class="builder-checkout-actions mt-6">
-                <button type="button" class="btn-outline-luxury w-full" data-checkout-action="draft">{{ __('builder.save_draft') }}</button>
-                <button type="button" class="btn-gold-shimmer btn-shine w-full" data-checkout-action="publish" data-ripple>{{ __('builder.checkout_pay_publish') }}</button>
+            <div class="builder-checkout-methods mt-5">
+                <p class="builder-checkout-methods__label">{{ __('builder.payment_method') }}</p>
+                <div class="builder-checkout-methods__grid" role="radiogroup" aria-label="{{ __('builder.payment_method') }}">
+                    <x-builder.payment-method-card
+                        id="payment_click"
+                        name="payment_provider"
+                        value="click"
+                        :label="__('builder.payment_click')"
+                        :hint="__('builder.payment_click_hint')"
+                        :checked="true"
+                    >
+                        <svg viewBox="0 0 64 24" aria-hidden="true">
+                            <rect x="1" y="3" width="62" height="18" rx="9" fill="#00A2FF"/>
+                            <text x="32" y="16.5" text-anchor="middle" fill="#fff" font-size="9" font-weight="700" font-family="Inter, Arial, sans-serif">CLICK</text>
+                        </svg>
+                    </x-builder.payment-method-card>
+
+                    <x-builder.payment-method-card
+                        id="payment_payme"
+                        name="payment_provider"
+                        value="payme"
+                        :label="__('builder.payment_payme')"
+                        :hint="__('builder.payment_payme_hint')"
+                    >
+                        <svg viewBox="0 0 64 24" aria-hidden="true">
+                            <rect x="1" y="3" width="62" height="18" rx="9" fill="#10B981"/>
+                            <text x="32" y="16.5" text-anchor="middle" fill="#fff" font-size="8.5" font-weight="700" font-family="Inter, Arial, sans-serif">PAYME</text>
+                        </svg>
+                    </x-builder.payment-method-card>
+                </div>
             </div>
-            <p class="mt-4 text-center text-xs text-ink-muted">{{ __('builder.checkout_note') }}</p>
+
+            <div class="builder-checkout-actions mt-6">
+                <button type="button" class="btn-gold-shimmer btn-shine w-full" id="checkout-pay-btn" data-ripple>
+                    {{ __('builder.checkout_pay_activate') }}
+                </button>
+                <button type="button" class="btn-outline-luxury w-full" data-checkout-action="draft">{{ __('builder.save_draft') }}</button>
+            </div>
+
+            <p class="builder-checkout-alert hidden" id="checkout-alert" role="alert"></p>
+            <p class="mt-3 text-center text-xs text-ink-muted">{{ __('builder.checkout_secure_note') }}</p>
         </div>
     </div>
 </div>
