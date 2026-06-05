@@ -383,11 +383,18 @@ html.theme-transition .phone-mockup {
 }
 
 /* ─── Phone mockups (enhanced depth in dark) ─── */
-.dark .phone-mockup {
+.dark .phone-mockup__shell {
     box-shadow:
-        0 25px 60px rgba(0, 0, 0, 0.55),
-        0 0 0 1px rgba(255, 255, 255, 0.08),
-        0 0 40px rgba(201, 162, 39, 0.08);
+        0 28px 60px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        0 0 40px rgba(201, 162, 39, 0.1);
+}
+
+.dark .phone-mockup:hover .phone-mockup__shell {
+    box-shadow:
+        0 36px 72px rgba(0, 0, 0, 0.62),
+        0 0 0 1px rgba(201, 162, 39, 0.48),
+        0 0 36px rgba(201, 162, 39, 0.22);
 }
 
 /* ─── Focus ring (dark) ─── */

@@ -34,35 +34,51 @@
                 </ul>
             </div>
             <div class="reveal reveal-delay-2 order-1 lg:order-2">
-                <div class="mockup-stage" id="mockup-tilt" role="img" aria-label="{{ __('landing.hero_mockup_aria') }}">
-                    <div class="mockup-stage__inner" id="mockup-tilt-target">
-                        <div class="phone-mockup phone-mockup--left" data-tilt-depth="0.5">
-                            <div class="phone-mockup__screen">
-                                <div class="invite-art invite-art--girl">
-                                    <div class="invite-art__ornament"></div>
-                                    <p class="invite-art__title">{!! __('landing.templates.qiz.title') !!}</p>
-                                    <p class="invite-art__date">15 Avgust 2026</p>
+                <div class="mockup-stage" id="hero-mockup-stage" role="img" aria-label="{{ __('landing.hero_mockup_aria') }}">
+                    <div class="mockup-stage__glow" aria-hidden="true"></div>
+                    <div class="mockup-stage__inner">
+                        <a href="#shablonlar" class="phone-mockup phone-mockup--left" data-phone-mockup aria-label="{{ __('landing.templates.qiz.title') }}">
+                            <div class="phone-mockup__shell">
+                                <div class="phone-mockup__island" aria-hidden="true"></div>
+                                <div class="phone-mockup__screen">
+                                    <div class="invite-art invite-art--girl">
+                                        <div class="invite-art__pattern" aria-hidden="true"></div>
+                                        <div class="invite-art__ornament" aria-hidden="true"></div>
+                                        <p class="invite-art__title">{!! __('landing.templates.qiz.title') !!}</p>
+                                        <p class="invite-art__date">15 Avgust 2026</p>
+                                    </div>
                                 </div>
+                                <span class="phone-mockup__shine" aria-hidden="true"></span>
                             </div>
-                        </div>
-                        <div class="phone-mockup phone-mockup--center" data-tilt-depth="1">
-                            <div class="phone-mockup__screen">
-                                <div class="invite-art invite-art--wedding">
-                                    <div class="invite-art__ornament"></div>
-                                    <p class="invite-art__title">{!! __('landing.templates.nikoh.title') !!}</p>
-                                    <p class="invite-art__date">22 Sentabr 2026</p>
+                        </a>
+                        <a href="#shablonlar" class="phone-mockup phone-mockup--center" data-phone-mockup aria-label="{{ __('landing.templates.nikoh.title') }}">
+                            <div class="phone-mockup__shell">
+                                <div class="phone-mockup__island" aria-hidden="true"></div>
+                                <div class="phone-mockup__screen">
+                                    <div class="invite-art invite-art--wedding">
+                                        <div class="invite-art__pattern" aria-hidden="true"></div>
+                                        <div class="invite-art__ornament" aria-hidden="true"></div>
+                                        <p class="invite-art__title">{!! __('landing.templates.nikoh.title') !!}</p>
+                                        <p class="invite-art__date">22 Sentabr 2026</p>
+                                    </div>
                                 </div>
+                                <span class="phone-mockup__shine" aria-hidden="true"></span>
                             </div>
-                        </div>
-                        <div class="phone-mockup phone-mockup--right" data-tilt-depth="0.65">
-                            <div class="phone-mockup__screen">
-                                <div class="invite-art invite-art--sunnat">
-                                    <div class="invite-art__ornament"></div>
-                                    <p class="invite-art__title">{!! __('landing.templates.sunnat.title') !!}</p>
-                                    <p class="invite-art__date">8 Iyun 2026</p>
+                        </a>
+                        <a href="#shablonlar" class="phone-mockup phone-mockup--right" data-phone-mockup aria-label="{{ __('landing.templates.sunnat.title') }}">
+                            <div class="phone-mockup__shell">
+                                <div class="phone-mockup__island" aria-hidden="true"></div>
+                                <div class="phone-mockup__screen">
+                                    <div class="invite-art invite-art--sunnat">
+                                        <div class="invite-art__pattern" aria-hidden="true"></div>
+                                        <div class="invite-art__ornament" aria-hidden="true"></div>
+                                        <p class="invite-art__title">{!! __('landing.templates.sunnat.title') !!}</p>
+                                        <p class="invite-art__date">8 Iyun 2026</p>
+                                    </div>
                                 </div>
+                                <span class="phone-mockup__shine" aria-hidden="true"></span>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>

@@ -244,51 +244,39 @@ function initSmoothAnchors() {
     });
 }
 
-function initMockupTilt() {
-    const stage = document.getElementById('mockup-tilt');
-    const target = document.getElementById('mockup-tilt-target');
-    if (!stage || !target) return;
+function initMockupPhones() {
+    const phones = [...document.querySelectorAll('[data-phone-mockup]')];
+    if (!phones.length) return;
 
     if (prefersReducedMotion() || window.matchMedia('(pointer: coarse)').matches) return;
 
-    const maxTilt = 10;
-    let rafId = null;
+    const maxTilt = 9;
 
-    const applyTilt = (rotateX, rotateY) => {
-        target.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    phones.forEach((phone) => {
+        let rafId = null;
 
-        stage.querySelectorAll('[data-tilt-depth]').forEach((phone) => {
-            const depth = parseFloat(phone.dataset.tiltDepth || '1');
-            const px = rotateX * depth * 0.4;
-            const py = rotateY * depth * 0.4;
-            phone.style.setProperty('--tilt-parallax-x', `${py}px`);
-            phone.style.setProperty('--tilt-parallax-y', `${px}px`);
+        const resetTilt = () => {
+            phone.classList.remove('is-tilting');
+            phone.style.removeProperty('--phone-tilt-x');
+            phone.style.removeProperty('--phone-tilt-y');
+        };
+
+        phone.addEventListener('mousemove', (event) => {
+            const rect = phone.getBoundingClientRect();
+            const x = (event.clientX - rect.left) / rect.width - 0.5;
+            const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+            phone.classList.add('is-tilting');
+
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(() => {
+                phone.style.setProperty('--phone-tilt-x', `${-y * maxTilt}deg`);
+                phone.style.setProperty('--phone-tilt-y', `${x * maxTilt}deg`);
+            });
         });
-    };
 
-    const resetTilt = () => {
-        stage.classList.remove('is-tilting');
-        applyTilt(0, 0);
-        stage.querySelectorAll('[data-tilt-depth]').forEach((phone) => {
-            phone.style.removeProperty('--tilt-parallax-x');
-            phone.style.removeProperty('--tilt-parallax-y');
-        });
-    };
-
-    stage.addEventListener('mousemove', (e) => {
-        const rect = stage.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width - 0.5;
-        const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-        stage.classList.add('is-tilting');
-
-        if (rafId) cancelAnimationFrame(rafId);
-        rafId = requestAnimationFrame(() => {
-            applyTilt(-y * maxTilt, x * maxTilt);
-        });
+        phone.addEventListener('mouseleave', resetTilt);
     });
-
-    stage.addEventListener('mouseleave', resetTilt);
 }
 
 function initTestimonialsSlider() {
@@ -503,7 +491,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileNav();
     initScrollReveal();
     initSmoothAnchors();
-    initMockupTilt();
+    initMockupPhones();
     initTestimonialsSlider();
     initFaqAccordion();
     initRsvpPreview();
