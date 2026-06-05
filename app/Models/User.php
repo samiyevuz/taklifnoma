@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'phone', 'password'])]
+#[Fillable(['name', 'email', 'phone', 'password', 'telegram_chat_id', 'telegram_notifications_enabled', 'telegram_linked_at'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -23,7 +23,19 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'telegram_notifications_enabled' => 'boolean',
+            'telegram_linked_at' => 'datetime',
         ];
+    }
+
+    public function hasTelegramLinked(): bool
+    {
+        return filled($this->telegram_chat_id);
+    }
+
+    public function receivesTelegramNotifications(): bool
+    {
+        return $this->hasTelegramLinked() && $this->telegram_notifications_enabled;
     }
 
     public function invitations(): HasMany

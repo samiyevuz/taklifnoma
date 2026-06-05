@@ -48,4 +48,13 @@ return [
     'favorite_removed' => 'Template removed from favorites.',
     'add_favorite' => 'Save to favorites',
     'remove_favorite' => 'Remove from favorites',
+    'telegram_title' => 'Telegram notifications',
+    'telegram_desc' => 'Get instant Telegram alerts when guests submit RSVP responses.',
+    'telegram_connect' => 'Connect Telegram',
+    'telegram_disconnect' => 'Disconnect',
+    'telegram_linked' => 'Telegram connected',
+    'telegram_enabled' => 'Notifications enabled',
+    'telegram_disabled' => 'Notifications disabled',
+    'telegram_disconnected' => 'Telegram disconnected.',
+    'telegram_not_linked' => 'Connect Telegram first.',
 ];

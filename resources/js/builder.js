@@ -3,6 +3,8 @@
  * Dynamic event profiles · Live preview · Stepper · Checkout modal
  */
 
+import { initRsvpLivePanels } from './rsvp-live-panel';
+
 const ELITE_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
 const UZ_MONTHS = [
     '', 'Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun',
@@ -734,6 +736,8 @@ function initBuilderStudio() {
 
     countdownTimer = window.setInterval(updateCountdown, 1000);
     window.addEventListener('beforeunload', () => clearInterval(countdownTimer));
+
+    initRsvpLivePanels();
 }
 
 document.addEventListener('DOMContentLoaded', initBuilderStudio);

@@ -127,4 +127,12 @@ return [
     'stats_attending' => 'Attending',
     'stats_declined' => 'Declined',
     'stats_guests' => 'Total guests',
+    'rsvp_live_label' => 'Live Panel',
+    'rsvp_live_title' => 'RSVP Statistics',
+    'rsvp_live_badge' => 'Live',
+    'rsvp_live_progress' => 'Response dynamics',
+    'rsvp_live_confirmed' => 'confirmed',
+    'rsvp_live_recent' => 'Latest responses',
+    'rsvp_live_updated' => 'Updated',
+    'rsvp_live_empty' => 'No RSVP responses yet. Share your link and wait for guests.',
 ];

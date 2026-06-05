@@ -48,4 +48,13 @@ return [
     'favorite_removed' => 'Shablon yoqtirganlardan olib tashlandi.',
     'add_favorite' => 'Yoqtirganlarga saqlash',
     'remove_favorite' => 'Yoqtirganlardan olib tashlash',
+    'telegram_title' => 'Telegram xabarnomalari',
+    'telegram_desc' => 'Mehmon RSVP yuborganida darhol Telegram orqali xabar oling.',
+    'telegram_connect' => 'Telegram ulash',
+    'telegram_disconnect' => 'Uzish',
+    'telegram_linked' => 'Telegram ulangan',
+    'telegram_enabled' => 'Xabarnomalar yoqilgan',
+    'telegram_disabled' => 'Xabarnomalar o\'chirilgan',
+    'telegram_disconnected' => 'Telegram ulanishi uzildi.',
+    'telegram_not_linked' => 'Avval Telegram hisobingizni ulang.',
 ];

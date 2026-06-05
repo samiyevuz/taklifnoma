@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreInvitationRequest;
 use App\Models\Invitation;
 use App\Services\InvitationService;
+use App\Services\Rsvp\RsvpDashboardService;
 use App\Support\BuilderEventProfile;
 use App\Support\InvitationDefaults;
 use App\Support\TemplateCatalog;
@@ -16,6 +17,7 @@ class InvitationBuilderController extends Controller
 {
     public function __construct(
         private readonly InvitationService $invitationService,
+        private readonly RsvpDashboardService $rsvpDashboardService,
     ) {}
 
     public function create(Request $request): View
@@ -66,7 +68,7 @@ class InvitationBuilderController extends Controller
         return view('builder.edit', [
             'title' => 'Tahrirlash — '.$invitation->displayTitle(),
             'invitation' => $invitation,
-            'stats' => $invitation->rsvpStats(),
+            'rsvpSnapshot' => $this->rsvpDashboardService->snapshot($invitation),
             'bootstrap' => $this->builderBootstrap($invitation),
         ]);
     }

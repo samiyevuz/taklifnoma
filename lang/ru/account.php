@@ -48,4 +48,13 @@ return [
     'favorite_removed' => 'Шаблон удалён из избранного.',
     'add_favorite' => 'Добавить в избранное',
     'remove_favorite' => 'Убрать из избранного',
+    'telegram_title' => 'Уведомления Telegram',
+    'telegram_desc' => 'Получайте мгновенные уведомления, когда гости отправляют RSVP.',
+    'telegram_connect' => 'Подключить Telegram',
+    'telegram_disconnect' => 'Отключить',
+    'telegram_linked' => 'Telegram подключён',
+    'telegram_enabled' => 'Уведомления включены',
+    'telegram_disabled' => 'Уведомления отключены',
+    'telegram_disconnected' => 'Telegram отключён.',
+    'telegram_not_linked' => 'Сначала подключите Telegram.',
 ];

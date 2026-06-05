@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\RsvpResponseSubmitted;
 use App\Http\Requests\StoreRsvpRequest;
 use App\Models\RsvpResponse;
 use App\Support\InvitationResolver;
@@ -12,6 +13,13 @@ class RsvpController extends Controller
     public function store(StoreRsvpRequest $request, string $slug): JsonResponse
     {
         $invitation = InvitationResolver::findPublic($slug);
+
+        if (! $invitation->rsvp_enabled) {
+            return response()->json([
+                'success' => false,
+                'message' => 'RSVP ushbu taklifnoma uchun o\'chirilgan.',
+            ], 403);
+        }
 
         $validated = $request->validated();
         $isAttending = $validated['status'] === RsvpResponse::STATUS_ATTENDING;
@@ -28,6 +36,8 @@ class RsvpController extends Controller
                 : 0,
             'ip_hash' => hash('sha256', $request->ip().$request->userAgent()),
         ]);
+
+        RsvpResponseSubmitted::dispatch($response)->afterCommit();
 
         $message = $validated['status'] === RsvpResponse::STATUS_ATTENDING
             ? "Rahmat, {$response->guest_name}! Javobingiz qabul qilindi."

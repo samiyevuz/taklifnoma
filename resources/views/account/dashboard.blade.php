@@ -7,6 +7,17 @@
         <p class="mt-2 text-ink-soft">{{ __('account.dashboard_subtitle') }}</p>
     </div>
 
+    @if ($liveInvitation && $rsvpSnapshot)
+        <div class="mb-8">
+            <x-rsvp.live-panel
+                :invitation="$liveInvitation"
+                :snapshot="$rsvpSnapshot"
+                :poll-url="route('builder.rsvp.live', $liveInvitation)"
+                :compact="true"
+            />
+        </div>
+    @endif
+
     <div class="account-stat-grid mb-8">
         <div class="account-stat glass-luxury"><p class="account-stat__value">{{ $stats['orders_total'] }}</p><p class="account-stat__label">{{ __('account.stats_orders') }}</p></div>
         <div class="account-stat glass-luxury"><p class="account-stat__value">{{ $stats['orders_published'] }}</p><p class="account-stat__label">{{ __('account.stats_published') }}</p></div>

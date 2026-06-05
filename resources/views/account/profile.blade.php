@@ -23,6 +23,34 @@
             <button type="submit" class="btn-gold-shimmer btn-shine" data-ripple>{{ __('account.save') }}</button>
         </form>
 
+        <div class="account-card glass-luxury space-y-5">
+            <h2 class="font-serif text-xl font-semibold text-ink">{{ __('account.telegram_title') }}</h2>
+            <p class="text-sm text-ink-soft">{{ __('account.telegram_desc') }}</p>
+
+            @if ($user->hasTelegramLinked())
+                <div class="rounded-xl border border-luxury-emerald/25 bg-luxury-emerald/8 px-4 py-3 text-sm text-luxury-emerald">
+                    {{ __('account.telegram_linked') }}
+                    @if ($user->telegram_linked_at)
+                        <span class="text-ink-muted">· {{ $user->telegram_linked_at->timezone('Asia/Tashkent')->format('d.m.Y H:i') }}</span>
+                    @endif
+                </div>
+
+                <div class="flex flex-wrap items-center gap-3">
+                    <span class="text-sm text-ink-soft">
+                        {{ $user->telegram_notifications_enabled ? __('account.telegram_enabled') : __('account.telegram_disabled') }}
+                    </span>
+                    <form action="{{ route('account.telegram.disconnect') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn-outline-luxury text-sm">{{ __('account.telegram_disconnect') }}</button>
+                    </form>
+                </div>
+            @else
+                <a href="{{ route('account.telegram.connect') }}" class="btn-gold-shimmer btn-shine inline-flex" data-ripple>
+                    {{ __('account.telegram_connect') }}
+                </a>
+            @endif
+        </div>
+
         <form action="{{ route('account.password.update') }}" method="POST" class="account-card glass-luxury space-y-5">
             @csrf @method('PUT')
             <h2 class="font-serif text-xl font-semibold text-ink">{{ __('account.update_password') }}</h2>

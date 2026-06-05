@@ -3,6 +3,8 @@
  * Theme · Tilt · Slider · FAQ · GPU motion
  */
 
+import { initRsvpLivePanels } from './rsvp-live-panel';
+
 const ELITE_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
 const THEME_COLORS = { light: '#FAF6F0', dark: '#0B0B0F' };
 
@@ -495,5 +497,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initTestimonialsSlider();
     initFaqAccordion();
     initRsvpPreview();
+    initRsvpLivePanels();
     initFavorites();
 });

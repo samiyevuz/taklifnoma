@@ -94,6 +94,14 @@ return [
     'stats_attending' => 'Keladi',
     'stats_declined' => 'Kelmaydi',
     'stats_guests' => 'Jami mehmon',
+    'rsvp_live_label' => 'Jonli Panel',
+    'rsvp_live_title' => 'RSVP Statistikasi',
+    'rsvp_live_badge' => 'Live',
+    'rsvp_live_progress' => 'Javoblar dinamikasi',
+    'rsvp_live_confirmed' => 'tasdiqlangan',
+    'rsvp_live_recent' => 'So\'nggi javoblar',
+    'rsvp_live_updated' => 'Yangilandi',
+    'rsvp_live_empty' => 'Hali RSVP javoblari yo\'q. Havolani ulashing va mehmonlarni kuting.',
     'fallback_primary' => 'Mehmon',
 
     'placeholders' => [

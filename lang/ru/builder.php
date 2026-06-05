@@ -127,4 +127,12 @@ return [
     'stats_attending' => 'Придут',
     'stats_declined' => 'Не придут',
     'stats_guests' => 'Всего гостей',
+    'rsvp_live_label' => 'Живая панель',
+    'rsvp_live_title' => 'Статистика RSVP',
+    'rsvp_live_badge' => 'Live',
+    'rsvp_live_progress' => 'Динамика ответов',
+    'rsvp_live_confirmed' => 'подтверждено',
+    'rsvp_live_recent' => 'Последние ответы',
+    'rsvp_live_updated' => 'Обновлено',
+    'rsvp_live_empty' => 'Пока нет RSVP ответов. Поделитесь ссылкой и ждите гостей.',
 ];

@@ -31,12 +31,12 @@
         </div>
     </header>
 
-    @if ($invitation && $stats)
-        <div class="builder-stats">
-            <div class="builder-stats__item"><p class="builder-stats__value">{{ $stats['attending'] }}</p><p class="builder-stats__label">{{ __('builder.stats_attending') }}</p></div>
-            <div class="builder-stats__item"><p class="builder-stats__value">{{ $stats['declined'] }}</p><p class="builder-stats__label">{{ __('builder.stats_declined') }}</p></div>
-            <div class="builder-stats__item"><p class="builder-stats__value">{{ $stats['total_guests'] }}</p><p class="builder-stats__label">{{ __('builder.stats_guests') }}</p></div>
-        </div>
+    @if ($invitation && ($rsvpSnapshot ?? null))
+        <x-rsvp.live-panel
+            :invitation="$invitation"
+            :snapshot="$rsvpSnapshot"
+            :poll-url="route('builder.rsvp.live', $invitation)"
+        />
     @endif
 
     @if (isset($errors) && $errors->any())

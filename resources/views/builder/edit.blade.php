@@ -4,7 +4,7 @@
     <div class="builder-page relative min-h-dvh">
         <x-landing.ambient />
         <main id="builder-main" class="relative z-10">
-            <x-builder.studio :bootstrap="$bootstrap" :invitation="$invitation" :stats="$stats" />
+            <x-builder.studio :bootstrap="$bootstrap" :invitation="$invitation" :rsvp-snapshot="$rsvpSnapshot" />
         </main>
     </div>
 @endsection

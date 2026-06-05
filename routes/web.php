@@ -4,6 +4,8 @@ use App\Http\Controllers\Account\DashboardController;
 use App\Http\Controllers\Account\FavoriteController;
 use App\Http\Controllers\Account\OrderController;
 use App\Http\Controllers\Account\ProfileController;
+use App\Http\Controllers\Account\RsvpPanelController;
+use App\Http\Controllers\Account\TelegramController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -12,6 +14,7 @@ use App\Http\Controllers\InvitationBuilderController;
 use App\Http\Controllers\InvitationViewController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RsvpController;
+use App\Http\Controllers\TelegramWebhookController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
@@ -38,6 +41,7 @@ Route::post('/i/{slug}/rsvp', [RsvpController::class, 'store']);
 Route::post('/payments/webhooks/payme', [PaymentController::class, 'handlePaymeWebhook'])->name('payments.webhooks.payme');
 Route::post('/payments/webhooks/click', [PaymentController::class, 'handleClickWebhook'])->name('payments.webhooks.click');
 Route::get('/payments/return', [PaymentController::class, 'return'])->name('payments.return');
+Route::post('/telegram/webhook', [TelegramWebhookController::class, 'handle'])->name('telegram.webhook');
 
 Route::redirect('/invite/nikoh-premium', '/i/farhod-shirin');
 
@@ -58,6 +62,9 @@ Route::middleware('auth')->group(function () {
         Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
         Route::get('/orders', [OrderController::class, 'index'])->name('orders');
         Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites');
+        Route::get('/telegram/connect', [TelegramController::class, 'connect'])->name('telegram.connect');
+        Route::post('/telegram/disconnect', [TelegramController::class, 'disconnect'])->name('telegram.disconnect');
+        Route::post('/telegram/toggle', [TelegramController::class, 'toggle'])->name('telegram.toggle');
     });
 
     Route::post('/favorites/{templateSlug}', [FavoriteController::class, 'store'])->name('favorites.store');
@@ -69,6 +76,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/create', [InvitationBuilderController::class, 'create'])->name('create');
         Route::post('/', [InvitationBuilderController::class, 'store'])->name('store');
         Route::get('/{invitation}/edit', [InvitationBuilderController::class, 'edit'])->name('edit');
+        Route::get('/{invitation}/rsvp/live', [RsvpPanelController::class, 'show'])->name('rsvp.live');
         Route::put('/{invitation}', [InvitationBuilderController::class, 'update'])->name('update');
     });
 });
