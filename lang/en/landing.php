@@ -63,4 +63,13 @@ return [
     'pricing_premium_desc' => 'Unlimited guests · RSVP · Music',
     'pricing_vip_desc' => 'Custom domain · Designer support',
     'pricing_cta' => 'Get Started',
+
+    'footer_tagline' => 'Uzbekistan\'s most elegant digital invitation platform for weddings and premium events.',
+    'footer_social' => 'Social media',
+    'footer_platform' => 'Platform',
+    'footer_contact' => 'Contact',
+    'footer_faq' => 'FAQ',
+    'footer_rights' => 'All rights reserved.',
+    'footer_privacy' => 'Privacy',
+    'footer_terms' => 'Terms of use',
 ];

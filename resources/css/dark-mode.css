@@ -281,8 +281,32 @@ html.theme-transition .phone-mockup {
     color: var(--color-ink-muted);
 }
 
-.dark .landing-footer {
-    border-color: rgba(255, 255, 255, 0.08);
+.dark .landing-footer__bottom {
+    border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark .landing-footer__logo-title {
+    color: var(--color-cream-50);
+}
+
+.dark .landing-footer__social-link {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--color-cream-200);
+}
+
+.dark .landing-footer__social-link:hover {
+    color: var(--color-luxury-gold-light);
+}
+
+.dark .landing-footer__links a,
+.dark .landing-footer__contact a {
+    color: var(--color-cream-200);
+}
+
+.dark .landing-footer__links a:hover,
+.dark .landing-footer__contact a:hover {
+    color: var(--color-cream-50);
 }
 
 /* ─── Testimonials & FAQ (dark) ─── */

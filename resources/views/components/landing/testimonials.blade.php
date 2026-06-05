@@ -35,7 +35,7 @@
     ];
 @endphp
 
-<section id="fikrlar" class="relative py-16 sm:py-20 lg:py-24" aria-labelledby="testimonials-heading">
+<section id="haqida" class="relative py-16 sm:py-20 lg:py-24" aria-labelledby="testimonials-heading">
     <div class="landing-container">
         <div class="reveal mx-auto max-w-2xl text-center">
             <p class="section-label mb-4 justify-center">Ishonch</p>

@@ -237,7 +237,9 @@
         </div>
 
         <aside class="builder-studio__preview-col" aria-hidden="false">
-            <x-builder.preview-panel />
+            <div class="builder-preview-stage">
+                <x-builder.preview-panel />
+            </div>
         </aside>
     </div>
 

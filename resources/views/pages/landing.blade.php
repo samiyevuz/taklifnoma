@@ -12,6 +12,7 @@
             <x-landing.testimonials />
             <x-landing.faq />
             <x-landing.pricing-cta />
+            <x-landing.footer />
         </div>
     </div>
 @endsection

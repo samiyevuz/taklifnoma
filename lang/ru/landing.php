@@ -63,4 +63,13 @@ return [
     'pricing_premium_desc' => 'Безлимит гостей · RSVP · Музыка',
     'pricing_vip_desc' => 'Свой домен · Помощь дизайнера',
     'pricing_cta' => 'Начать сейчас',
+
+    'footer_tagline' => 'Самая изысканная платформа цифровых приглашений в Узбекистане.',
+    'footer_social' => 'Социальные сети',
+    'footer_platform' => 'Платформа',
+    'footer_contact' => 'Контакты',
+    'footer_faq' => 'Вопросы и ответы',
+    'footer_rights' => 'Все права защищены.',
+    'footer_privacy' => 'Конфиденциальность',
+    'footer_terms' => 'Условия использования',
 ];

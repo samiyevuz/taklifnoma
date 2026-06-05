@@ -1,7 +1,10 @@
 @extends('layouts.builder')
 
 @section('body')
-    <main id="builder-main">
-        <x-builder.studio :bootstrap="$bootstrap" />
-    </main>
+    <div class="builder-page relative min-h-dvh">
+        <x-landing.ambient />
+        <main id="builder-main" class="relative z-10">
+            <x-builder.studio :bootstrap="$bootstrap" />
+        </main>
+    </div>
 @endsection

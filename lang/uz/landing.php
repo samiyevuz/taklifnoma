@@ -79,4 +79,13 @@ return [
     'pricing_premium_desc' => 'Cheksiz mehmon · RSVP · Musiqa',
     'pricing_vip_desc' => 'Maxsus domen · Dizayner yordami',
     'pricing_cta' => 'Hoziroq Boshlash',
+
+    'footer_tagline' => 'O\'zbekistondagi eng nafis raqamli taklifnoma platformasi. To\'y, uzatish va maxsus tadbirlar uchun premium tajriba.',
+    'footer_social' => 'Ijtimoiy tarmoqlar',
+    'footer_platform' => 'Platforma',
+    'footer_contact' => 'Aloqa',
+    'footer_faq' => 'Savol-javoblar',
+    'footer_rights' => 'Barcha huquqlar himoyalangan.',
+    'footer_privacy' => 'Maxfiylik',
+    'footer_terms' => 'Foydalanish shartlari',
 ];

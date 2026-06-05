@@ -7,9 +7,10 @@
     <div class="builder-phone" id="builder-phone">
         <div class="builder-phone__frame">
             <div class="builder-phone__island" aria-hidden="true"></div>
-            <div class="builder-phone__screen">
-                <div class="builder-preview-scaler">
-                    <div class="invitation-page builder-preview-page" id="builder-preview">
+            <div class="builder-phone__screen" id="builder-phone-screen">
+                <div class="builder-preview-viewport">
+                    <div class="builder-preview-scaler">
+                        <div class="invitation-page builder-preview-page" id="builder-preview">
                         <main class="invitation-content">
                             <section class="inv-welcome" aria-hidden="false">
                                 <div class="inv-welcome__ornament" aria-hidden="true">
@@ -79,6 +80,7 @@
                                 </div>
                             </section>
                         </main>
+                        </div>
                     </div>
                 </div>
             </div>
