@@ -7,112 +7,62 @@ class TemplateVariantCatalog
     public static function definitions(): array
     {
         return [
-            'nikoh' => [
-                [
-                    'id' => 'nikoh-classic',
-                    'title' => 'Nikoh Classic',
-                    'subtitle' => 'Sodda va nafis dizayn',
-                    'price_amount' => 69000,
-                    'blade' => 'nikoh-premium',
-                    'theme' => 'classic',
-                    'cover_image' => 'images/templates/nikoh.jpg',
-                    'badge' => null,
-                ],
-                [
-                    'id' => 'nikoh-premium',
-                    'title' => 'Nikoh Premium',
-                    'subtitle' => 'Oltin naqshlar va romantik fon',
-                    'price_amount' => 89000,
-                    'blade' => 'nikoh-premium',
-                    'theme' => 'premium',
-                    'cover_image' => 'images/templates/nikoh.jpg',
-                    'badge' => 'Eng mashhur',
-                ],
-                [
-                    'id' => 'nikoh-luxury',
-                    'title' => 'Nikoh Luxury',
-                    'subtitle' => 'Kinematik animatsiya va musiqa',
-                    'price_amount' => 119000,
-                    'blade' => 'nikoh-premium',
-                    'theme' => 'luxury',
-                    'cover_image' => 'images/templates/nikoh.jpg',
-                    'badge' => 'Yangi',
-                ],
-                [
-                    'id' => 'nikoh-royal',
-                    'title' => 'Nikoh Royal',
-                    'subtitle' => 'VIP effektlar va maxsus domen',
-                    'price_amount' => 149000,
-                    'blade' => 'nikoh-premium',
-                    'theme' => 'royal',
-                    'cover_image' => 'images/templates/nikoh.jpg',
-                    'badge' => 'VIP',
-                ],
-            ],
-            'qiz' => [
-                [
-                    'id' => 'qiz-standard',
-                    'title' => 'Qiz Uzatish Standard',
-                    'subtitle' => 'Nozik pushti palitra',
-                    'price_amount' => 69000,
-                    'blade' => 'qiz-uzatish',
-                    'theme' => 'classic',
-                    'cover_image' => 'images/templates/qiz.jpg',
-                    'badge' => null,
-                ],
-                [
-                    'id' => 'qiz-premium',
-                    'title' => 'Qiz Uzatish Premium',
-                    'subtitle' => 'Zamonaviy guldasta uslubi',
-                    'price_amount' => 79000,
-                    'blade' => 'qiz-uzatish',
-                    'theme' => 'premium',
-                    'cover_image' => 'images/templates/qiz.jpg',
-                    'badge' => 'Eng mashhur',
-                ],
-                [
-                    'id' => 'qiz-luxury',
-                    'title' => 'Qiz Uzatish Luxury',
-                    'subtitle' => 'Premium fon musiqasi bilan',
-                    'price_amount' => 99000,
-                    'blade' => 'qiz-uzatish',
-                    'theme' => 'luxury',
-                    'cover_image' => 'images/templates/qiz.jpg',
-                    'badge' => null,
-                ],
-            ],
-            'sunnat' => [
-                [
-                    'id' => 'sunnat-standard',
-                    'title' => 'Sunnat Standard',
-                    'subtitle' => 'Iliq oltin tonlar',
-                    'price_amount' => 59000,
-                    'blade' => 'sunnat-toyi',
-                    'theme' => 'classic',
-                    'cover_image' => 'images/templates/sunnat.jpg',
-                    'badge' => null,
-                ],
-                [
-                    'id' => 'sunnat-premium',
-                    'title' => 'Sunnat Premium',
-                    'subtitle' => 'Yorqin bolalar motivlari',
-                    'price_amount' => 69000,
-                    'blade' => 'sunnat-toyi',
-                    'theme' => 'premium',
-                    'cover_image' => 'images/templates/sunnat.jpg',
-                    'badge' => 'Eng mashhur',
-                ],
-                [
-                    'id' => 'sunnat-luxury',
-                    'title' => 'Sunnat Luxury',
-                    'subtitle' => 'Animatsiya va RSVP panel',
-                    'price_amount' => 89000,
-                    'blade' => 'sunnat-toyi',
-                    'theme' => 'luxury',
-                    'cover_image' => 'images/templates/sunnat.jpg',
-                    'badge' => null,
-                ],
-            ],
+            'nikoh' => self::tiers('nikoh', 'Nikoh', 'nikoh-premium', 'images/templates/nikoh.jpg', [
+                ['suffix' => 'Classic', 'subtitle' => 'Sodda va nafis dizayn', 'price' => 69000, 'theme' => 'classic'],
+                ['suffix' => 'Premium', 'subtitle' => 'Oltin naqshlar va romantik fon', 'price' => 89000, 'theme' => 'premium', 'badge' => 'Eng mashhur'],
+                ['suffix' => 'Luxury', 'subtitle' => 'Kinematik animatsiya va musiqa', 'price' => 119000, 'theme' => 'luxury', 'badge' => 'Yangi'],
+                ['suffix' => 'Royal', 'subtitle' => 'VIP effektlar va maxsus domen', 'price' => 149000, 'theme' => 'royal', 'badge' => 'VIP'],
+            ]),
+            'qiz' => self::tiers('qiz', 'Qiz Uzatish', 'qiz-uzatish', 'images/templates/qiz.jpg', [
+                ['suffix' => 'Standard', 'subtitle' => 'Nozik pushti palitra', 'price' => 69000, 'theme' => 'classic'],
+                ['suffix' => 'Premium', 'subtitle' => 'Zamonaviy guldasta uslubi', 'price' => 79000, 'theme' => 'premium', 'badge' => 'Eng mashhur'],
+                ['suffix' => 'Luxury', 'subtitle' => 'Premium fon musiqasi bilan', 'price' => 99000, 'theme' => 'luxury'],
+            ]),
+            'sunnat' => self::tiers('sunnat', 'Sunnat To\'yi', 'sunnat-toyi', 'images/templates/sunnat.jpg', [
+                ['suffix' => 'Standard', 'subtitle' => 'Iliq oltin tonlar', 'price' => 59000, 'theme' => 'classic'],
+                ['suffix' => 'Premium', 'subtitle' => 'Yorqin bolalar motivlari', 'price' => 69000, 'theme' => 'premium', 'badge' => 'Eng mashhur'],
+                ['suffix' => 'Luxury', 'subtitle' => 'Animatsiya va RSVP panel', 'price' => 89000, 'theme' => 'luxury'],
+            ]),
+            'beshik' => self::tiers('beshik', 'Beshik To\'yi', 'beshik-toyi', 'images/templates/beshik.jpg', [
+                ['suffix' => 'Standard', 'subtitle' => 'Yumshoq yashil tabiat tonlari', 'price' => 59000, 'theme' => 'classic'],
+                ['suffix' => 'Premium', 'subtitle' => 'Nafis chaqaloq motivlari', 'price' => 75000, 'theme' => 'premium', 'badge' => 'Eng mashhur'],
+                ['suffix' => 'Luxury', 'subtitle' => 'Animatsiya va maxsus muqova', 'price' => 95000, 'theme' => 'luxury'],
+            ]),
+            'yubiley' => self::tiers('yubiley', 'Yubiley', 'yubiley-premium', 'images/templates/yubiley.jpg', [
+                ['suffix' => 'Standard', 'subtitle' => 'Pushti va oltin aksentlar', 'price' => 55000, 'theme' => 'classic'],
+                ['suffix' => 'Premium', 'subtitle' => '50 yoki 60 yubiley uchun hashamat', 'price' => 69000, 'theme' => 'premium', 'badge' => 'Eng mashhur'],
+                ['suffix' => 'Luxury', 'subtitle' => 'Kinematik slayd va musiqa', 'price' => 89000, 'theme' => 'luxury'],
+            ]),
+            'nahor' => self::tiers('nahor', 'Nahor Oshi', 'nahor-oshi', 'images/templates/nahor.jpg', [
+                ['suffix' => 'Standard', 'subtitle' => 'Moviy va lavanda ertalabki uslub', 'price' => 65000, 'theme' => 'classic'],
+                ['suffix' => 'Premium', 'subtitle' => 'Zamonaviy dasturxon taklifi', 'price' => 79000, 'theme' => 'premium', 'badge' => 'Eng mashhur'],
+                ['suffix' => 'Luxury', 'subtitle' => 'Premium fon va RSVP panel', 'price' => 99000, 'theme' => 'luxury'],
+            ]),
+            'fotiha' => self::tiers('fotiha', 'Fotiha To\'yi', 'fotiha-toyi', 'images/templates/fotiha.jpg', [
+                ['suffix' => 'Standard', 'subtitle' => 'Romantik pushti va oltin naqsh', 'price' => 69000, 'theme' => 'classic'],
+                ['suffix' => 'Premium', 'subtitle' => 'Unashtiruv uchun premium dizayn', 'price' => 85000, 'theme' => 'premium', 'badge' => 'Eng mashhur'],
+                ['suffix' => 'Luxury', 'subtitle' => 'Hashamatli animatsiya va musiqa', 'price' => 109000, 'theme' => 'luxury'],
+            ]),
+            'birthday' => self::tiers('birthday', 'Tug\'ilgan Kun', 'birthday-premium', 'images/templates/birthday.jpg', [
+                ['suffix' => 'Standard', 'subtitle' => 'Iliq krem va shampan oltin', 'price' => 49000, 'theme' => 'classic'],
+                ['suffix' => 'Premium', 'subtitle' => 'Har qanday yosh uchun zamonaviy', 'price' => 59000, 'theme' => 'premium', 'badge' => 'Eng mashhur'],
+                ['suffix' => 'Luxury', 'subtitle' => 'Premium effektlar va fon musiqasi', 'price' => 79000, 'theme' => 'luxury'],
+            ]),
+            'iftorlik' => self::tiers('iftorlik', 'Iftorlik', 'iftorlik-premium', 'images/templates/iftorlik.jpg', [
+                ['suffix' => 'Standard', 'subtitle' => 'To\'q yashil Ramazon uslubi', 'price' => 59000, 'theme' => 'classic'],
+                ['suffix' => 'Premium', 'subtitle' => 'Iftor marosimi uchun nafis taklif', 'price' => 72000, 'theme' => 'premium', 'badge' => 'Eng mashhur'],
+                ['suffix' => 'Luxury', 'subtitle' => 'Oltin naqshlar va premium musiqa', 'price' => 92000, 'theme' => 'luxury'],
+            ]),
+            'aqiyqa' => self::tiers('aqiyqa', 'Aqiyqa', 'aqiyqa-toyi', 'images/templates/aqiyqa.jpg', [
+                ['suffix' => 'Standard', 'subtitle' => 'Krem va bej samimiy tonlar', 'price' => 55000, 'theme' => 'classic'],
+                ['suffix' => 'Premium', 'subtitle' => 'Yangi chaqaloq uchun iliq dizayn', 'price' => 68000, 'theme' => 'premium', 'badge' => 'Eng mashhur'],
+                ['suffix' => 'Luxury', 'subtitle' => 'Premium muqova va fon musiqasi', 'price' => 88000, 'theme' => 'luxury'],
+            ]),
+            'bitiruv' => self::tiers('bitiruv', 'Bitiruv Oqshomi', 'bitiruv-oqshomi', 'images/templates/bitiruv.jpg', [
+                ['suffix' => 'Standard', 'subtitle' => 'To\'q ko\'k rasmiy uslub', 'price' => 49000, 'theme' => 'classic'],
+                ['suffix' => 'Premium', 'subtitle' => 'Maktab yoki universitet bitiruvi', 'price' => 64000, 'theme' => 'premium', 'badge' => 'Eng mashhur'],
+                ['suffix' => 'Luxury', 'subtitle' => 'Oltin aksentlar va RSVP panel', 'price' => 84000, 'theme' => 'luxury'],
+            ]),
         ];
     }
 
@@ -130,16 +80,17 @@ class TemplateVariantCatalog
             return [];
         }
 
-        return [self::enrich([
-            'id' => $familySlug.'-standard',
-            'title' => $template['title'],
-            'subtitle' => $template['desc'] ?? '',
-            'price_amount' => $template['price_amount'],
-            'blade' => $template['template'],
-            'theme' => 'premium',
-            'cover_image' => $template['cover_image'] ?? null,
-            'badge' => $template['tag'] ?? null,
-        ], $familySlug)];
+        return array_map(
+            fn (array $variant) => self::enrich($variant, $familySlug),
+            self::generatedTiers(
+                $familySlug,
+                $template['title'] ?? $familySlug,
+                $template['template'] ?? 'nikoh-premium',
+                (int) ($template['price_amount'] ?? 69000),
+                $template['cover_image'] ?? null,
+                $template['desc'] ?? ''
+            )
+        );
     }
 
     public static function find(string $familySlug, ?string $variantId): ?array
@@ -171,7 +122,7 @@ class TemplateVariantCatalog
             }
         }
 
-        return $variants[0];
+        return $variants[(int) floor(count($variants) / 2)] ?? $variants[0];
     }
 
     public static function resolvePrice(string $familySlug, ?string $variantId): int
@@ -186,11 +137,74 @@ class TemplateVariantCatalog
         return (int) ($template['price_amount'] ?? 89000);
     }
 
+    private static function tiers(
+        string $slug,
+        string $titlePrefix,
+        string $blade,
+        string $coverImage,
+        array $levels,
+    ): array {
+        return array_map(function (array $level) use ($slug, $titlePrefix, $blade, $coverImage) {
+            $suffix = $level['suffix'];
+            $idSuffix = strtolower(str_replace(' ', '-', $suffix));
+
+            return [
+                'id' => "{$slug}-{$idSuffix}",
+                'title' => trim("{$titlePrefix} {$suffix}"),
+                'subtitle' => $level['subtitle'],
+                'price_amount' => (int) $level['price'],
+                'blade' => $blade,
+                'theme' => $level['theme'] ?? 'premium',
+                'cover_image' => $coverImage,
+                'badge' => $level['badge'] ?? null,
+            ];
+        }, $levels);
+    }
+
+    private static function generatedTiers(
+        string $slug,
+        string $title,
+        string $blade,
+        int $premiumPrice,
+        ?string $coverImage,
+        string $desc,
+    ): array {
+        $classicPrice = max(39000, self::roundPrice($premiumPrice - 20000));
+        $luxuryPrice = self::roundPrice($premiumPrice + 20000);
+
+        return self::tiers($slug, $title, $blade, $coverImage ?? '', [
+            [
+                'suffix' => 'Classic',
+                'subtitle' => $desc ?: 'Sodda va zamonaviy dizayn',
+                'price' => $classicPrice,
+                'theme' => 'classic',
+            ],
+            [
+                'suffix' => 'Premium',
+                'subtitle' => $desc ?: 'Eng mashhur variant',
+                'price' => $premiumPrice,
+                'theme' => 'premium',
+                'badge' => 'Eng mashhur',
+            ],
+            [
+                'suffix' => 'Luxury',
+                'subtitle' => 'Premium effektlar va fon musiqasi',
+                'price' => $luxuryPrice,
+                'theme' => 'luxury',
+            ],
+        ]);
+    }
+
+    private static function roundPrice(int $amount): int
+    {
+        return (int) (round($amount / 1000) * 1000);
+    }
+
     private static function enrich(array $variant, string $familySlug): array
     {
         $variant['family_slug'] = $familySlug;
         $variant['price'] = number_format($variant['price_amount'], 0, '.', ' ').' '.__('landing.currency');
-        $variant['cover_url'] = isset($variant['cover_image'])
+        $variant['cover_url'] = isset($variant['cover_image']) && $variant['cover_image'] !== ''
             ? asset($variant['cover_image'])
             : null;
 

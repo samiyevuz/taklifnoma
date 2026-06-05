@@ -16,8 +16,8 @@
     @vite(['resources/css/app.css', 'resources/js/invitation.js'])
 
     @stack('head')
-    <script>
-        window.invitationI18n = @json([
+    @php
+        $invitationI18n = [
             'submit' => __('invitation.rsvp_submit'),
             'submitting' => __('invitation.rsvp_submitting'),
             'success' => __('invitation.rsvp_success'),
@@ -26,7 +26,10 @@
             'musicPlay' => __('invitation.music_play'),
             'musicPause' => __('invitation.music_pause'),
             'musicError' => __('invitation.music_error'),
-        ]);
+        ];
+    @endphp
+    <script>
+        window.invitationI18n = @json($invitationI18n);
     </script>
 </head>
 <body class="invitation-body min-h-dvh overflow-x-hidden antialiased">
