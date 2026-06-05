@@ -6,6 +6,6 @@ return [
     'youtube' => env('SOCIAL_YOUTUBE', ''),
     'facebook' => env('SOCIAL_FACEBOOK', ''),
     'whatsapp' => env('SOCIAL_WHATSAPP', 'https://wa.me/998901234567'),
-    'email' => env('SOCIAL_EMAIL', 'info@taklifnoma.uz'),
+    'email' => env('SOCIAL_EMAIL', 'info@taklifnoma.net'),
     'phone' => env('SOCIAL_PHONE', '+998 90 123 45 67'),
 ];

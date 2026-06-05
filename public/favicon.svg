@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+  <defs>
+    <linearGradient id="fav-gold" x1="6" y1="6" x2="34" y2="34" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F0D78C"/>
+      <stop offset="45%" stop-color="#C9A227"/>
+      <stop offset="100%" stop-color="#8B6914"/>
+    </linearGradient>
+    <linearGradient id="fav-seal" x1="14" y1="14" x2="26" y2="26" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#34D399"/>
+      <stop offset="100%" stop-color="#0D6B5C"/>
+    </linearGradient>
+    <linearGradient id="fav-card" x1="12" y1="15" x2="28" y2="27" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#F5E6C8" stop-opacity="0.75"/>
+    </linearGradient>
+  </defs>
+  <rect width="40" height="40" rx="10" fill="#FAF6F0"/>
+  <rect x="3" y="3" width="34" height="34" rx="10" fill="url(#fav-gold)" fill-opacity="0.16"/>
+  <rect x="3" y="3" width="34" height="34" rx="10" stroke="url(#fav-gold)" stroke-opacity="0.35"/>
+  <path d="M9 15.5h22a1.5 1.5 0 011.5 1.5V28a2.5 2.5 0 01-2.5 2.5H10A2.5 2.5 0 017.5 28V17a1.5 1.5 0 011.5-1.5z" fill="rgba(255,255,255,0.9)" stroke="#8B6914" stroke-width="1.35"/>
+  <path d="M9 16.5l11 7.2L31 16.5" fill="none" stroke="#8B6914" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="13.5" y="18" width="13" height="9.5" rx="1.5" fill="url(#fav-card)"/>
+  <path d="M15.5 21.5h9M15.5 24h6" stroke="rgba(154,123,20,0.45)" stroke-width="0.9" stroke-linecap="round"/>
+  <circle cx="20" cy="22.8" r="4" fill="url(#fav-seal)"/>
+  <path d="M20 21v3.6M18.2 22.8h3.6" stroke="#FFFBF5" stroke-width="1.1" stroke-linecap="round"/>
+</svg>

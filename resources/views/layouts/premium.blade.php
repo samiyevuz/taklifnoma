@@ -20,6 +20,8 @@
 
     <title>{{ $title ?? config('app.name', 'Taklifnoma') }}</title>
 
+    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+
     @fonts
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])

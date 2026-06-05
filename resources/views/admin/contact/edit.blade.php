@@ -16,7 +16,7 @@
 
             <div class="admin-form-row">
                 <label class="admin-label" for="email">Email</label>
-                <input type="email" id="email" name="email" value="{{ old('email', $contact['email']) }}" class="admin-input w-full" placeholder="info@taklifnoma.uz">
+                <input type="email" id="email" name="email" value="{{ old('email', $contact['email']) }}" class="admin-input w-full" placeholder="info@taklifnoma.net">
             </div>
 
             <div class="admin-form-row">

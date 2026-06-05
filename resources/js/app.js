@@ -91,7 +91,7 @@ function initStickyNav() {
     const nav = document.getElementById('site-nav');
     if (!nav) return;
 
-    const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 24);
+    const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 8);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
 }

@@ -4,17 +4,18 @@
 
 <header class="nav-glass" id="site-nav" role="banner">
     <div class="nav-glass__inner mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <a href="/" class="flex shrink-0 items-center gap-2.5 no-underline">
-            <div class="flex h-10 w-10 items-center justify-center rounded-xl glass-luxury font-serif text-lg font-semibold text-luxury-gold-dark" aria-hidden="true">
-                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M12 2L4 8v14h16V8L12 2z" stroke-linejoin="round"/>
-                    <path d="M12 8v8M9 11h6" stroke-linecap="round"/>
-                </svg>
-            </div>
-            <div class="hidden min-[360px]:block">
-                <span class="font-serif text-base font-semibold tracking-tight text-ink dark:text-cream-50 sm:text-lg">Taklifnoma</span>
-                <span class="block text-[0.65rem] font-medium tracking-widest text-luxury-gold-dark uppercase">Premium</span>
-            </div>
+        <a href="/" class="brand-logo-link shrink-0 no-underline" aria-label="Taklifnoma — bosh sahifa">
+            <x-ui.brand-logo
+                data-logo-id="nav"
+                size="md"
+                class="hidden min-[360px]:inline-flex"
+            />
+            <x-ui.brand-logo
+                data-logo-id="nav-mark"
+                :show-text="false"
+                size="md"
+                class="min-[360px]:hidden"
+            />
         </a>
 
         <nav class="hidden items-center gap-6 lg:flex lg:gap-8" aria-label="{{ __('nav.main_nav') }}">

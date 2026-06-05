@@ -35,17 +35,8 @@
         <div class="landing-footer__card glass-luxury">
             <div class="landing-footer__grid">
                 <div class="landing-footer__brand">
-                    <a href="/" class="landing-footer__logo">
-                        <span class="landing-footer__logo-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M12 2L4 8v14h16V8L12 2z" stroke-linejoin="round"/>
-                                <path d="M12 8v8M9 11h6" stroke-linecap="round"/>
-                            </svg>
-                        </span>
-                        <span>
-                            <span class="landing-footer__logo-title">Taklifnoma</span>
-                            <span class="landing-footer__logo-sub">Premium</span>
-                        </span>
+                    <a href="/" class="landing-footer__logo" aria-label="Taklifnoma — bosh sahifa">
+                        <x-ui.brand-logo data-logo-id="footer" size="lg" />
                     </a>
                     <p class="landing-footer__tagline">{{ __('landing.footer_tagline') }}</p>
 
