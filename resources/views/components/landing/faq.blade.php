@@ -1,11 +1,16 @@
-@php $faqs = __('landing.faqs'); @endphp
+@php
+    use App\Support\SiteContent;
+
+    $faqMeta = SiteContent::faqMeta();
+    $faqs = SiteContent::faqs();
+@endphp
 
 <section id="savollar" class="relative py-16 sm:py-20 lg:py-24" aria-labelledby="faq-heading">
     <div class="landing-container">
         <div class="reveal mx-auto max-w-2xl text-center">
-            <p class="section-label mb-4 justify-center">{{ __('landing.faq_label') }}</p>
-            <h2 id="faq-heading" class="font-serif text-display font-semibold text-ink text-balance">{{ __('landing.faq_title') }}</h2>
-            <p class="mt-4 text-fluid-body text-ink-soft">{{ __('landing.faq_desc') }}</p>
+            <p class="section-label mb-4 justify-center">{{ $faqMeta['label'] }}</p>
+            <h2 id="faq-heading" class="font-serif text-display font-semibold text-ink text-balance">{{ $faqMeta['title'] }}</h2>
+            <p class="mt-4 text-fluid-body text-ink-soft">{{ $faqMeta['desc'] }}</p>
         </div>
 
         <div class="faq-accordion mx-auto mt-12 max-w-3xl" id="faq-accordion">

@@ -236,4 +236,103 @@
             grid-template-columns: repeat(2, minmax(0, 1fr));
         }
     }
+
+    .admin-form-grid {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .admin-form-row {
+        margin-bottom: 1rem;
+    }
+
+    .admin-form-row--2 {
+        display: grid;
+        gap: 1rem;
+    }
+
+    @media (min-width: 640px) {
+        .admin-form-row--2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    .admin-label {
+        display: block;
+        margin-bottom: 0.35rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--color-ink-muted);
+    }
+
+    .admin-textarea {
+        min-height: 5.5rem;
+        resize: vertical;
+    }
+
+    .admin-hint {
+        margin-top: 0.35rem;
+        font-size: 0.72rem;
+        color: var(--color-ink-muted);
+    }
+
+    .admin-form-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+    }
+
+    .admin-locale-block {
+        padding: 1rem 0;
+        border-top: 1px solid rgba(26, 23, 20, 0.06);
+    }
+
+    .admin-locale-block:first-of-type {
+        border-top: 0;
+        padding-top: 0;
+    }
+
+    .admin-locale-block__title {
+        margin-bottom: 0.85rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--color-luxury-gold-dark);
+    }
+
+    .admin-check {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--color-ink);
+    }
+
+    .admin-thumb {
+        width: 3.5rem;
+        height: 2.5rem;
+        border-radius: 0.5rem;
+        object-fit: cover;
+        border: 1px solid rgba(26, 23, 20, 0.08);
+    }
+
+    .admin-thumb--empty {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(26, 23, 20, 0.05);
+        color: var(--color-ink-muted);
+        font-size: 0.75rem;
+    }
+
+    .admin-cover-preview {
+        width: 100%;
+        max-width: 18rem;
+        border-radius: 0.85rem;
+        border: 1px solid rgba(26, 23, 20, 0.08);
+        object-fit: cover;
+        aspect-ratio: 16 / 10;
+    }
 }

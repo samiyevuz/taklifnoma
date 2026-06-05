@@ -2,9 +2,13 @@
 
 namespace App\Support;
 
+use App\Models\EventTemplate;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
+
 class TemplateCatalog
 {
-    public static function definitions(): array
+    public static function fallbackDefinitions(): array
     {
         return [
             [
@@ -109,22 +113,48 @@ class TemplateCatalog
         ];
     }
 
+    public static function definitions(): array
+    {
+        if (! self::usesDatabase()) {
+            return self::fallbackDefinitions();
+        }
+
+        return Cache::remember('landing.templates.definitions', 3600, function () {
+            return EventTemplate::query()
+                ->active()
+                ->ordered()
+                ->get()
+                ->map(fn (EventTemplate $template) => [
+                    'slug' => $template->slug,
+                    'template' => $template->blade,
+                    'visual' => $template->visual,
+                    'cover_image' => $template->cover_path,
+                    'price_amount' => $template->price_amount,
+                    'preview_route' => $template->preview_route,
+                    'preview_param' => $template->preview_param,
+                ])
+                ->all();
+        });
+    }
+
     public static function all(): array
     {
-        return array_map(function (array $item) {
-            $slug = $item['slug'];
-            $trans = __("landing.templates.{$slug}");
+        if (! self::usesDatabase()) {
+            return array_map(function (array $item) {
+                return self::enrichDefinition($item);
+            }, self::fallbackDefinitions());
+        }
 
-            $item['title'] = is_array($trans) ? ($trans['title'] ?? $slug) : $slug;
-            $item['desc'] = is_array($trans) ? ($trans['desc'] ?? '') : '';
-            $item['tag'] = is_array($trans) ? ($trans['tag'] ?? null) : null;
-            $item['price'] = number_format($item['price_amount'], 0, '.', ' ').' '.__('landing.currency');
-            $item['cover_url'] = isset($item['cover_image'])
-                ? asset($item['cover_image'])
-                : null;
+        $locale = app()->getLocale();
 
-            return $item;
-        }, self::definitions());
+        return Cache::remember("landing.templates.all.{$locale}", 3600, function () use ($locale) {
+            return EventTemplate::query()
+                ->active()
+                ->ordered()
+                ->get()
+                ->map(fn (EventTemplate $template) => $template->toCatalogArray($locale))
+                ->all();
+        });
     }
 
     public static function find(string $slug): ?array
@@ -152,5 +182,36 @@ class TemplateCatalog
     public static function slugs(): array
     {
         return array_column(self::definitions(), 'slug');
+    }
+
+    public static function clearCache(): void
+    {
+        Cache::forget('landing.templates.definitions');
+
+        foreach (['uz', 'en', 'ru'] as $locale) {
+            Cache::forget("landing.templates.all.{$locale}");
+        }
+    }
+
+    private static function usesDatabase(): bool
+    {
+        return Schema::hasTable('event_templates')
+            && EventTemplate::query()->active()->exists();
+    }
+
+    private static function enrichDefinition(array $item): array
+    {
+        $slug = $item['slug'];
+        $trans = __("landing.templates.{$slug}");
+
+        $item['title'] = is_array($trans) ? ($trans['title'] ?? $slug) : $slug;
+        $item['desc'] = is_array($trans) ? ($trans['desc'] ?? '') : '';
+        $item['tag'] = is_array($trans) ? ($trans['tag'] ?? null) : null;
+        $item['price'] = number_format($item['price_amount'], 0, '.', ' ').' '.__('landing.currency');
+        $item['cover_url'] = isset($item['cover_image'])
+            ? asset($item['cover_image'])
+            : null;
+
+        return $item;
     }
 }

@@ -10,6 +10,16 @@
                 </div>
             @endif
 
+            @if ($errors->any())
+                <div class="mb-6 rounded-xl border border-red-300/40 bg-red-50 p-4 text-sm text-red-700">
+                    <ul class="list-disc pl-5 space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="admin-shell">
                 <x-admin.sidebar />
                 <main class="min-w-0">

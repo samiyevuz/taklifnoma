@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\InvitationController as AdminInvitationController;
 use App\Http\Controllers\Admin\PaymentController as AdminPaymentController;
 use App\Http\Controllers\Admin\RsvpController as AdminRsvpController;
+use App\Http\Controllers\Admin\TemplateController as AdminTemplateController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Account\DashboardController;
 use App\Http\Controllers\Account\FavoriteController;
@@ -92,6 +95,18 @@ Route::middleware('auth')->group(function () {
         Route::delete('/invitations/{invitation}', [AdminInvitationController::class, 'destroy'])->name('invitations.destroy');
         Route::get('/rsvps', [AdminRsvpController::class, 'index'])->name('rsvps.index');
         Route::get('/payments', [AdminPaymentController::class, 'index'])->name('payments.index');
+        Route::get('/templates', [AdminTemplateController::class, 'index'])->name('templates.index');
+        Route::get('/templates/{eventTemplate}/edit', [AdminTemplateController::class, 'edit'])->name('templates.edit');
+        Route::put('/templates/{eventTemplate}', [AdminTemplateController::class, 'update'])->name('templates.update');
+        Route::get('/faqs', [AdminFaqController::class, 'index'])->name('faqs.index');
+        Route::get('/faqs/create', [AdminFaqController::class, 'create'])->name('faqs.create');
+        Route::post('/faqs', [AdminFaqController::class, 'store'])->name('faqs.store');
+        Route::put('/faqs/meta', [AdminFaqController::class, 'updateMeta'])->name('faqs.meta');
+        Route::get('/faqs/{faq}/edit', [AdminFaqController::class, 'edit'])->name('faqs.edit');
+        Route::put('/faqs/{faq}', [AdminFaqController::class, 'update'])->name('faqs.update');
+        Route::delete('/faqs/{faq}', [AdminFaqController::class, 'destroy'])->name('faqs.destroy');
+        Route::get('/contact', [AdminContactController::class, 'edit'])->name('contact.edit');
+        Route::put('/contact', [AdminContactController::class, 'update'])->name('contact.update');
     });
 
     Route::prefix('builder')->name('builder.')->group(function () {
