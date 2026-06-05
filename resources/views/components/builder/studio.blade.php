@@ -81,8 +81,9 @@
                 <input type="hidden" name="dress_colors_json" id="dress_colors_json" value="">
                 <input type="hidden" name="rsvp_enabled" id="rsvp_enabled" value="1">
                 <input type="hidden" name="publish" id="publish_flag" value="0">
-                <input type="hidden" name="template" value="{{ old('template', $b['template_blade'] ?? 'nikoh-premium') }}">
+                <input type="hidden" name="template" id="template_blade" value="{{ old('template', $b['template_blade'] ?? 'nikoh-premium') }}">
                 <input type="hidden" name="template_slug" id="template_slug" value="{{ $b['template_slug'] ?? 'nikoh' }}">
+                <input type="hidden" name="template_variant" id="template_variant" value="{{ old('template_variant', $b['template_variant'] ?? '') }}">
                 @if ($invitation)
                     <input type="hidden" name="invitation_id" id="invitation_id" value="{{ $invitation->id }}">
                 @endif

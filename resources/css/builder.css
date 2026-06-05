@@ -685,6 +685,129 @@
         50% { opacity: 0.55; }
     }
 
+    .builder-variant-carousel {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 0.65rem;
+        width: 100%;
+        max-width: 22rem;
+    }
+
+    .builder-variant-carousel.is-single {
+        grid-template-columns: 1fr;
+    }
+
+    .builder-variant-carousel__stage {
+        display: flex;
+        justify-content: center;
+        min-width: 0;
+    }
+
+    .builder-variant-nav {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.35rem;
+        height: 2.35rem;
+        border-radius: 9999px;
+        border: 1px solid rgba(201, 162, 39, 0.28);
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--color-luxury-gold-dark);
+        box-shadow: 0 8px 24px rgba(26, 23, 20, 0.08);
+        transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+        flex-shrink: 0;
+    }
+
+    .builder-variant-nav svg {
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+
+    .builder-variant-nav:hover {
+        background: #fff;
+        border-color: rgba(201, 162, 39, 0.5);
+        transform: scale(1.04);
+    }
+
+    .builder-variant-nav:active {
+        transform: scale(0.96);
+    }
+
+    .builder-variant-meta {
+        width: 100%;
+        max-width: 20rem;
+        margin-top: 1.1rem;
+        text-align: center;
+    }
+
+    .builder-variant-meta__dots {
+        display: flex;
+        justify-content: center;
+        gap: 0.45rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .builder-variant-dot {
+        width: 0.45rem;
+        height: 0.45rem;
+        border-radius: 9999px;
+        background: rgba(201, 162, 39, 0.25);
+        border: none;
+        padding: 0;
+        transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .builder-variant-dot.is-active {
+        width: 1.35rem;
+        background: var(--color-luxury-gold);
+    }
+
+    .builder-variant-meta__head {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .builder-variant-meta__title {
+        font-family: var(--font-serif, Georgia, serif);
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--color-ink);
+    }
+
+    .builder-variant-meta__badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.2rem 0.55rem;
+        border-radius: 9999px;
+        background: rgba(201, 162, 39, 0.12);
+        border: 1px solid rgba(201, 162, 39, 0.25);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--color-luxury-gold-dark);
+    }
+
+    .builder-variant-meta__subtitle {
+        margin-top: 0.25rem;
+        font-size: 0.8rem;
+        line-height: 1.45;
+        color: var(--color-ink-soft);
+    }
+
+    .builder-variant-meta__price {
+        margin-top: 0.55rem;
+        font-family: var(--font-serif, Georgia, serif);
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--color-luxury-gold-dark);
+        letter-spacing: 0.02em;
+    }
+
     .builder-phone {
         display: flex;
         justify-content: center;
@@ -782,6 +905,39 @@
         margin: 0;
         left: 0;
         right: 0;
+    }
+
+    .builder-preview-page.inv-theme--classic {
+        --color-inv-champagne: #f5ebe0;
+        --color-inv-rose: #e8d4cc;
+        --color-inv-gold: #c9a227;
+        --color-inv-gold-light: #e8d48b;
+    }
+
+    .builder-preview-page.inv-theme--premium {
+        --color-inv-champagne: #faf6f0;
+        --color-inv-rose: #f0e4dc;
+        --color-inv-gold: #b8860b;
+        --color-inv-gold-light: #dfc06a;
+    }
+
+    .builder-preview-page.inv-theme--luxury {
+        --color-inv-champagne: #f3e8e4;
+        --color-inv-rose: #e2c4bc;
+        --color-inv-gold: #9a6b3f;
+        --color-inv-gold-light: #c9a070;
+    }
+
+    .builder-preview-page.inv-theme--royal {
+        --color-inv-champagne: #e8efe9;
+        --color-inv-rose: #c8d9cc;
+        --color-inv-gold: #2f5d46;
+        --color-inv-gold-light: #5a8f6e;
+    }
+
+    .builder-preview-page.inv-theme--luxury .inv-welcome__pre,
+    .builder-preview-page.inv-theme--royal .inv-welcome__pre {
+        letter-spacing: 0.18em;
     }
 
     .builder-preview-page .inv-welcome {

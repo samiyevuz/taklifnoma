@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Invitation;
 use App\Support\InvitationEventData;
 use App\Support\TemplateCatalog;
+use App\Support\TemplateVariantCatalog;
 use Illuminate\Support\Str;
 
 class InvitationService
@@ -19,6 +20,8 @@ class InvitationService
             $catalog = TemplateCatalog::findByBlade($data['template']);
             $data['template_slug'] = $catalog['slug'] ?? 'nikoh';
         }
+
+        $data = $this->resolveTemplateVariant($data);
 
         $slugSeed = $data['custom_slug'] ?? $data['slug'] ?? $this->generateSlug($data['groom_name'], $data['bride_name']);
         $data['custom_slug'] = $this->resolveUniqueSlug($slugSeed);
@@ -40,6 +43,8 @@ class InvitationService
     public function update(Invitation $invitation, array $data, ?bool $publish = null): Invitation
     {
         unset($data['publish'], $data['dress_colors_json']);
+
+        $data = $this->resolveTemplateVariant($data);
 
         if (isset($data['event_data'])) {
             $data = array_merge($data, array_filter(
@@ -90,6 +95,30 @@ class InvitationService
         }
 
         return $slug;
+    }
+
+    private function resolveTemplateVariant(array $data): array
+    {
+        $familySlug = $data['template_slug'] ?? null;
+
+        if (! $familySlug && ! empty($data['template'])) {
+            $catalog = TemplateCatalog::findByBlade($data['template']);
+            $familySlug = $catalog['slug'] ?? 'nikoh';
+            $data['template_slug'] = $familySlug;
+        }
+
+        if (! $familySlug) {
+            return $data;
+        }
+
+        $variant = TemplateVariantCatalog::find($familySlug, $data['template_variant'] ?? null);
+
+        if ($variant) {
+            $data['template_variant'] = $variant['id'];
+            $data['template'] = $variant['blade'];
+        }
+
+        return $data;
     }
 
     private function slugExists(string $slug, ?int $exceptId = null): bool

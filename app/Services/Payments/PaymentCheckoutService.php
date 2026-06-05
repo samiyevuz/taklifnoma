@@ -6,7 +6,7 @@ use App\Models\Invitation;
 use App\Models\PaymentInvoice;
 use App\Models\User;
 use App\Services\InvitationService;
-use App\Support\TemplateCatalog;
+use App\Support\TemplateVariantCatalog;
 use Illuminate\Support\Facades\DB;
 
 class PaymentCheckoutService
@@ -21,8 +21,8 @@ class PaymentCheckoutService
         return DB::transaction(function () use ($user, $payload) {
             $provider = $payload['payment_provider'];
             $templateSlug = $payload['template_slug'] ?? 'nikoh';
-            $template = TemplateCatalog::find($templateSlug) ?? TemplateCatalog::find('nikoh');
-            $amount = (int) ($template['price_amount'] ?? 89000);
+            $variantId = $payload['template_variant'] ?? null;
+            $amount = TemplateVariantCatalog::resolvePrice($templateSlug, $variantId);
 
             $invitation = $this->resolveInvitation($user, $payload);
             $amountTiyin = $amount * 100;

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Support\BuilderEventProfile;
 use App\Support\TemplateCatalog;
+use App\Support\TemplateVariantCatalog;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -69,6 +70,8 @@ class StoreInvitationRequest extends FormRequest
                 Rule::unique('invitations', 'slug')->ignore($this->route('invitation')),
             ],
             'publish' => ['sometimes', 'boolean'],
+            'template_slug' => ['nullable', 'string', Rule::in(TemplateCatalog::slugs())],
+            'template_variant' => ['nullable', 'string', 'max:80'],
             'template' => [
                 'nullable',
                 'string',
@@ -105,6 +108,14 @@ class StoreInvitationRequest extends FormRequest
                         "profile.{$field['key']}",
                         __($field['label']).' majburiy.'
                     );
+                }
+            }
+
+            if ($this->filled('template_variant')) {
+                $variant = TemplateVariantCatalog::find($slug, $this->input('template_variant'));
+
+                if (! $variant) {
+                    $validator->errors()->add('template_variant', 'Tanlangan shablon varianti noto\'g\'ri.');
                 }
             }
         });

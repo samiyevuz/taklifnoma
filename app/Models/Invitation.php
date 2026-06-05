@@ -33,6 +33,7 @@ class Invitation extends Model
         'custom_slug',
         'template',
         'template_slug',
+        'template_variant',
         'status',
         'groom_name',
         'bride_name',
@@ -100,7 +101,7 @@ class Invitation extends Model
             if ($invitation->isDirty([
                 'profile_meta', 'event_at', 'event_city', 'venue_name', 'venue_address',
                 'map_lat', 'map_lng', 'invitation_text_1', 'invitation_text_2',
-                'family_signature', 'music_url', 'cover_image', 'dress_colors', 'rsvp_enabled', 'template',
+                'family_signature', 'music_url', 'cover_image', 'dress_colors', 'rsvp_enabled', 'template', 'template_variant',
             ])) {
                 $invitation->event_data = InvitationEventData::fromInvitation($invitation);
             }

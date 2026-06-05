@@ -10,6 +10,7 @@ use App\Services\Rsvp\RsvpDashboardService;
 use App\Support\BuilderEventProfile;
 use App\Support\InvitationDefaults;
 use App\Support\TemplateCatalog;
+use App\Support\TemplateVariantCatalog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -30,7 +31,9 @@ class InvitationBuilderController extends Controller
         $defaults = InvitationDefaults::demoAttributes();
         unset($defaults['slug'], $defaults['status'], $defaults['published_at']);
         $slug = $catalogTemplate['slug'] ?? 'nikoh';
-        $defaults['template'] = $catalogTemplate['template'] ?? 'nikoh-premium';
+        $defaultVariant = TemplateVariantCatalog::defaultForFamily($slug);
+        $defaults['template'] = $defaultVariant['blade'] ?? $catalogTemplate['template'] ?? 'nikoh-premium';
+        $defaults['template_variant'] = $defaultVariant['id'] ?? null;
         $defaults['event_type'] = $catalogTemplate['title'] ?? 'Nikoh To\'yi';
         $normalized = BuilderEventProfile::normalizeForStorage($slug, [
             'profile' => BuilderEventProfile::demoProfile($slug),
@@ -84,9 +87,16 @@ class InvitationBuilderController extends Controller
             ?? TemplateCatalog::find('nikoh');
         $source = $invitation ?? (object) ($defaults ?? InvitationDefaults::demoAttributes());
         $slug = $template['slug'] ?? 'nikoh';
+        $variants = TemplateVariantCatalog::forFamily($slug);
+        $selectedVariantId = $invitation?->template_variant
+            ?? (is_array($defaults) ? ($defaults['template_variant'] ?? null) : null);
+        $selectedVariant = TemplateVariantCatalog::find($slug, $selectedVariantId)
+            ?? TemplateVariantCatalog::defaultForFamily($slug);
 
         return [
             'template_slug' => $slug,
+            'template_variant' => $selectedVariant['id'] ?? null,
+            'template_variants' => $variants,
             'field_schema' => BuilderEventProfile::bootstrapSchema($slug, $source),
             'groom_name' => $source->groom_name ?? '',
             'bride_name' => $source->bride_name ?? '',
@@ -113,10 +123,10 @@ class InvitationBuilderController extends Controller
                 ? route('builder.update', $invitation)
                 : route('builder.store'),
             'method' => $invitation ? 'PUT' : 'POST',
-            'price_amount' => $template['price_amount'] ?? 89000,
+            'price_amount' => $selectedVariant['price_amount'] ?? $template['price_amount'] ?? 89000,
             'currency' => __('landing.currency'),
-            'template_title' => $template['title'] ?? 'Nikoh To\'yi Premium',
-            'template_blade' => $template['template'] ?? 'nikoh-premium',
+            'template_title' => $selectedVariant['title'] ?? $template['title'] ?? 'Nikoh To\'yi Premium',
+            'template_blade' => $selectedVariant['blade'] ?? $template['template'] ?? 'nikoh-premium',
             'music_presets' => InvitationDefaults::musicPresets(),
             'default_music_url' => asset('audio/romantic-wedding.mp3'),
             'payments' => [

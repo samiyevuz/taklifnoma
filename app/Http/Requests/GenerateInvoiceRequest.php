@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\PaymentInvoice;
 use App\Support\BuilderEventProfile;
 use App\Support\TemplateCatalog;
+use App\Support\TemplateVariantCatalog;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -48,6 +49,7 @@ class GenerateInvoiceRequest extends FormRequest
                 PaymentInvoice::PROVIDER_PAYME,
             ])],
             'template_slug' => ['required', 'string', Rule::in(TemplateCatalog::slugs())],
+            'template_variant' => ['nullable', 'string', 'max:80'],
             'invitation_id' => ['nullable', 'integer', 'exists:invitations,id'],
             'profile' => ['nullable', 'array'],
             'profile_meta' => ['nullable', 'array'],
@@ -112,6 +114,14 @@ class GenerateInvoiceRequest extends FormRequest
 
                 if (trim((string) $this->input("profile.{$field['key']}", '')) === '') {
                     $validator->errors()->add("profile.{$field['key']}", __($field['label']).' majburiy.');
+                }
+            }
+
+            if ($this->filled('template_variant')) {
+                $variant = TemplateVariantCatalog::find($slug, $this->input('template_variant'));
+
+                if (! $variant) {
+                    $validator->errors()->add('template_variant', 'Tanlangan shablon varianti noto\'g\'ri.');
                 }
             }
         });

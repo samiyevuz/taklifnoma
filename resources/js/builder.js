@@ -24,6 +24,14 @@ function pad2(value) {
     return String(value).padStart(2, '0');
 }
 
+function formatVariantPrice(amount, currency = "so'm") {
+    const value = Number(amount);
+    if (!Number.isFinite(value)) return '';
+    return `${value.toLocaleString('uz-UZ').replace(/,/g, ' ')} ${currency}`;
+}
+
+const VARIANT_THEME_CLASSES = ['inv-theme--classic', 'inv-theme--premium', 'inv-theme--luxury', 'inv-theme--royal'];
+
 function formatEventDate(value) {
     if (!value) return '';
     const date = new Date(value);
@@ -218,6 +226,23 @@ function initBuilderStudio() {
     const musicUrlInput = document.getElementById('music_url');
     const reviewList = studio.querySelector('.builder-review__list');
     const heroBlocks = [...studio.querySelectorAll('[data-preview-layout]')];
+    const variants = Array.isArray(bootstrap.template_variants) ? bootstrap.template_variants : [];
+    let variantIndex = Math.max(0, variants.findIndex((variant) => variant.id === bootstrap.template_variant));
+    if (variantIndex < 0) variantIndex = 0;
+
+    const variantPrev = document.getElementById('builder-variant-prev');
+    const variantNext = document.getElementById('builder-variant-next');
+    const variantDots = document.getElementById('builder-variant-dots');
+    const variantTitle = document.getElementById('builder-variant-title');
+    const variantSubtitle = document.getElementById('builder-variant-subtitle');
+    const variantPrice = document.getElementById('builder-variant-price');
+    const variantBadge = document.getElementById('builder-variant-badge');
+    const variantCarousel = document.getElementById('builder-variant-carousel');
+    const templateVariantInput = document.getElementById('template_variant');
+    const templateBladeInput = document.getElementById('template_blade');
+    const checkoutPrice = document.getElementById('checkout-price');
+    const checkoutTemplate = document.getElementById('checkout-template');
+    const previewPage = document.getElementById('builder-preview');
 
     const previewMap = {};
     studio.querySelectorAll('[data-preview]').forEach((el) => {
@@ -535,6 +560,73 @@ function initBuilderStudio() {
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-+|-+$/g, '') || 'taklifnoma';
 
+    const applyVariant = (index) => {
+        if (!variants.length) return;
+
+        const safeIndex = ((index % variants.length) + variants.length) % variants.length;
+        variantIndex = safeIndex;
+        const variant = variants[safeIndex];
+        const priceLabel = variant.price || formatVariantPrice(variant.price_amount, bootstrap.currency);
+
+        if (templateVariantInput) templateVariantInput.value = variant.id || '';
+        if (templateBladeInput) templateBladeInput.value = variant.blade || '';
+        if (variantTitle) variantTitle.textContent = variant.title || '';
+        if (variantSubtitle) variantSubtitle.textContent = variant.subtitle || '';
+        if (variantPrice) variantPrice.textContent = priceLabel;
+        if (variantBadge) {
+            const badge = variant.badge || '';
+            variantBadge.textContent = badge;
+            variantBadge.classList.toggle('hidden', !badge);
+        }
+        if (checkoutPrice) checkoutPrice.textContent = priceLabel;
+        if (checkoutTemplate) checkoutTemplate.textContent = variant.title || bootstrap.template_title || '';
+
+        if (previewPage) {
+            previewPage.classList.remove(...VARIANT_THEME_CLASSES);
+            previewPage.classList.add(`inv-theme--${variant.theme || 'premium'}`);
+        }
+
+        variantDots?.querySelectorAll('[data-variant-dot]').forEach((dot, dotIndex) => {
+            dot.classList.toggle('is-active', dotIndex === safeIndex);
+            dot.setAttribute('aria-selected', dotIndex === safeIndex ? 'true' : 'false');
+        });
+
+        const showNav = variants.length > 1;
+        variantPrev?.toggleAttribute('hidden', !showNav);
+        variantNext?.toggleAttribute('hidden', !showNav);
+    };
+
+    const initVariantCarousel = () => {
+        if (!variants.length) {
+            variantCarousel?.classList.add('is-single');
+            return;
+        }
+
+        if (variantDots) {
+            variantDots.innerHTML = variants.map((variant, index) => `
+                <button
+                    type="button"
+                    class="builder-variant-dot${index === variantIndex ? ' is-active' : ''}"
+                    data-variant-dot
+                    data-variant-index="${index}"
+                    role="tab"
+                    aria-selected="${index === variantIndex ? 'true' : 'false'}"
+                    aria-label="${variant.title || `Variant ${index + 1}`}"
+                ></button>
+            `).join('');
+
+            variantDots.querySelectorAll('[data-variant-dot]').forEach((dot) => {
+                dot.addEventListener('click', () => {
+                    applyVariant(Number(dot.dataset.variantIndex));
+                });
+            });
+        }
+
+        variantPrev?.addEventListener('click', () => applyVariant(variantIndex - 1));
+        variantNext?.addEventListener('click', () => applyVariant(variantIndex + 1));
+        applyVariant(variantIndex);
+    };
+
     const openCheckout = () => {
         const state = readFormState();
         const couple = document.getElementById('checkout-couple');
@@ -547,6 +639,7 @@ function initBuilderStudio() {
         if (couple) couple.textContent = title;
         if (event) event.textContent = `${formatEventDate(state.event_at)} · ${state.venue_name}`;
         if (url) url.textContent = `${bootstrap.payments?.site_host || 'taklifnoma.net'}/l/${slugPreview}`;
+        applyVariant(variantIndex);
         if (alert) {
             alert.textContent = '';
             alert.classList.add('hidden');
@@ -976,6 +1069,7 @@ function initBuilderStudio() {
         }
     }
 
+    initVariantCarousel();
     renderDressPalette();
     syncDressColors();
     syncRsvp();
