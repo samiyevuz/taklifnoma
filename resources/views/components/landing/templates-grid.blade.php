@@ -26,20 +26,26 @@
                     aria-label="{{ $template['title'] }} shabloni"
                 >
                     <div class="template-card__visual relative">
-                        <button
-                            type="button"
-                            class="favorite-btn {{ $isFavorited ? 'is-active' : '' }}"
-                            data-favorite-btn
-                            data-template-slug="{{ $template['slug'] }}"
-                            data-login-url="{{ route('login') }}"
-                            data-auth="{{ auth()->check() ? '1' : '0' }}"
-                            aria-label="{{ $isFavorited ? __('account.remove_favorite') : __('account.add_favorite') }}"
-                            aria-pressed="{{ $isFavorited ? 'true' : 'false' }}"
-                        >
-                            <svg viewBox="0 0 24 24" fill="{{ $isFavorited ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                            </svg>
-                        </button>
+                        <div class="template-card__actions">
+                            @if ($template['tag'])
+                                <span class="template-card__badge">{{ $template['tag'] }}</span>
+                            @endif
+
+                            <button
+                                type="button"
+                                class="favorite-btn {{ $isFavorited ? 'is-active' : '' }}"
+                                data-favorite-btn
+                                data-template-slug="{{ $template['slug'] }}"
+                                data-login-url="{{ route('login') }}"
+                                data-auth="{{ auth()->check() ? '1' : '0' }}"
+                                aria-label="{{ $isFavorited ? __('account.remove_favorite') : __('account.add_favorite') }}"
+                                aria-pressed="{{ $isFavorited ? 'true' : 'false' }}"
+                            >
+                                <svg viewBox="0 0 24 24" fill="{{ $isFavorited ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                </svg>
+                            </button>
+                        </div>
 
                         <div class="template-card__visual-inner {{ $template['visual'] }}">
                             <div class="template-card__pattern"></div>
@@ -49,10 +55,6 @@
                                 <p class="mt-1 text-xs tracking-widest text-white/70 uppercase">Taklifnoma.uz</p>
                             </div>
                         </div>
-
-                        @if ($template['tag'])
-                            <span class="template-card__badge">{{ $template['tag'] }}</span>
-                        @endif
 
                         <div class="template-card__overlay">
                             <p class="font-serif text-lg font-medium text-white">{{ $template['title'] }}</p>

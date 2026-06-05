@@ -681,19 +681,40 @@
         padding: 1.25rem;
     }
 
-    .template-card__badge {
+    .template-card__actions {
         position: absolute;
-        top: 1rem;
-        right: 1rem;
+        top: 0.75rem;
+        left: 0.75rem;
+        right: 0.75rem;
+        z-index: 10;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.5rem;
+        pointer-events: none;
+    }
+
+    .template-card__actions > * {
+        pointer-events: auto;
+    }
+
+    .template-card__badge {
+        flex: 0 1 auto;
+        min-width: 0;
+        max-width: calc(100% - 3rem);
         padding: 0.375rem 0.75rem;
         font-size: 0.75rem;
         font-weight: 600;
+        line-height: 1.2;
         color: #1a1510;
         background: rgba(255, 255, 255, 0.92);
         backdrop-filter: blur(8px);
         border-radius: 9999px;
         border: 1px solid rgba(255, 255, 255, 0.6);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .template-card__quick {

@@ -12,6 +12,17 @@ class StoreInvitationRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('dress_colors_json') && is_string($this->dress_colors_json)) {
+            $decoded = json_decode($this->dress_colors_json, true);
+
+            if (is_array($decoded)) {
+                $this->merge(['dress_colors' => $decoded]);
+            }
+        }
+    }
+
     public function rules(): array
     {
         return [
@@ -28,6 +39,11 @@ class StoreInvitationRequest extends FormRequest
             'invitation_text_2' => ['nullable', 'string', 'max:1000'],
             'family_signature' => ['nullable', 'string', 'max:150'],
             'music_url' => ['nullable', 'string', 'max:500'],
+            'dress_colors' => ['nullable', 'array', 'max:8'],
+            'dress_colors.*.name' => ['required_with:dress_colors', 'string', 'max:40'],
+            'dress_colors.*.hex' => ['required_with:dress_colors', 'string', 'max:7'],
+            'dress_colors.*.note' => ['nullable', 'string', 'max:200'],
+            'rsvp_enabled' => ['sometimes', 'boolean'],
             'slug' => [
                 'nullable',
                 'string',

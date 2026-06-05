@@ -10,7 +10,7 @@ class InvitationService
 {
     public function create(array $data, bool $publish = false): Invitation
     {
-        unset($data['publish']);
+        unset($data['publish'], $data['dress_colors_json']);
 
         $data['slug'] = $this->resolveUniqueSlug(
             $data['slug'] ?? $this->generateSlug($data['groom_name'], $data['bride_name'])
@@ -31,7 +31,7 @@ class InvitationService
 
     public function update(Invitation $invitation, array $data, ?bool $publish = null): Invitation
     {
-        unset($data['publish']);
+        unset($data['publish'], $data['dress_colors_json']);
 
         if (isset($data['slug']) && $data['slug'] !== $invitation->slug) {
             $data['slug'] = $this->resolveUniqueSlug($data['slug'], $invitation->id);

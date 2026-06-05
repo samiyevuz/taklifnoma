@@ -9,6 +9,7 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
+                'resources/js/builder.js',
                 'resources/js/invitation.js',
             ],
             refresh: true,

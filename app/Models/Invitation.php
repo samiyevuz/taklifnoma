@@ -35,6 +35,7 @@ class Invitation extends Model
         'family_signature',
         'dress_colors',
         'music_url',
+        'rsvp_enabled',
         'published_at',
     ];
 
@@ -46,6 +47,7 @@ class Invitation extends Model
             'map_lat' => 'float',
             'map_lng' => 'float',
             'published_at' => 'datetime',
+            'rsvp_enabled' => 'boolean',
         ];
     }
 

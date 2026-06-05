@@ -14,6 +14,27 @@ class InvitationDefaults
         ];
     }
 
+    public static function musicPresets(): array
+    {
+        return [
+            [
+                'id' => 'romantic',
+                'label' => 'Romantik pianino',
+                'url' => asset('audio/romantic-wedding.mp3'),
+            ],
+            [
+                'id' => 'classic',
+                'label' => 'Klassik to\'y marosimi',
+                'url' => asset('audio/romantic-wedding.mp3'),
+            ],
+            [
+                'id' => 'custom',
+                'label' => 'O\'z musiqam (MP3 havola)',
+                'url' => '',
+            ],
+        ];
+    }
+
     public static function demoAttributes(): array
     {
         return [
@@ -33,6 +54,7 @@ class InvitationDefaults
             'invitation_text_2' => 'Sizning iliq tilaklaringiz va qatnashuvingiz biz uchun eng katta baxt. Marosimimizda sizni kutib qolamiz.',
             'family_signature' => 'Farhod & Shirin oilalari',
             'dress_colors' => self::dressColors(),
+            'rsvp_enabled' => true,
             'published_at' => now(),
         ];
     }

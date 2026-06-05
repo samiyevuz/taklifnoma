@@ -130,6 +130,7 @@
                 </div>
             </section>
 
+            @if ($invitation->rsvp_enabled)
             <section class="inv-section" id="inv-rsvp" aria-labelledby="inv-rsvp-title">
                 <div class="inv-reveal">
                     <p class="inv-section-label">{{ __('invitation.rsvp') }}</p>
@@ -191,6 +192,7 @@
                     </div>
                 </div>
             </section>
+            @endif
 
             <section class="inv-section" id="inv-location" aria-labelledby="inv-location-title">
                 <div class="inv-reveal">
