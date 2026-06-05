@@ -131,6 +131,14 @@ function initLocaleDropdown() {
     });
 }
 
+function closeLocaleDropdowns() {
+    document.querySelectorAll('[data-locale-dropdown].is-open').forEach((dropdown) => {
+        dropdown.classList.remove('is-open');
+        dropdown.querySelector('.locale-dropdown__trigger')?.setAttribute('aria-expanded', 'false');
+        dropdown.querySelector('.locale-dropdown__menu')?.setAttribute('hidden', '');
+    });
+}
+
 function initMobileNav() {
     const toggle = document.getElementById('mobile-menu-toggle');
     const panel = document.getElementById('mobile-nav');
@@ -139,18 +147,52 @@ function initMobileNav() {
 
     if (!toggle || !panel) return;
 
+    let scrollY = 0;
+    let isOpen = false;
+
+    const lockScroll = () => {
+        scrollY = window.scrollY;
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollY}px`;
+        document.body.style.left = '0';
+        document.body.style.right = '0';
+        document.body.style.width = '100%';
+    };
+
+    const unlockScroll = () => {
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.left = '';
+        document.body.style.right = '';
+        document.body.style.width = '';
+        window.scrollTo(0, scrollY);
+    };
+
     const setOpen = (open) => {
+        if (isOpen === open) return;
+        isOpen = open;
+
         panel.classList.toggle('is-open', open);
         panel.setAttribute('aria-hidden', String(!open));
         toggle.setAttribute('aria-expanded', String(open));
         iconOpen?.classList.toggle('hidden', open);
         iconClose?.classList.toggle('hidden', !open);
-        document.body.style.overflow = open ? 'hidden' : '';
+
+        if (open) {
+            closeLocaleDropdowns();
+            lockScroll();
+        } else {
+            unlockScroll();
+        }
     };
 
-    toggle.addEventListener('click', () => setOpen(!panel.classList.contains('is-open')));
+    toggle.addEventListener('click', () => setOpen(!isOpen));
     panel.querySelectorAll('[data-close-mobile-nav]').forEach((el) => {
         el.addEventListener('click', () => setOpen(false));
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isOpen) setOpen(false);
     });
 }
 

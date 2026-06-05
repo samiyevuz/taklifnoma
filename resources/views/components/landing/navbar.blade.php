@@ -25,7 +25,9 @@
         </nav>
 
         <div class="nav-actions">
-            <x-ui.locale-switcher />
+            <div class="hidden lg:block">
+                <x-ui.locale-switcher />
+            </div>
 
             <button
                 type="button"
@@ -67,20 +69,32 @@
 </header>
 
 <div class="mobile-nav lg:hidden" id="mobile-nav" aria-hidden="true">
-    <div class="mobile-nav__backdrop" data-close-mobile-nav></div>
+    <div class="mobile-nav__backdrop" data-close-mobile-nav aria-hidden="true"></div>
     <nav class="mobile-nav__panel" aria-label="{{ __('nav.mobile_nav') }}">
-        <ul class="flex flex-col gap-1">
-            <li><a href="#shablonlar" class="block rounded-lg px-4 py-3 text-base font-medium text-ink hover:bg-white/50" data-close-mobile-nav>{{ __('nav.templates') }}</a></li>
-            <li><a href="#xizmatlar" class="block rounded-lg px-4 py-3 text-base font-medium text-ink hover:bg-white/50" data-close-mobile-nav>{{ __('nav.services') }}</a></li>
-            <li><a href="#narxlar" class="block rounded-lg px-4 py-3 text-base font-medium text-ink hover:bg-white/50" data-close-mobile-nav>{{ __('nav.pricing') }}</a></li>
-            <li><a href="#haqida" class="block rounded-lg px-4 py-3 text-base font-medium text-ink hover:bg-white/50" data-close-mobile-nav>{{ __('nav.about') }}</a></li>
+        <div class="mobile-nav__header">
+            <div>
+                <p class="mobile-nav__eyebrow">Taklifnoma</p>
+                <p class="mobile-nav__title">{{ __('nav.menu') }}</p>
+            </div>
+            <button type="button" class="nav-icon-btn mobile-nav__close" data-close-mobile-nav aria-label="{{ __('nav.close_menu') }}">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/>
+                </svg>
+            </button>
+        </div>
+
+        <ul class="mobile-nav__links">
+            <li><a href="#shablonlar" class="mobile-nav__link" data-close-mobile-nav>{{ __('nav.templates') }}</a></li>
+            <li><a href="#xizmatlar" class="mobile-nav__link" data-close-mobile-nav>{{ __('nav.services') }}</a></li>
+            <li><a href="#narxlar" class="mobile-nav__link" data-close-mobile-nav>{{ __('nav.pricing') }}</a></li>
+            <li><a href="#haqida" class="mobile-nav__link" data-close-mobile-nav>{{ __('nav.about') }}</a></li>
             @auth
-                <li><a href="{{ route('account.dashboard') }}" class="block rounded-lg px-4 py-3 text-base font-medium text-ink hover:bg-white/50" data-close-mobile-nav>{{ __('nav.cabinet') }}</a></li>
+                <li><a href="{{ route('account.dashboard') }}" class="mobile-nav__link" data-close-mobile-nav>{{ __('nav.cabinet') }}</a></li>
             @endif
         </ul>
 
-        <div class="mt-6 flex flex-col gap-3 border-t border-white/40 pt-6">
-            <div class="flex items-center justify-between gap-3 px-1">
+        <div class="mobile-nav__footer">
+            <div class="mobile-nav__tools">
                 <x-ui.locale-switcher />
                 <button
                     type="button"

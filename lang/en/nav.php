@@ -19,5 +19,7 @@ return [
     'main_nav' => 'Main navigation',
     'mobile_nav' => 'Mobile navigation',
     'open_menu' => 'Open menu',
+    'close_menu' => 'Close menu',
+    'menu' => 'Menu',
     'toggle_theme' => 'Toggle theme',
 ];

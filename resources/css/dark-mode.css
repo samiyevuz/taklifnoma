@@ -344,16 +344,18 @@ html.theme-transition .phone-mockup {
     border-left-color: rgba(255, 255, 255, 0.08);
 }
 
-.dark .mobile-nav__panel a {
-    color: var(--color-ink);
+.dark .mobile-nav__title {
+    color: var(--color-cream-50);
 }
 
-.dark .mobile-nav__panel a:hover {
+.dark .mobile-nav__link {
+    color: var(--color-cream-200);
+}
+
+.dark .mobile-nav__link:hover,
+.dark .mobile-nav__link:focus-visible {
+    color: var(--color-cream-50);
     background: rgba(255, 255, 255, 0.06);
-}
-
-.dark .mobile-nav__panel .border-t {
-    border-color: rgba(255, 255, 255, 0.08);
 }
 
 /* ─── Phone mockups (enhanced depth in dark) ─── */

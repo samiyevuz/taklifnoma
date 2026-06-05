@@ -19,5 +19,7 @@ return [
     'main_nav' => 'Asosiy navigatsiya',
     'mobile_nav' => 'Mobil navigatsiya',
     'open_menu' => 'Menyuni ochish',
+    'close_menu' => 'Menyuni yopish',
+    'menu' => 'Menyu',
     'toggle_theme' => 'Mavzu rejimini almashtirish',
 ];

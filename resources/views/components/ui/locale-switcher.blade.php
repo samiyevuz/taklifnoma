@@ -3,7 +3,7 @@
 
     $current = LocaleManager::current();
     $locales = config('locales.supported', []);
-    $active = $locales[$current] ?? ['label' => strtoupper($current), 'short' => strtoupper($current), 'flag' => '🌐'];
+    $active = $locales[$current] ?? ['label' => strtoupper($current), 'short' => strtoupper($current)];
 @endphp
 
 <div class="locale-dropdown" data-locale-dropdown>
@@ -14,7 +14,7 @@
         aria-haspopup="listbox"
         aria-label="{{ __('nav.language') }}"
     >
-        <span class="locale-dropdown__flag" aria-hidden="true">{{ $active['flag'] }}</span>
+        <x-ui.locale-flag :code="$current" class="locale-dropdown__flag-svg" />
         <span class="locale-dropdown__label">{{ $active['short'] }}</span>
         <svg class="locale-dropdown__chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path stroke-linecap="round" d="M6 9l6 6 6-6"/>
@@ -31,7 +31,7 @@
                 role="option"
                 @if ($current === $code) aria-current="true" @endif
             >
-                <span class="locale-dropdown__flag" aria-hidden="true">{{ $meta['flag'] }}</span>
+                <x-ui.locale-flag :code="$code" class="locale-dropdown__flag-svg" />
                 <span class="locale-dropdown__item-label">{{ $meta['label'] }}</span>
                 @if ($current === $code)
                     <svg class="locale-dropdown__check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
