@@ -13,7 +13,7 @@
             <p class="mt-4 text-fluid-body text-ink-soft text-pretty">{{ __('landing.templates_desc') }}</p>
         </div>
 
-        <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+        <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-7">
             @foreach ($templates as $index => $template)
                 @php
                     $isFavorited = in_array($template['slug'], $favoriteSlugs, true);
@@ -28,65 +28,58 @@
                     class="template-card reveal {{ $index > 0 ? 'reveal-delay-' . min($index, 6) : '' }}"
                     aria-label="{{ $template['title'] }} shabloni"
                 >
-                    <div class="template-card__visual relative">
-                        <div class="template-card__actions">
-                            @if ($template['tag'])
-                                <span class="template-card__badge">{{ $template['tag'] }}</span>
-                            @endif
+                    <div class="template-card__actions">
+                        @if ($template['tag'])
+                            <span class="template-card__badge">{{ $template['tag'] }}</span>
+                        @endif
 
-                            <button
-                                type="button"
-                                class="favorite-btn {{ $isFavorited ? 'is-active' : '' }}"
-                                data-favorite-btn
-                                data-template-slug="{{ $template['slug'] }}"
-                                data-login-url="{{ route('login') }}"
-                                data-auth="{{ auth()->check() ? '1' : '0' }}"
-                                aria-label="{{ $isFavorited ? __('account.remove_favorite') : __('account.add_favorite') }}"
-                                aria-pressed="{{ $isFavorited ? 'true' : 'false' }}"
-                            >
-                                <svg viewBox="0 0 24 24" fill="{{ $isFavorited ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                                </svg>
-                            </button>
-                        </div>
+                        <button
+                            type="button"
+                            class="favorite-btn {{ $isFavorited ? 'is-active' : '' }}"
+                            data-favorite-btn
+                            data-template-slug="{{ $template['slug'] }}"
+                            data-login-url="{{ route('login') }}"
+                            data-auth="{{ auth()->check() ? '1' : '0' }}"
+                            aria-label="{{ $isFavorited ? __('account.remove_favorite') : __('account.add_favorite') }}"
+                            aria-pressed="{{ $isFavorited ? 'true' : 'false' }}"
+                        >
+                            <svg viewBox="0 0 24 24" fill="{{ $isFavorited ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            </svg>
+                        </button>
+                    </div>
 
-                        <div class="template-card__visual-inner {{ $template['visual'] }}">
-                            <div class="template-card__scene">
-                                <div class="template-card__pattern"></div>
-                                <x-landing.template-icon :slug="$template['slug']" />
+                    <a href="{{ $previewUrl }}" class="template-card__preview-link" aria-label="{{ __('landing.quick_preview') }}: {{ $template['title'] }}">
+                        <div class="template-card__hero {{ $template['visual'] }}">
+                            <div class="template-card__grain" aria-hidden="true"></div>
+                            <div class="template-card__glow" aria-hidden="true"></div>
+                            <div class="template-card__hero-content">
+                                <div class="template-card__icon-ring">
+                                    <x-landing.template-icon :slug="$template['slug']" />
+                                </div>
+                                <p class="template-card__hero-title">{{ $template['title'] }}</p>
+                                <p class="template-card__hero-price">{{ $template['price'] }}</p>
                             </div>
-                            <div class="template-card__label">
-                                <p class="template-card__label-title">{{ $template['title'] }}</p>
-                            </div>
-                        </div>
-
-                        <div class="template-card__overlay">
-                            <p class="font-serif text-lg font-medium text-white">{{ $template['title'] }}</p>
-                            <p class="mt-1 text-sm font-semibold text-luxury-gold-light">{{ $template['price'] }}</p>
-                        </div>
-
-                        <div class="template-card__quick">
-                            <a
-                                href="{{ $previewUrl }}"
-                                class="inline-flex items-center gap-2 rounded-full bg-white/95 px-5 py-2.5 text-sm font-semibold text-ink shadow-lg transition-transform duration-300 hover:scale-105"
-                                style="transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1)"
-                            >
-                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <span class="template-card__preview-chip">
+                                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
                                     <path stroke-linecap="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                 </svg>
                                 {{ __('landing.quick_preview') }}
-                            </a>
+                            </span>
                         </div>
-                    </div>
+                    </a>
 
                     <div class="template-card__body">
                         <h3 class="font-serif text-lg font-semibold text-ink">{{ $template['title'] }}</h3>
                         <p class="mt-2 text-sm leading-relaxed text-ink-muted line-clamp-2">{{ $template['desc'] }}</p>
-                        <div class="mt-4 flex items-center justify-between">
-                            <span class="text-sm font-bold text-luxury-gold-dark">{{ $template['price'] }}</span>
-                            <a href="{{ $builderUrl }}" class="text-sm font-semibold text-ink hover:text-luxury-gold-dark transition-colors" style="transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1)">
-                                {{ __('landing.choose') }} →
+                        <div class="template-card__footer">
+                            <span class="template-card__price">{{ $template['price'] }}</span>
+                            <a href="{{ $builderUrl }}" class="template-card__cta">
+                                {{ __('landing.choose') }}
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <path stroke-linecap="round" d="M9 5l7 7-7 7"/>
+                                </svg>
                             </a>
                         </div>
                     </div>

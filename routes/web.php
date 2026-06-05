@@ -14,6 +14,7 @@ use App\Http\Controllers\InvitationBuilderController;
 use App\Http\Controllers\InvitationViewController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RsvpController;
+use App\Http\Controllers\TemplatePreviewController;
 use App\Http\Controllers\TelegramWebhookController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,7 @@ Route::get('/ui-kit', function () {
     ]);
 });
 
+Route::get('/preview/{templateSlug}', [TemplatePreviewController::class, 'show'])->name('template.preview');
 Route::get('/l/{slug}', [InvitationViewController::class, 'show'])->name('invitation.show');
 Route::get('/i/{slug}', [InvitationViewController::class, 'show']);
 Route::post('/l/{slug}/rsvp', [RsvpController::class, 'store'])->name('rsvp.store');
@@ -43,7 +45,9 @@ Route::post('/payments/webhooks/click', [PaymentController::class, 'handleClickW
 Route::get('/payments/return', [PaymentController::class, 'return'])->name('payments.return');
 Route::post('/telegram/webhook', [TelegramWebhookController::class, 'handle'])->name('telegram.webhook');
 
-Route::redirect('/invite/nikoh-premium', '/i/farhod-shirin');
+Route::redirect('/invite/nikoh-premium', '/preview/nikoh');
+Route::redirect('/i/farhod-shirin', '/preview/nikoh');
+Route::redirect('/l/farhod-shirin', '/preview/nikoh');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'create'])->name('register');

@@ -170,10 +170,14 @@ html.theme-transition .phone-mockup {
     color: var(--color-ink-muted);
 }
 
-.dark .template-card__quick a {
-    background: rgba(22, 20, 32, 0.95);
+.dark .template-card__cta {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--landing-border);
     color: var(--color-ink);
-    border: 1px solid var(--landing-border);
+}
+
+.dark .template-card__cta:hover {
+    color: #1a1510;
 }
 
 /* ─── Feature cards & RSVP ─── */

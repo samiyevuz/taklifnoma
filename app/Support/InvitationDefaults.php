@@ -2,6 +2,9 @@
 
 namespace App\Support;
 
+use App\Models\Invitation;
+use Illuminate\Support\Str;
+
 class InvitationDefaults
 {
     public static function dressColors(): array
@@ -57,5 +60,38 @@ class InvitationDefaults
             'rsvp_enabled' => true,
             'published_at' => now(),
         ];
+    }
+
+    public static function demoForTemplate(string $slug): array
+    {
+        $catalog = TemplateCatalog::find($slug) ?? TemplateCatalog::find('nikoh');
+        $profile = BuilderEventProfile::demoProfile($slug);
+        $normalized = BuilderEventProfile::normalizeForStorage($slug, ['profile' => $profile]);
+        $trans = __("landing.templates.{$slug}");
+        $eventType = is_array($trans) ? ($trans['title'] ?? 'Nikoh To\'yi') : 'Nikoh To\'yi';
+
+        return array_merge(self::demoAttributes(), [
+            'slug' => 'preview-'.$slug,
+            'custom_slug' => 'preview-'.$slug,
+            'template' => $catalog['template'] ?? 'nikoh-premium',
+            'template_slug' => $slug,
+            'event_type' => $eventType,
+            'groom_name' => $normalized['groom_name'],
+            'bride_name' => $normalized['bride_name'],
+            'profile_meta' => $normalized['profile_meta'],
+            'status' => Invitation::STATUS_ACTIVE,
+            'published_at' => now(),
+            'rsvp_enabled' => false,
+        ]);
+    }
+
+    public static function demoInvitation(string $slug): Invitation
+    {
+        $attributes = self::demoForTemplate($slug);
+        $invitation = new Invitation($attributes);
+        $invitation->uuid = (string) Str::uuid();
+        $invitation->event_data = InvitationEventData::fromInvitation($invitation);
+
+        return $invitation;
     }
 }
