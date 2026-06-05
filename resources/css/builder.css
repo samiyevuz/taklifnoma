@@ -1,0 +1,37 @@
+/* Builder form styles */
+@layer components {
+    .builder-field label {
+        display: block;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--color-ink-soft);
+        margin-bottom: 0.5rem;
+    }
+
+    .builder-field input,
+    .builder-field textarea,
+    .builder-field select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border-radius: 0.875rem;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        background: rgba(255, 255, 255, 0.45);
+        backdrop-filter: blur(12px);
+        font-size: 0.9375rem;
+        color: var(--color-ink);
+        transition: border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .builder-field input:focus,
+    .builder-field textarea:focus {
+        outline: none;
+        border-color: var(--color-luxury-gold);
+    }
+
+    .dark .builder-field input,
+    .dark .builder-field textarea {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.1);
+        color: var(--color-ink);
+    }
+}

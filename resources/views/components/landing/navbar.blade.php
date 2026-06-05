@@ -37,7 +37,7 @@
                 Qorong'u rejim
             </button>
 
-            <a href="#boshlash" class="btn-nav-cta btn-shine hidden sm:inline-flex" data-ripple>
+            <a href="{{ route('builder.create') }}" class="btn-nav-cta btn-shine hidden sm:inline-flex" data-ripple>
                 Taklifnoma Yaratish
             </a>
 
@@ -74,7 +74,7 @@
             <button type="button" id="theme-toggle-mobile" class="theme-toggle-btn rounded-full px-4 py-3 text-sm font-medium glass-luxury text-ink-soft">
                 Qorong'u rejim
             </button>
-            <a href="#boshlash" class="btn-gold-shimmer btn-shine w-full text-center" data-ripple data-close-mobile-nav>
+            <a href="{{ route('builder.create') }}" class="btn-gold-shimmer btn-shine w-full text-center" data-ripple data-close-mobile-nav>
                 Taklifnoma Yaratish
             </a>
         </div>

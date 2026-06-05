@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <a href="#boshlash" class="btn-gold-shimmer btn-shine mt-8 inline-flex sm:mt-10" data-ripple>
+            <a href="{{ route('builder.create') }}" class="btn-gold-shimmer btn-shine mt-8 inline-flex sm:mt-10" data-ripple>
                 Hoziroq Boshlash
             </a>
         </div>

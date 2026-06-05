@@ -75,7 +75,7 @@
 
                         <div class="template-card__quick">
                             <a
-                                href="{{ $template['slug'] === 'nikoh' ? url('/invite/nikoh-premium') : '#boshlash' }}"
+                                href="{{ $template['slug'] === 'nikoh' ? route('invitation.show', 'ali-vali') : route('builder.create') }}"
                                 class="inline-flex items-center gap-2 rounded-full bg-white/95 px-5 py-2.5 text-sm font-semibold text-ink shadow-lg transition-transform duration-300 hover:scale-105"
                                 style="transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1)"
                             >
@@ -93,7 +93,7 @@
                         <p class="mt-2 text-sm leading-relaxed text-ink-muted line-clamp-2">{{ $template['desc'] }}</p>
                         <div class="mt-4 flex items-center justify-between">
                             <span class="text-sm font-bold text-luxury-gold-dark">{{ $template['price'] }}</span>
-                            <a href="#boshlash" class="text-sm font-semibold text-ink hover:text-luxury-gold-dark transition-colors" style="transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1)">
+                            <a href="{{ route('builder.create') }}" class="text-sm font-semibold text-ink hover:text-luxury-gold-dark transition-colors" style="transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1)">
                                 Tanlash →
                             </a>
                         </div>

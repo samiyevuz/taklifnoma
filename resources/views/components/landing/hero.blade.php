@@ -19,7 +19,7 @@
                 </p>
 
                 <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center lg:justify-start">
-                    <a href="#boshlash" class="btn-gold-shimmer btn-shine w-full sm:w-auto" data-ripple id="boshlash">
+                    <a href="{{ route('builder.create') }}" class="btn-gold-shimmer btn-shine w-full sm:w-auto" data-ripple id="boshlash">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
                         </svg>

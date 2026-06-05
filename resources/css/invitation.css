@@ -572,6 +572,11 @@
         animation: inv-welcome-fade 0.6s var(--inv-ease) both;
     }
 
+    .inv-rsvp-success.is-error .inv-rsvp-success__icon {
+        background: rgba(220, 38, 38, 0.12);
+        color: #dc2626;
+    }
+
     .inv-rsvp-success__icon {
         width: 4rem;
         height: 4rem;

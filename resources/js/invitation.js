@@ -157,7 +157,12 @@ function initRsvpForm() {
         });
     });
 
-    form.addEventListener('submit', (e) => {
+    const submitBtn = document.getElementById('inv-submit');
+    const csrfToken =
+        document.querySelector('meta[name="csrf-token"]')?.content ||
+        form.querySelector('input[name="_token"]')?.value;
+
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const name = document.getElementById('rsvp-name');
@@ -168,19 +173,59 @@ function initRsvpForm() {
         }
         name?.removeAttribute('aria-invalid');
 
-        const status = statusInput?.value;
-        const adults = document.getElementById('rsvp-adults')?.value || '1';
+        const rsvpUrl = form.dataset.rsvpUrl;
+        if (!rsvpUrl) return;
 
-        if (successMsg) {
-            if (status === 'attending') {
-                successMsg.textContent = `Rahmat, ${name.value.trim()}! ${adults} kishi bilan kutib qolamiz.`;
-            } else {
-                successMsg.textContent = `Rahmat, ${name.value.trim()}. Sizni tushunamiz va yaxshi tilaklar tilaymiz.`;
-            }
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Yuborilmoqda...';
         }
 
-        form.style.display = 'none';
-        success?.classList.add('is-shown');
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch(rsvpUrl, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'X-CSRF-TOKEN': csrfToken || '',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: formData,
+            });
+
+            const payload = await response.json().catch(() => ({}));
+
+            if (!response.ok) {
+                const firstError = payload.errors
+                    ? Object.values(payload.errors).flat()[0]
+                    : payload.message || 'Xatolik yuz berdi. Qayta urinib ko\'ring.';
+                if (successMsg) successMsg.textContent = firstError;
+                success?.classList.add('is-shown', 'is-error');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Tasdiqlash';
+                }
+                return;
+            }
+
+            if (successMsg) {
+                successMsg.textContent = payload.message || 'Javobingiz qabul qilindi.';
+            }
+
+            form.style.display = 'none';
+            success?.classList.remove('is-error');
+            success?.classList.add('is-shown');
+        } catch {
+            if (successMsg) {
+                successMsg.textContent = 'Tarmoq xatosi. Internetni tekshirib, qayta urinib ko\'ring.';
+            }
+            success?.classList.add('is-shown', 'is-error');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Tasdiqlash';
+            }
+        }
     });
 }
 

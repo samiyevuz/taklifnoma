@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\InvitationBuilderController;
+use App\Http\Controllers\InvitationViewController;
+use App\Http\Controllers\RsvpController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,9 +18,14 @@ Route::get('/ui-kit', function () {
     ]);
 });
 
-Route::get('/invite/nikoh-premium', function () {
-    return view('templates.nikoh-premium', [
-        'title' => 'Ali & Vali — Nikoh To\'yi',
-        'metaDescription' => 'Ali va Vali nikoh to\'yi taklifnomasi. 22 Sentabr 2026, Toshkent.',
-    ]);
+Route::get('/i/{slug}', [InvitationViewController::class, 'show'])->name('invitation.show');
+Route::post('/i/{slug}/rsvp', [RsvpController::class, 'store'])->name('rsvp.store');
+
+Route::redirect('/invite/nikoh-premium', '/i/ali-vali');
+
+Route::prefix('builder')->name('builder.')->group(function () {
+    Route::get('/create', [InvitationBuilderController::class, 'create'])->name('create');
+    Route::post('/', [InvitationBuilderController::class, 'store'])->name('store');
+    Route::get('/{invitation}/edit', [InvitationBuilderController::class, 'edit'])->name('edit');
+    Route::put('/{invitation}', [InvitationBuilderController::class, 'update'])->name('update');
 });
