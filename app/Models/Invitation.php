@@ -62,8 +62,8 @@ class Invitation extends Model
     public function statusLabel(): string
     {
         return match ($this->status) {
-            self::STATUS_PUBLISHED => 'Nashr qilingan',
-            default => 'Qoralama',
+            self::STATUS_PUBLISHED => __('account.status_published'),
+            default => __('account.status_draft'),
         };
     }
 

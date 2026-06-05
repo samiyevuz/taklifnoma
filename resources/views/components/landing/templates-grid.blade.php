@@ -8,14 +8,9 @@
 <section id="shablonlar" class="relative py-16 sm:py-20 lg:py-28" aria-labelledby="templates-heading">
     <div class="landing-container">
         <div class="reveal mx-auto max-w-2xl text-center">
-            <p class="section-label mb-4 justify-center">Premium Shablonlar</p>
-            <h2 id="templates-heading" class="font-serif text-display font-semibold text-ink text-balance">
-                Raqobatchilardan Ustun — Tayyor Hashamatli Dizaynlar
-            </h2>
-            <p class="mt-4 text-fluid-body text-ink-soft text-pretty">
-                Har bir shablon professional dizaynerlar tomonidan yaratilgan. Bir bosishda tahrirlang,
-                mehmonlarga ulashing — hech qanday dizayn bilimi shart emas.
-            </p>
+            <p class="section-label mb-4 justify-center">{{ __('landing.templates_label') }}</p>
+            <h2 id="templates-heading" class="font-serif text-display font-semibold text-ink text-balance">{{ __('landing.templates_title') }}</h2>
+            <p class="mt-4 text-fluid-body text-ink-soft text-pretty">{{ __('landing.templates_desc') }}</p>
         </div>
 
         <div class="mt-12 grid grid-cols-1 gap-6 min-[400px]:grid-cols-2 lg:grid-cols-4 lg:gap-6">
@@ -38,7 +33,7 @@
                             data-template-slug="{{ $template['slug'] }}"
                             data-login-url="{{ route('login') }}"
                             data-auth="{{ auth()->check() ? '1' : '0' }}"
-                            aria-label="{{ $isFavorited ? 'Yoqtirganlardan olib tashlash' : 'Yoqtirganlarga saqlash' }}"
+                            aria-label="{{ $isFavorited ? __('account.remove_favorite') : __('account.add_favorite') }}"
                             aria-pressed="{{ $isFavorited ? 'true' : 'false' }}"
                         >
                             <svg viewBox="0 0 24 24" fill="{{ $isFavorited ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2">
@@ -74,7 +69,7 @@
                                     <path stroke-linecap="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                 </svg>
-                                Tezkor ko'rish
+                                {{ __('landing.quick_preview') }}
                             </a>
                         </div>
                     </div>
@@ -85,7 +80,7 @@
                         <div class="mt-4 flex items-center justify-between">
                             <span class="text-sm font-bold text-luxury-gold-dark">{{ $template['price'] }}</span>
                             <a href="{{ auth()->check() ? route('builder.create') : route('login') }}" class="text-sm font-semibold text-ink hover:text-luxury-gold-dark transition-colors" style="transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1)">
-                                Tanlash →
+                                {{ __('landing.choose') }} →
                             </a>
                         </div>
                     </div>

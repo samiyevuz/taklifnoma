@@ -1,0 +1,23 @@
+<?php
+
+return [
+    'templates' => 'Шаблоны',
+    'services' => 'Услуги',
+    'pricing' => 'Цены',
+    'about' => 'О нас',
+    'login' => 'Войти',
+    'register' => 'Регистрация',
+    'logout' => 'Выйти',
+    'create_invitation' => 'Создать приглашение',
+    'cabinet' => 'Кабинет',
+    'my_orders' => 'Мои заказы',
+    'favorites' => 'Избранное',
+    'theme_dark' => 'Тёмная тема',
+    'theme_light' => 'Светлая тема',
+    'language' => 'Язык',
+    'skip_to_content' => 'Перейти к содержимому',
+    'main_nav' => 'Основная навигация',
+    'mobile_nav' => 'Мобильная навигация',
+    'open_menu' => 'Открыть меню',
+    'toggle_theme' => 'Переключить тему',
+];

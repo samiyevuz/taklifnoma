@@ -233,4 +233,52 @@
         width: 1.1rem;
         height: 1.1rem;
     }
+
+    .locale-switcher {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.125rem;
+        padding: 0.2rem;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        backdrop-filter: blur(12px);
+    }
+
+    .dark .locale-switcher {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .locale-switcher__btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.35rem 0.55rem;
+        border-radius: 9999px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--color-ink-muted);
+        text-decoration: none;
+        transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .locale-switcher__btn:hover {
+        color: var(--color-ink);
+        background: rgba(255, 255, 255, 0.45);
+    }
+
+    .locale-switcher__btn.is-active {
+        color: var(--color-luxury-gold-dark);
+        background: rgba(201, 162, 39, 0.18);
+    }
+
+    .locale-switcher__flag {
+        font-size: 0.85rem;
+        line-height: 1;
+    }
+
+    .locale-switcher__code {
+        letter-spacing: 0.04em;
+    }
 }

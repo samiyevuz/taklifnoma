@@ -1,0 +1,23 @@
+<?php
+
+return [
+    'templates' => 'Shablonlar',
+    'services' => 'Xizmatlar',
+    'pricing' => 'Narxlar',
+    'about' => 'Biz haqimizda',
+    'login' => 'Kirish',
+    'register' => 'Ro\'yxatdan o\'tish',
+    'logout' => 'Chiqish',
+    'create_invitation' => 'Taklifnoma Yaratish',
+    'cabinet' => 'Kabinet',
+    'my_orders' => 'Zakazlarim',
+    'favorites' => 'Yoqtirganlar',
+    'theme_dark' => 'Qorong\'u rejim',
+    'theme_light' => 'Yorug\' rejim',
+    'language' => 'Til',
+    'skip_to_content' => 'Asosiy kontentga o\'tish',
+    'main_nav' => 'Asosiy navigatsiya',
+    'mobile_nav' => 'Mobil navigatsiya',
+    'open_menu' => 'Menyuni ochish',
+    'toggle_theme' => 'Mavzu rejimini almashtirish',
+];

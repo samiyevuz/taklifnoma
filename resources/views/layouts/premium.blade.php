@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uz" class="h-full antialiased">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full antialiased">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -31,7 +31,7 @@
         href="#main-content"
         class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-luxury-gold focus:text-royal-950"
     >
-        Asosiy kontentga o'tish
+        {{ __('nav.skip_to_content') }}
     </a>
 
     @yield('body')

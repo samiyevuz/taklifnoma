@@ -178,7 +178,7 @@ function initRsvpForm() {
 
         if (submitBtn) {
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Yuborilmoqda...';
+            submitBtn.textContent = i18n.submitting || 'Sending...';
         }
 
         const formData = new FormData(form);
@@ -199,18 +199,18 @@ function initRsvpForm() {
             if (!response.ok) {
                 const firstError = payload.errors
                     ? Object.values(payload.errors).flat()[0]
-                    : payload.message || 'Xatolik yuz berdi. Qayta urinib ko\'ring.';
+                    : payload.message || i18n.error || 'Error';
                 if (successMsg) successMsg.textContent = firstError;
                 success?.classList.add('is-shown', 'is-error');
                 if (submitBtn) {
                     submitBtn.disabled = false;
-                    submitBtn.textContent = 'Tasdiqlash';
+                    submitBtn.textContent = i18n.submit || 'Confirm';
                 }
                 return;
             }
 
             if (successMsg) {
-                successMsg.textContent = payload.message || 'Javobingiz qabul qilindi.';
+                successMsg.textContent = payload.message || i18n.success || 'Received.';
             }
 
             form.style.display = 'none';
@@ -218,7 +218,7 @@ function initRsvpForm() {
             success?.classList.add('is-shown');
         } catch {
             if (successMsg) {
-                successMsg.textContent = 'Tarmoq xatosi. Internetni tekshirib, qayta urinib ko\'ring.';
+                successMsg.textContent = i18n.networkError || 'Network error.';
             }
             success?.classList.add('is-shown', 'is-error');
             if (submitBtn) {
@@ -245,6 +245,7 @@ function initSubmitRipple() {
 }
 
 const MUSIC_TARGET_VOLUME = 0.42;
+const i18n = window.invitationI18n || {};
 
 function fadeAudioVolume(audio, target, duration = 1400) {
     return new Promise((resolve) => {
@@ -323,7 +324,7 @@ function initMusicPlayer() {
         btn.setAttribute('aria-pressed', String(playing));
         btn.setAttribute(
             'aria-label',
-            playing ? "Fon musiqasini o'chirish" : 'Fon musiqasini yoqish'
+            playing ? (i18n.musicPause || 'Pause music') : (i18n.musicPlay || 'Play music')
         );
         iconPlay?.classList.toggle('hidden', playing);
         iconPause?.classList.toggle('hidden', !playing);
@@ -332,10 +333,7 @@ function initMusicPlayer() {
     const showMusicError = () => {
         btn.classList.add('is-error');
         btn.classList.remove('is-loading');
-        btn.setAttribute(
-            'aria-label',
-            "Musiqa yuklanmadi. To'g'ridan-to'g'ri MP3 havola kiriting."
-        );
+        btn.setAttribute('aria-label', i18n.musicError || 'Music failed to load.');
     };
 
     const stopMusic = async () => {

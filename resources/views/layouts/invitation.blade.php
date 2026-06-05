@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uz" class="h-full antialiased">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full antialiased">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
@@ -16,6 +16,18 @@
     @vite(['resources/css/app.css', 'resources/js/invitation.js'])
 
     @stack('head')
+    <script>
+        window.invitationI18n = @json([
+            'submit' => __('invitation.rsvp_submit'),
+            'submitting' => __('invitation.rsvp_submitting'),
+            'success' => __('invitation.rsvp_success'),
+            'error' => __('invitation.rsvp_error'),
+            'networkError' => __('invitation.rsvp_network_error'),
+            'musicPlay' => __('invitation.music_play'),
+            'musicPause' => __('invitation.music_pause'),
+            'musicError' => __('invitation.music_error'),
+        ]);
+    </script>
 </head>
 <body class="invitation-body min-h-dvh overflow-x-hidden antialiased">
     @yield('body')

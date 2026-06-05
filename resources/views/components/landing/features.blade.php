@@ -1,45 +1,28 @@
 <section id="xizmatlar" class="relative py-16 sm:py-20 lg:py-28" aria-labelledby="features-heading">
     <div class="landing-container">
         <div class="reveal mx-auto max-w-2xl text-center">
-            <p class="section-label mb-4 justify-center">Nima Uchun Biz?</p>
-            <h2 id="features-heading" class="font-serif text-display font-semibold text-ink text-balance">
-                Boshqa Platformalardan Farq Qiladigan Imkoniyatlar
-            </h2>
-            <p class="mt-4 text-fluid-body text-ink-soft text-pretty">
-                Faqat chiroyli dizayn emas — to'liq tadbir boshqaruv ekotizimi. Mehmonlar, musiqa,
-                dress-code va statistika — barchasi bir joyda.
-            </p>
+            <p class="section-label mb-4 justify-center">{{ __('landing.features_label') }}</p>
+            <h2 id="features-heading" class="font-serif text-display font-semibold text-ink text-balance">{{ __('landing.features_title') }}</h2>
+            <p class="mt-4 text-fluid-body text-ink-soft text-pretty">{{ __('landing.features_desc') }}</p>
         </div>
 
         <div class="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12 lg:items-start">
             {{-- Feature cards --}}
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                @foreach ([
-                    [
-                        'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>',
-                        'title' => 'Jonli RSVP Kuzatuv',
-                        'desc' => 'Kim keladi, kim kelmaydi — real vaqtda yangilanadigan interaktiv panel.',
-                    ],
-                    [
-                        'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>',
-                        'title' => 'Fon Musiqasi Tanlash',
-                        'desc' => 'Taklifnoma ochilganda premium fon musiqasi — kayfiyatni darhol yaratadi.',
-                    ],
-                    [
-                        'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>',
-                        'title' => 'Dress Code Palitrasi',
-                        'desc' => 'Mehmonlar uchun aniq rang kodlari va vizual palitra namoyishi.',
-                    ],
-                    [
-                        'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>',
-                        'title' => 'Mehmonlar Hisoblagichi',
-                        'desc' => 'Kattalar, bolalar, o\'rinlar — barchasi avtomatik hisoblanadi va eksport qilinadi.',
-                    ],
-                ] as $i => $feature)
+                @php
+                    $featureIcons = [
+                        '<path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>',
+                        '<path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>',
+                        '<path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>',
+                        '<path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>',
+                    ];
+                    $features = __('landing.features');
+                @endphp
+                @foreach ($features as $i => $feature)
                     <div class="feature-card reveal {{ $i > 0 ? 'reveal-delay-' . min($i, 3) : '' }}">
                         <div class="feature-icon">
                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                {!! $feature['icon'] !!}
+                                {!! $featureIcons[$i] ?? $featureIcons[0] !!}
                             </svg>
                         </div>
                         <h3 class="font-semibold text-ink">{{ $feature['title'] }}</h3>

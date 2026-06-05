@@ -1,0 +1,23 @@
+<?php
+
+return [
+    'templates' => 'Templates',
+    'services' => 'Features',
+    'pricing' => 'Pricing',
+    'about' => 'About',
+    'login' => 'Sign in',
+    'register' => 'Sign up',
+    'logout' => 'Sign out',
+    'create_invitation' => 'Create Invitation',
+    'cabinet' => 'Dashboard',
+    'my_orders' => 'My Orders',
+    'favorites' => 'Favorites',
+    'theme_dark' => 'Dark mode',
+    'theme_light' => 'Light mode',
+    'language' => 'Language',
+    'skip_to_content' => 'Skip to main content',
+    'main_nav' => 'Main navigation',
+    'mobile_nav' => 'Mobile navigation',
+    'open_menu' => 'Open menu',
+    'toggle_theme' => 'Toggle theme',
+];

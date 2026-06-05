@@ -29,6 +29,6 @@ class RegisterController extends Controller
 
         return redirect()
             ->route('account.dashboard')
-            ->with('success', 'Xush kelibsiz! Hisobingiz muvaffaqiyatli yaratildi.');
+            ->with('success', __('auth.welcome'));
     }
 }

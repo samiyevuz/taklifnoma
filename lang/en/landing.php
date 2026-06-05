@@ -1,0 +1,66 @@
+<?php
+
+return [
+    'meta_title' => 'Taklifnoma — Premium Digital Invitations',
+    'meta_description' => 'Perfect digital invitations for your most beautiful day. Live RSVP, background music, and premium templates.',
+
+    'hero_badge' => "Uzbekistan's #1 Premium Platform",
+    'hero_title' => 'For Life\'s Most Beautiful Day',
+    'hero_title_accent' => 'Perfect Digital Invitations',
+    'hero_desc' => 'Luxury, elegance, and modern design — all in one platform. Send cinematic digital invitations with live RSVP, music, dress code, and guest tracking.',
+    'hero_cta_start' => 'Start Free',
+    'hero_cta_templates' => 'View Templates',
+    'hero_events' => 'events',
+    'hero_live_rsvp' => 'Live RSVP',
+    'hero_mockup_aria' => 'Mobile digital invitation previews',
+
+    'templates_label' => 'Premium Templates',
+    'templates_title' => 'Luxury Ready-Made Designs',
+    'templates_desc' => 'Every template is crafted by professional designers. Edit and share in one click — no design skills needed.',
+    'quick_preview' => 'Quick preview',
+    'choose' => 'Choose',
+    'currency' => 'UZS',
+
+    'templates' => [
+        'nikoh' => ['title' => 'Wedding (Nikoh)', 'desc' => 'Gold patterns, classic serif typography, and a romantic backdrop.', 'tag' => 'Most popular'],
+        'qiz' => ['title' => 'Bride Farewell', 'desc' => 'Soft pink and purple tones for a traditional ceremony.', 'tag' => 'New'],
+        'sunnat' => ['title' => 'Sunnat Celebration', 'desc' => 'Green and emerald palette for a warm family celebration.', 'tag' => null],
+        'birthday' => ['title' => 'Birthday', 'desc' => 'Champagne gold and warm cream — modern premium invitation.', 'tag' => 'Sale'],
+    ],
+
+    'features_label' => 'Why Us?',
+    'features_title' => 'Features That Set Us Apart',
+    'features_desc' => 'More than beautiful design — a complete event management ecosystem.',
+    'features' => [
+        ['title' => 'Live RSVP Tracking', 'desc' => 'Who is coming and who is not — a real-time interactive dashboard.'],
+        ['title' => 'Background Music', 'desc' => 'Premium music when the invitation opens — sets the mood instantly.'],
+        ['title' => 'Dress Code Palette', 'desc' => 'A color palette for guests — makes outfit choices easy.'],
+        ['title' => 'Mobile Optimized', 'desc' => 'Perfect on any phone — fully responsive from 320px up.'],
+    ],
+
+    'faq_label' => 'Help',
+    'faq_title' => 'FAQ',
+    'faq_desc' => 'Quick answers to common questions.',
+    'faqs' => [
+        ['q' => 'How long does it take to create an invitation?', 'a' => 'Choosing a template and editing text takes about 3–5 minutes. Share the link instantly via Telegram, WhatsApp, or SMS.'],
+        ['q' => 'How do guests RSVP?', 'a' => 'Each invitation has "Attending" / "Can\'t attend" buttons. Responses update live on your dashboard.'],
+        ['q' => 'Does it look good on mobile?', 'a' => 'Yes. All templates are optimized from 320px screens to tablets.'],
+        ['q' => 'Can I change the background music?', 'a' => 'Premium and VIP plans include 20+ licensed tracks or your own MP3 upload.'],
+        ['q' => 'How does payment work?', 'a' => 'Secure payment via Payme, Click, and bank cards. Free plan includes 30 guests and 1 template.'],
+        ['q' => 'Can I edit or cancel an invitation?', 'a' => 'Absolutely. Edit anytime, update guest lists, or disable the link.'],
+    ],
+
+    'pricing_label' => 'Pricing',
+    'pricing_title' => 'Premium for Every Budget',
+    'pricing_desc' => 'Start with a free trial. VIP packages for professional events.',
+    'pricing_scroll' => '← Swipe →',
+    'pricing_tier_starter' => 'Starter',
+    'pricing_tier_premium' => 'Premium',
+    'pricing_tier_vip' => 'VIP',
+    'pricing_free' => 'Free',
+    'pricing_recommended' => 'Recommended',
+    'pricing_starter_desc' => '30 guests · 1 template',
+    'pricing_premium_desc' => 'Unlimited guests · RSVP · Music',
+    'pricing_vip_desc' => 'Custom domain · Designer support',
+    'pricing_cta' => 'Get Started',
+];

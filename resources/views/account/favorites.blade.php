@@ -2,9 +2,9 @@
 
 @section('account')
     <div class="mb-8">
-        <p class="section-label mb-3">Sevimlilar</p>
-        <h1 class="font-serif text-display font-semibold text-ink">Yoqtirganlar</h1>
-        <p class="mt-2 text-ink-soft">Saqlangan premium shablonlaringiz.</p>
+        <p class="section-label mb-3">{{ __('account.favorites') }}</p>
+        <h1 class="font-serif text-display font-semibold text-ink">{{ __('account.favorites_title') }}</h1>
+        <p class="mt-2 text-ink-soft">{{ __('account.favorites_subtitle') }}</p>
     </div>
 
     @if (count($templates))
@@ -18,11 +18,10 @@
                         <span class="text-sm font-bold text-luxury-gold-dark">{{ $template['price'] }}</span>
                         <div class="flex items-center gap-3">
                             <form action="{{ route('favorites.destroy', $template['slug']) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-sm text-ink-muted hover:text-red-600">Olib tashlash</button>
+                                @csrf @method('DELETE')
+                                <button type="submit" class="text-sm text-ink-muted hover:text-red-600">{{ __('account.remove') }}</button>
                             </form>
-                            <a href="{{ route('builder.create') }}" class="text-sm font-semibold text-ink hover:text-luxury-gold-dark">Yaratish →</a>
+                            <a href="{{ route('builder.create') }}" class="text-sm font-semibold text-ink hover:text-luxury-gold-dark">{{ __('account.create') }} →</a>
                         </div>
                     </div>
                 </article>
@@ -30,8 +29,8 @@
         </div>
     @else
         <div class="account-card glass-luxury text-center py-14">
-            <p class="text-ink-soft">Hali yoqtirgan shablonlar yo'q.</p>
-            <a href="/#shablonlar" class="btn-outline-luxury mt-4 inline-flex">Shablonlarni ko'rish</a>
+            <p class="text-ink-soft">{{ __('account.favorites_empty') }}</p>
+            <a href="/#shablonlar" class="btn-outline-luxury mt-4 inline-flex">{{ __('account.browse_templates') }}</a>
         </div>
     @endif
 @endsection

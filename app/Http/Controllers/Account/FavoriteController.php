@@ -41,11 +41,11 @@ class FavoriteController extends Controller
             return response()->json([
                 'success' => true,
                 'favorited' => true,
-                'message' => 'Shablon yoqtirganlarga qo\'shildi.',
+                'message' => __('account.favorite_added'),
             ]);
         }
 
-        return back()->with('success', 'Shablon yoqtirganlarga qo\'shildi.');
+        return back()->with('success', __('account.favorite_added'));
     }
 
     public function destroy(Request $request, string $templateSlug): JsonResponse|RedirectResponse
@@ -59,10 +59,10 @@ class FavoriteController extends Controller
             return response()->json([
                 'success' => true,
                 'favorited' => false,
-                'message' => 'Shablon yoqtirganlardan olib tashlandi.',
+                'message' => __('account.favorite_removed'),
             ]);
         }
 
-        return back()->with('success', 'Shablon yoqtirganlardan olib tashlandi.');
+        return back()->with('success', __('account.favorite_removed'));
     }
 }

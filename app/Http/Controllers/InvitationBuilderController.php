@@ -36,8 +36,8 @@ class InvitationBuilderController extends Controller
         return redirect()
             ->route('builder.edit', $invitation)
             ->with('success', $request->boolean('publish')
-                ? 'Taklifnoma muvaffaqiyatli nashr qilindi!'
-                : 'Taklifnoma qoralama sifatida saqlandi.');
+                ? __('builder.saved_published')
+                : __('builder.saved_draft'));
     }
 
     public function edit(Invitation $invitation): View
@@ -63,6 +63,6 @@ class InvitationBuilderController extends Controller
 
         return redirect()
             ->route('builder.edit', $invitation)
-            ->with('success', 'O\'zgarishlar saqlandi.');
+            ->with('success', __('builder.saved_changes'));
     }
 }

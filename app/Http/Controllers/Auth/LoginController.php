@@ -25,7 +25,7 @@ class LoginController extends Controller
         if (! Auth::attempt($credentials, $remember)) {
             return back()
                 ->withInput($request->only('email', 'remember'))
-                ->withErrors(['email' => 'Email yoki parol noto\'g\'ri.']);
+                ->withErrors(['email' => __('auth.invalid_credentials')]);
         }
 
         $request->session()->regenerate();

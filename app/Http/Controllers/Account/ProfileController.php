@@ -22,7 +22,7 @@ class ProfileController extends Controller
     {
         auth()->user()->update($request->validated());
 
-        return back()->with('success', 'Profil ma\'lumotlari yangilandi.');
+        return back()->with('success', __('account.profile_updated'));
     }
 
     public function updatePassword(UpdatePasswordRequest $request): RedirectResponse
@@ -31,6 +31,6 @@ class ProfileController extends Controller
             'password' => $request->validated('password'),
         ]);
 
-        return back()->with('success', 'Parol muvaffaqiyatli yangilandi.');
+        return back()->with('success', __('account.password_updated'));
     }
 }

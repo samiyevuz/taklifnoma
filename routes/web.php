@@ -7,15 +7,18 @@ use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\InvitationBuilderController;
 use App\Http\Controllers\InvitationViewController;
 use App\Http\Controllers\RsvpController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
+
 Route::get('/', function () {
     return view('pages.landing', [
-        'title' => 'Taklifnoma — Premium Raqamli Taklifnomalar',
-        'metaDescription' => "Hayotingizdagi eng go'zal kun uchun mukammal raqamli taklifnomalar. Jonli RSVP, fon musiqasi va premium shablonlar.",
+        'title' => __('landing.meta_title'),
+        'metaDescription' => __('landing.meta_description'),
         'favoriteSlugs' => auth()->check() ? auth()->user()->favoriteSlugs() : [],
     ]);
 });

@@ -55,8 +55,10 @@ function initThemeToggle() {
 
         html.classList.toggle('dark', dark);
         toggles.forEach((btn) => {
+            const labelDark = btn.dataset.themeLabelDark || 'Dark mode';
+            const labelLight = btn.dataset.themeLabelLight || 'Light mode';
             btn.setAttribute('aria-pressed', String(dark));
-            btn.textContent = dark ? "Yorug' rejim" : "Qorong'u rejim";
+            btn.textContent = dark ? labelLight : labelDark;
         });
         sessionStorage.setItem('theme', dark ? 'dark' : 'light');
         updateThemeMeta(dark);
