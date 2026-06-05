@@ -11,7 +11,14 @@
         <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
             @foreach ($templates as $template)
                 <article class="account-card glass-luxury relative">
-                    <div class="template-card__visual {{ $template['visual'] }} rounded-xl h-36 mb-4"></div>
+                    <div class="rounded-xl h-36 mb-4 overflow-hidden flex {{ $template['visual'] }}">
+                        <div class="template-card__scene flex-1">
+                            <x-landing.template-icon :slug="$template['slug']" class="template-card__icon h-10 w-10" />
+                        </div>
+                        <div class="template-card__label flex-1">
+                            <p class="template-card__label-title text-sm">{{ $template['title'] }}</p>
+                        </div>
+                    </div>
                     <h3 class="font-serif text-lg font-semibold text-ink">{{ $template['title'] }}</h3>
                     <p class="mt-2 text-sm text-ink-muted line-clamp-2">{{ $template['desc'] }}</p>
                     <div class="mt-4 flex items-center justify-between">
@@ -21,7 +28,7 @@
                                 @csrf @method('DELETE')
                                 <button type="submit" class="text-sm text-ink-muted hover:text-red-600">{{ __('account.remove') }}</button>
                             </form>
-                            <a href="{{ route('builder.create') }}" class="text-sm font-semibold text-ink hover:text-luxury-gold-dark">{{ __('account.create') }} →</a>
+                            <a href="{{ route('builder.create', ['template' => $template['slug']]) }}" class="text-sm font-semibold text-ink hover:text-luxury-gold-dark">{{ __('account.create') }} →</a>
                         </div>
                     </div>
                 </article>

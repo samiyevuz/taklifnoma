@@ -8,6 +8,7 @@ use App\Services\InvitationService;
 use App\Support\InvitationDefaults;
 use App\Support\TemplateCatalog;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class InvitationBuilderController extends Controller
@@ -16,15 +17,20 @@ class InvitationBuilderController extends Controller
         private readonly InvitationService $invitationService,
     ) {}
 
-    public function create(): View
+    public function create(Request $request): View
     {
+        $slug = (string) $request->query('template', 'nikoh');
+        $catalogTemplate = TemplateCatalog::find($slug) ?? TemplateCatalog::find('nikoh');
+
         $defaults = InvitationDefaults::demoAttributes();
         unset($defaults['slug'], $defaults['status'], $defaults['published_at']);
+        $defaults['template'] = $catalogTemplate['template'] ?? 'nikoh-premium';
+        $defaults['event_type'] = $catalogTemplate['title'] ?? 'Nikoh To\'yi';
 
         return view('builder.create', [
             'title' => 'Taklifnoma Yaratish — Builder',
             'defaults' => $defaults,
-            'bootstrap' => $this->builderBootstrap(null, $defaults),
+            'bootstrap' => $this->builderBootstrap(null, $defaults, $catalogTemplate),
         ]);
     }
 
@@ -57,9 +63,11 @@ class InvitationBuilderController extends Controller
         ]);
     }
 
-    private function builderBootstrap(?Invitation $invitation, ?array $defaults = null): array
+    private function builderBootstrap(?Invitation $invitation, ?array $defaults = null, ?array $catalogTemplate = null): array
     {
-        $template = TemplateCatalog::find('nikoh');
+        $template = $catalogTemplate
+            ?? ($invitation ? TemplateCatalog::findByBlade($invitation->template) : null)
+            ?? TemplateCatalog::find('nikoh');
         $source = $invitation ?? (object) ($defaults ?? InvitationDefaults::demoAttributes());
 
         return [
@@ -89,6 +97,7 @@ class InvitationBuilderController extends Controller
             'price_amount' => $template['price_amount'] ?? 89000,
             'currency' => __('landing.currency'),
             'template_title' => $template['title'] ?? 'Nikoh To\'yi Premium',
+            'template_blade' => $template['template'] ?? 'nikoh-premium',
             'music_presets' => InvitationDefaults::musicPresets(),
             'default_music_url' => asset('audio/romantic-wedding.mp3'),
         ];

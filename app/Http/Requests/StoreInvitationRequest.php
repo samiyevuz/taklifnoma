@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Support\TemplateCatalog;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -52,6 +53,12 @@ class StoreInvitationRequest extends FormRequest
                 Rule::unique('invitations', 'slug')->ignore($this->route('invitation')),
             ],
             'publish' => ['sometimes', 'boolean'],
+            'template' => [
+                'nullable',
+                'string',
+                'max:80',
+                Rule::in(array_column(TemplateCatalog::definitions(), 'template')),
+            ],
         ];
     }
 

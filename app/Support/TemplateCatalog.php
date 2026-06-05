@@ -32,10 +32,74 @@ class TemplateCatalog
                 'preview_param' => null,
             ],
             [
+                'slug' => 'beshik',
+                'template' => 'beshik-toyi',
+                'visual' => 'template-visual--beshik',
+                'price_amount' => 75000,
+                'preview_route' => null,
+                'preview_param' => null,
+            ],
+            [
+                'slug' => 'yubiley',
+                'template' => 'yubiley-premium',
+                'visual' => 'template-visual--yubiley',
+                'price_amount' => 69000,
+                'preview_route' => null,
+                'preview_param' => null,
+            ],
+            [
+                'slug' => 'nahor',
+                'template' => 'nahor-oshi',
+                'visual' => 'template-visual--nahor',
+                'price_amount' => 79000,
+                'preview_route' => null,
+                'preview_param' => null,
+            ],
+            [
+                'slug' => 'fotiha',
+                'template' => 'fotiha-toyi',
+                'visual' => 'template-visual--fotiha',
+                'price_amount' => 85000,
+                'preview_route' => null,
+                'preview_param' => null,
+            ],
+            [
                 'slug' => 'birthday',
                 'template' => 'birthday-premium',
                 'visual' => 'template-visual--birthday',
                 'price_amount' => 59000,
+                'preview_route' => null,
+                'preview_param' => null,
+            ],
+            [
+                'slug' => 'muchal',
+                'template' => 'muchal-toyi',
+                'visual' => 'template-visual--muchal',
+                'price_amount' => 65000,
+                'preview_route' => null,
+                'preview_param' => null,
+            ],
+            [
+                'slug' => 'iftorlik',
+                'template' => 'iftorlik-premium',
+                'visual' => 'template-visual--iftorlik',
+                'price_amount' => 72000,
+                'preview_route' => null,
+                'preview_param' => null,
+            ],
+            [
+                'slug' => 'aqiyqa',
+                'template' => 'aqiyqa-toyi',
+                'visual' => 'template-visual--aqiyqa',
+                'price_amount' => 68000,
+                'preview_route' => null,
+                'preview_param' => null,
+            ],
+            [
+                'slug' => 'bitiruv',
+                'template' => 'bitiruv-oqshomi',
+                'visual' => 'template-visual--bitiruv',
+                'price_amount' => 64000,
                 'preview_route' => null,
                 'preview_param' => null,
             ],
@@ -62,6 +126,17 @@ class TemplateCatalog
         foreach (self::all() as $template) {
             if ($template['slug'] === $slug) {
                 return $template;
+            }
+        }
+
+        return null;
+    }
+
+    public static function findByBlade(string $blade): ?array
+    {
+        foreach (self::definitions() as $item) {
+            if ($item['template'] === $blade) {
+                return self::find($item['slug']);
             }
         }
 

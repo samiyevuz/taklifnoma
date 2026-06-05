@@ -24,8 +24,16 @@ return [
     'templates' => [
         'nikoh' => ['title' => 'Wedding (Nikoh)', 'desc' => 'Gold patterns, classic serif typography, and a romantic backdrop.', 'tag' => 'Most popular'],
         'qiz' => ['title' => 'Bride Farewell', 'desc' => 'Soft pink and purple tones for a traditional ceremony.', 'tag' => 'New'],
-        'sunnat' => ['title' => 'Sunnat Celebration', 'desc' => 'Green and emerald palette for a warm family celebration.', 'tag' => null],
+        'sunnat' => ['title' => 'Sunnat Celebration', 'desc' => 'Orange and gold tones — a warm design for a family celebration.', 'tag' => null],
+        'beshik' => ['title' => 'Cradle Ceremony', 'desc' => 'Soft green tones — an elegant invitation for welcoming a newborn.', 'tag' => 'New'],
+        'yubiley' => ['title' => 'Jubilee', 'desc' => 'Pink and gold accents — a luxurious template for 50th, 60th, or any anniversary.', 'tag' => null],
+        'nahor' => ['title' => 'Morning Pilaf', 'desc' => 'Blue and lavender tones — a modern invitation for a morning feast.', 'tag' => null],
+        'fotiha' => ['title' => 'Engagement (Fotiha)', 'desc' => 'Gold and pink patterns — a romantic premium design for engagement.', 'tag' => 'Popular'],
         'birthday' => ['title' => 'Birthday', 'desc' => 'Champagne gold and warm cream — modern premium invitation.', 'tag' => 'Sale'],
+        'muchal' => ['title' => 'Muchal Celebration', 'desc' => 'Blue and violet palette — tradition meets modern style for the 12-year cycle.', 'tag' => null],
+        'iftorlik' => ['title' => 'Iftar Gathering', 'desc' => 'Deep green and gold — an elegant Ramadan iftar invitation.', 'tag' => null],
+        'aqiyqa' => ['title' => 'Aqeeqah', 'desc' => 'Cream and beige tones — a heartfelt template for a newborn ceremony.', 'tag' => null],
+        'bitiruv' => ['title' => 'Graduation Night', 'desc' => 'Navy and gold — a formal premium invitation for graduation.', 'tag' => null],
     ],
 
     'features_label' => 'Why Us?',

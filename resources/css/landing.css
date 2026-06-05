@@ -631,11 +631,14 @@
 
     .template-card__visual {
         position: relative;
-        aspect-ratio: 3 / 4;
+        aspect-ratio: 2.35 / 1;
+        min-height: 7.5rem;
         overflow: hidden;
     }
 
     .template-card__visual-inner {
+        display: flex;
+        align-items: stretch;
         width: 100%;
         height: 100%;
         transition: transform 0.7s var(--ease-elite);
@@ -644,23 +647,145 @@
     }
 
     .template-card:hover .template-card__visual-inner {
-        transform: scale(1.08) translateZ(0);
+        transform: scale(1.03) translateZ(0);
     }
 
-    .template-visual--nikoh {
-        background: linear-gradient(160deg, #1c1520 0%, #4a2c3d 35%, #c9a88a 70%, #f5e6d8 100%);
+    .template-card__scene {
+        position: relative;
+        flex: 0 0 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
     }
 
-    .template-visual--qiz {
-        background: linear-gradient(160deg, #2a1a35 0%, #7b4d8a 45%, #e8b4c8 80%, #faf0f4 100%);
+    .template-card__scene::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to right, transparent 42%, rgba(255, 255, 255, 0.92) 100%);
+        pointer-events: none;
     }
 
-    .template-visual--sunnat {
-        background: linear-gradient(160deg, #0a2e28 0%, #0d6b5c 40%, #5ec4b0 75%, #e8f5f2 100%);
+    .template-card__icon {
+        position: relative;
+        z-index: 1;
+        width: 3rem;
+        height: 3rem;
+        color: rgba(255, 255, 255, 0.92);
+        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.18));
     }
 
-    .template-visual--birthday {
-        background: linear-gradient(160deg, #2d1f14 0%, #8b6914 40%, #e8d48b 70%, #faf6f0 100%);
+    .template-card__label {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.15rem;
+        min-width: 0;
+    }
+
+    .template-card__label-title {
+        font-family: var(--font-serif, Georgia, serif);
+        font-size: 1.02rem;
+        font-weight: 600;
+        line-height: 1.3;
+        color: #1a1510;
+    }
+
+    .template-visual--nikoh .template-card__scene {
+        background: linear-gradient(135deg, #1c1520 0%, #6b3f52 55%, #c9a88a 100%);
+    }
+
+    .template-visual--nikoh .template-card__label {
+        background: linear-gradient(135deg, #f5e6d8 0%, #faf3eb 100%);
+    }
+
+    .template-visual--qiz .template-card__scene {
+        background: linear-gradient(135deg, #2a1a35 0%, #7b4d8a 55%, #e8b4c8 100%);
+    }
+
+    .template-visual--qiz .template-card__label {
+        background: linear-gradient(135deg, #fce8ef 0%, #faf0f4 100%);
+    }
+
+    .template-visual--sunnat .template-card__scene {
+        background: linear-gradient(135deg, #7c2d12 0%, #ea580c 55%, #fb923c 100%);
+    }
+
+    .template-visual--sunnat .template-card__label {
+        background: linear-gradient(135deg, #ffedd5 0%, #fff7ed 100%);
+    }
+
+    .template-visual--beshik .template-card__scene {
+        background: linear-gradient(135deg, #1b4332 0%, #40916c 55%, #95d5b2 100%);
+    }
+
+    .template-visual--beshik .template-card__label {
+        background: linear-gradient(135deg, #d8f3dc 0%, #f1faee 100%);
+    }
+
+    .template-visual--yubiley .template-card__scene {
+        background: linear-gradient(135deg, #831843 0%, #db2777 55%, #f9a8d4 100%);
+    }
+
+    .template-visual--yubiley .template-card__label {
+        background: linear-gradient(135deg, #fce7f3 0%, #fdf2f8 100%);
+    }
+
+    .template-visual--nahor .template-card__scene {
+        background: linear-gradient(135deg, #1e3a5f 0%, #3b82f6 55%, #93c5fd 100%);
+    }
+
+    .template-visual--nahor .template-card__label {
+        background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+    }
+
+    .template-visual--fotiha .template-card__scene {
+        background: linear-gradient(135deg, #4a1942 0%, #9d4edd 55%, #e0aaff 100%);
+    }
+
+    .template-visual--fotiha .template-card__label {
+        background: linear-gradient(135deg, #f3e8ff 0%, #faf5ff 100%);
+    }
+
+    .template-visual--birthday .template-card__scene {
+        background: linear-gradient(135deg, #2d1f14 0%, #8b6914 55%, #e8d48b 100%);
+    }
+
+    .template-visual--birthday .template-card__label {
+        background: linear-gradient(135deg, #faf0d7 0%, #faf6f0 100%);
+    }
+
+    .template-visual--muchal .template-card__scene {
+        background: linear-gradient(135deg, #1e1b4b 0%, #4f46e5 55%, #a5b4fc 100%);
+    }
+
+    .template-visual--muchal .template-card__label {
+        background: linear-gradient(135deg, #e0e7ff 0%, #eef2ff 100%);
+    }
+
+    .template-visual--iftorlik .template-card__scene {
+        background: linear-gradient(135deg, #064e3b 0%, #059669 55%, #6ee7b7 100%);
+    }
+
+    .template-visual--iftorlik .template-card__label {
+        background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%);
+    }
+
+    .template-visual--aqiyqa .template-card__scene {
+        background: linear-gradient(135deg, #57534e 0%, #a8a29e 55%, #e7e5e4 100%);
+    }
+
+    .template-visual--aqiyqa .template-card__label {
+        background: linear-gradient(135deg, #f5f5f4 0%, #fafaf9 100%);
+    }
+
+    .template-visual--bitiruv .template-card__scene {
+        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 55%, #60a5fa 100%);
+    }
+
+    .template-visual--bitiruv .template-card__label {
+        background: linear-gradient(135deg, #dbeafe 0%, #f8fafc 100%);
     }
 
     .template-card__pattern {
@@ -872,6 +997,14 @@
     }
     .reveal-delay-4 {
         transition-delay: 0.4s;
+    }
+
+    .reveal-delay-5 {
+        transition-delay: 0.5s;
+    }
+
+    .reveal-delay-6 {
+        transition-delay: 0.6s;
     }
 
     /* Mobile nav drawer */

@@ -80,6 +80,7 @@
                 <input type="hidden" name="dress_colors_json" id="dress_colors_json" value="">
                 <input type="hidden" name="rsvp_enabled" id="rsvp_enabled" value="1">
                 <input type="hidden" name="publish" id="publish_flag" value="0">
+                <input type="hidden" name="template" value="{{ old('template', $b['template_blade'] ?? 'nikoh-premium') }}">
 
                 {{-- STEP 1: General --}}
                 <div class="builder-step is-active" data-step="1">

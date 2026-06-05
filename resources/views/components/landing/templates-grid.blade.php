@@ -13,16 +13,19 @@
             <p class="mt-4 text-fluid-body text-ink-soft text-pretty">{{ __('landing.templates_desc') }}</p>
         </div>
 
-        <div class="mt-12 grid grid-cols-1 gap-6 min-[400px]:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+        <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
             @foreach ($templates as $index => $template)
                 @php
                     $isFavorited = in_array($template['slug'], $favoriteSlugs, true);
+                    $builderUrl = auth()->check()
+                        ? route('builder.create', ['template' => $template['slug']])
+                        : route('login');
                     $previewUrl = $template['preview_route'] && $template['preview_param']
                         ? route($template['preview_route'], $template['preview_param'])
-                        : (auth()->check() ? route('builder.create') : route('login'));
+                        : $builderUrl;
                 @endphp
                 <article
-                    class="template-card reveal {{ $index > 0 ? 'reveal-delay-' . min($index, 4) : '' }}"
+                    class="template-card reveal {{ $index > 0 ? 'reveal-delay-' . min($index, 6) : '' }}"
                     aria-label="{{ $template['title'] }} shabloni"
                 >
                     <div class="template-card__visual relative">
@@ -48,11 +51,12 @@
                         </div>
 
                         <div class="template-card__visual-inner {{ $template['visual'] }}">
-                            <div class="template-card__pattern"></div>
-                            <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                                <div class="mb-3 h-12 w-12 rounded-full border border-white/30"></div>
-                                <p class="font-serif text-lg font-medium text-white drop-shadow-md">{{ $template['title'] }}</p>
-                                <p class="mt-1 text-xs tracking-widest text-white/70 uppercase">Taklifnoma.uz</p>
+                            <div class="template-card__scene">
+                                <div class="template-card__pattern"></div>
+                                <x-landing.template-icon :slug="$template['slug']" />
+                            </div>
+                            <div class="template-card__label">
+                                <p class="template-card__label-title">{{ $template['title'] }}</p>
                             </div>
                         </div>
 
@@ -81,7 +85,7 @@
                         <p class="mt-2 text-sm leading-relaxed text-ink-muted line-clamp-2">{{ $template['desc'] }}</p>
                         <div class="mt-4 flex items-center justify-between">
                             <span class="text-sm font-bold text-luxury-gold-dark">{{ $template['price'] }}</span>
-                            <a href="{{ auth()->check() ? route('builder.create') : route('login') }}" class="text-sm font-semibold text-ink hover:text-luxury-gold-dark transition-colors" style="transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1)">
+                            <a href="{{ $builderUrl }}" class="text-sm font-semibold text-ink hover:text-luxury-gold-dark transition-colors" style="transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1)">
                                 {{ __('landing.choose') }} →
                             </a>
                         </div>

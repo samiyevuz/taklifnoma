@@ -34,13 +34,53 @@ return [
         ],
         'sunnat' => [
             'title' => 'Sunnat To\'yi',
-            'desc' => 'Yashil va marvarid palitrasi — oilaviy bayram uchun iliq va yorqin dizayn.',
+            'desc' => 'To\'q sariq va oltin tonlar — bolaning baxtli kuni uchun iliq va yorqin dizayn.',
             'tag' => null,
+        ],
+        'beshik' => [
+            'title' => 'Beshik To\'yi',
+            'desc' => 'Yumshoq yashil va tabiat ilhomidagi ranglar — yangi chaqaloq uchun nafis taklifnoma.',
+            'tag' => 'Yangi',
+        ],
+        'yubiley' => [
+            'title' => 'Yubiley',
+            'desc' => 'Pushti va oltin aksentlar — 50, 60 yoki har qanday yubiley uchun hashamatli shablon.',
+            'tag' => null,
+        ],
+        'nahor' => [
+            'title' => 'Nahor Oshi',
+            'desc' => 'Moviy va lavanda tonlar — ertalabki dasturxon marosimi uchun zamonaviy taklif.',
+            'tag' => null,
+        ],
+        'fotiha' => [
+            'title' => 'Fotiha To\'yi',
+            'desc' => 'Oltin va pushti naqshlar — unashtiruv marosimi uchun romantik premium dizayn.',
+            'tag' => 'Mashhur',
         ],
         'birthday' => [
             'title' => 'Tug\'ilgan Kun',
             'desc' => 'Shampan oltin va iliq krem — har qanday yosh uchun zamonaviy premium taklif.',
             'tag' => 'Chegirma',
+        ],
+        'muchal' => [
+            'title' => 'Muchal To\'yi',
+            'desc' => 'Ko\'k va binafsha palitrasi — 12 yosh aylanishi uchun an\'anaviy va zamonaviy uyg\'unlik.',
+            'tag' => null,
+        ],
+        'iftorlik' => [
+            'title' => 'Iftorlik',
+            'desc' => 'To\'q yashil va oltin — Ramazon iftor marosimi uchun nafis va iliq taklifnoma.',
+            'tag' => null,
+        ],
+        'aqiyqa' => [
+            'title' => 'Aqiyqa',
+            'desc' => 'Krem va bej tonlar — yangi tug\'ilgan chaqaloq uchun samimiy va iliq marosim shabloni.',
+            'tag' => null,
+        ],
+        'bitiruv' => [
+            'title' => 'Bitiruv Oqshomi',
+            'desc' => 'To\'q ko\'k va oltin — maktab yoki universitet bitiruvi uchun rasmiy premium taklif.',
+            'tag' => null,
         ],
     ],
 
