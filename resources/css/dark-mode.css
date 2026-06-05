@@ -285,6 +285,50 @@ html.theme-transition .phone-mockup {
     border-color: rgba(255, 255, 255, 0.08);
 }
 
+/* ─── Testimonials & FAQ (dark) ─── */
+.dark .testimonial-nav {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--color-ink);
+}
+
+.dark .testimonial-nav:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.dark .testimonial-dot {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.dark .testimonial-dot.is-active {
+    background: var(--color-luxury-gold-light);
+}
+
+.dark .faq-item.is-open {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dark .faq-icon {
+    background: rgba(201, 162, 39, 0.15);
+    color: var(--color-luxury-gold-light);
+}
+
+.dark .pricing-sticky-header {
+    background: transparent;
+}
+
+@media (max-width: 639px) {
+    .dark .pricing-scroll-wrapper {
+        background: linear-gradient(
+            to right,
+            var(--landing-bg) 0%,
+            transparent 4%,
+            transparent 96%,
+            var(--landing-bg) 100%
+        );
+    }
+}
+
 /* ─── Section labels ─── */
 .dark .section-label {
     color: var(--color-luxury-gold-light);

@@ -1,10 +1,14 @@
 /**
  * Taklifnoma — Premium Landing Interactions
- * Theme system · GPU motion · Accessibility
+ * Theme · Tilt · Slider · FAQ · GPU motion
  */
 
 const ELITE_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
 const THEME_COLORS = { light: '#FAF6F0', dark: '#0B0B0F' };
+
+function prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
 
 function initRippleEffect() {
     document.querySelectorAll('[data-ripple]').forEach((button) => {
@@ -106,7 +110,7 @@ function initScrollReveal() {
     const elements = document.querySelectorAll('.reveal');
     if (!elements.length) return;
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (prefersReducedMotion()) {
         elements.forEach((el) => el.classList.add('is-visible'));
         return;
     }
@@ -150,9 +154,155 @@ function initSmoothAnchors() {
     });
 }
 
+function initMockupTilt() {
+    const stage = document.getElementById('mockup-tilt');
+    const target = document.getElementById('mockup-tilt-target');
+    if (!stage || !target) return;
+
+    if (prefersReducedMotion() || window.matchMedia('(pointer: coarse)').matches) return;
+
+    const maxTilt = 10;
+    let rafId = null;
+
+    const applyTilt = (rotateX, rotateY) => {
+        target.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+
+        stage.querySelectorAll('[data-tilt-depth]').forEach((phone) => {
+            const depth = parseFloat(phone.dataset.tiltDepth || '1');
+            const px = rotateX * depth * 0.4;
+            const py = rotateY * depth * 0.4;
+            phone.style.setProperty('--tilt-parallax-x', `${py}px`);
+            phone.style.setProperty('--tilt-parallax-y', `${px}px`);
+        });
+    };
+
+    const resetTilt = () => {
+        stage.classList.remove('is-tilting');
+        applyTilt(0, 0);
+        stage.querySelectorAll('[data-tilt-depth]').forEach((phone) => {
+            phone.style.removeProperty('--tilt-parallax-x');
+            phone.style.removeProperty('--tilt-parallax-y');
+        });
+    };
+
+    stage.addEventListener('mousemove', (e) => {
+        const rect = stage.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+        stage.classList.add('is-tilting');
+
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => {
+            applyTilt(-y * maxTilt, x * maxTilt);
+        });
+    });
+
+    stage.addEventListener('mouseleave', resetTilt);
+}
+
+function initTestimonialsSlider() {
+    const slider = document.getElementById('testimonials-slider');
+    if (!slider) return;
+
+    const cards = [...slider.querySelectorAll('.testimonial-card')];
+    const dots = [...slider.querySelectorAll('.testimonial-dot')];
+    const prev = document.getElementById('testimonial-prev');
+    const next = document.getElementById('testimonial-next');
+
+    if (!cards.length) return;
+
+    let current = 0;
+    let autoplayTimer = null;
+
+    const goTo = (index) => {
+        current = (index + cards.length) % cards.length;
+
+        cards.forEach((card, i) => {
+            const active = i === current;
+            card.classList.toggle('is-active', active);
+            card.setAttribute('aria-hidden', String(!active));
+        });
+
+        dots.forEach((dot, i) => {
+            const active = i === current;
+            dot.classList.toggle('is-active', active);
+            dot.setAttribute('aria-selected', String(active));
+        });
+    };
+
+    const startAutoplay = () => {
+        if (prefersReducedMotion()) return;
+        stopAutoplay();
+        autoplayTimer = window.setInterval(() => goTo(current + 1), 6000);
+    };
+
+    const stopAutoplay = () => {
+        if (autoplayTimer) {
+            clearInterval(autoplayTimer);
+            autoplayTimer = null;
+        }
+    };
+
+    prev?.addEventListener('click', () => {
+        goTo(current - 1);
+        startAutoplay();
+    });
+
+    next?.addEventListener('click', () => {
+        goTo(current + 1);
+        startAutoplay();
+    });
+
+    dots.forEach((dot) => {
+        dot.addEventListener('click', () => {
+            goTo(parseInt(dot.dataset.slideTo, 10));
+            startAutoplay();
+        });
+    });
+
+    slider.addEventListener('mouseenter', stopAutoplay);
+    slider.addEventListener('mouseleave', startAutoplay);
+    slider.addEventListener('focusin', stopAutoplay);
+    slider.addEventListener('focusout', startAutoplay);
+
+    startAutoplay();
+}
+
+function initFaqAccordion() {
+    const accordion = document.getElementById('faq-accordion');
+    if (!accordion) return;
+
+    const items = [...accordion.querySelectorAll('.faq-item')];
+
+    items.forEach((item) => {
+        const trigger = item.querySelector('.faq-trigger');
+        const panel = item.querySelector('.faq-panel');
+        if (!trigger || !panel) return;
+
+        trigger.addEventListener('click', () => {
+            const isOpen = item.classList.contains('is-open');
+
+            items.forEach((other) => {
+                const otherPanel = other.querySelector('.faq-panel');
+                const otherTrigger = other.querySelector('.faq-trigger');
+                other.classList.remove('is-open');
+                otherPanel?.setAttribute('aria-hidden', 'true');
+                otherTrigger?.setAttribute('aria-expanded', 'false');
+            });
+
+            if (!isOpen) {
+                item.classList.add('is-open');
+                panel.setAttribute('aria-hidden', 'false');
+                trigger.setAttribute('aria-expanded', 'true');
+            }
+        });
+    });
+}
+
 function initRsvpPreview() {
     const panel = document.getElementById('rsvp-preview');
-    if (!panel || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!panel || prefersReducedMotion()) return;
 
     const counts = {
         accepted: { el: panel.querySelector('[data-rsvp-count="accepted"]'), base: 142 },
@@ -207,5 +357,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileNav();
     initScrollReveal();
     initSmoothAnchors();
+    initMockupTilt();
+    initTestimonialsSlider();
+    initFaqAccordion();
     initRsvpPreview();
 });

@@ -19,7 +19,7 @@
                 </p>
 
                 <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center lg:justify-start">
-                    <a href="#boshlash" class="btn-gold-shimmer w-full sm:w-auto" data-ripple id="boshlash">
+                    <a href="#boshlash" class="btn-gold-shimmer btn-shine w-full sm:w-auto" data-ripple id="boshlash">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
                         </svg>
@@ -51,8 +51,9 @@
 
             {{-- Floating mockups --}}
             <div class="reveal reveal-delay-2 order-1 lg:order-2">
-                <div class="mockup-stage" role="img" aria-label="Raqamli taklifnoma mobil namunalari">
-                    <div class="phone-mockup phone-mockup--left">
+                <div class="mockup-stage" id="mockup-tilt" role="img" aria-label="Raqamli taklifnoma mobil namunalari">
+                    <div class="mockup-stage__inner" id="mockup-tilt-target">
+                    <div class="phone-mockup phone-mockup--left" data-tilt-depth="0.5">
                         <div class="phone-mockup__screen">
                             <div class="invite-art invite-art--girl">
                                 <div class="invite-art__ornament"></div>
@@ -61,7 +62,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="phone-mockup phone-mockup--center">
+                    <div class="phone-mockup phone-mockup--center" data-tilt-depth="1">
                         <div class="phone-mockup__screen">
                             <div class="invite-art invite-art--wedding">
                                 <div class="invite-art__ornament"></div>
@@ -70,7 +71,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="phone-mockup phone-mockup--right">
+                    <div class="phone-mockup phone-mockup--right" data-tilt-depth="0.65">
                         <div class="phone-mockup__screen">
                             <div class="invite-art invite-art--sunnat">
                                 <div class="invite-art__ornament"></div>
@@ -78,6 +79,7 @@
                                 <p class="invite-art__date">8 Iyun 2026</p>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>

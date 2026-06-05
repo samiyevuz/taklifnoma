@@ -9,6 +9,8 @@
             <x-landing.hero />
             <x-landing.templates-grid />
             <x-landing.features />
+            <x-landing.testimonials />
+            <x-landing.faq />
             <x-landing.pricing-cta />
         </div>
     </div>

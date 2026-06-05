@@ -848,4 +848,291 @@
     .section-label::after {
         background: linear-gradient(90deg, var(--color-luxury-gold), transparent);
     }
+
+    /* ─── 3D mockup tilt ─── */
+    .mockup-stage {
+        transform-style: preserve-3d;
+    }
+
+    .mockup-stage__inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        will-change: transform;
+        transition: transform 0.12s var(--ease-elite);
+    }
+
+    .mockup-stage.is-tilting .mockup-stage__inner {
+        transition: transform 0.08s linear;
+    }
+
+    .mockup-stage.is-tilting .phone-mockup {
+        animation-play-state: paused;
+    }
+
+    /* ─── Button shine sweep ─── */
+    .btn-shine {
+        isolation: isolate;
+    }
+
+    .btn-shine::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -120%;
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(
+            105deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.15) 35%,
+            rgba(255, 255, 255, 0.55) 50%,
+            rgba(255, 255, 255, 0.15) 65%,
+            transparent 100%
+        );
+        transform: skewX(-18deg);
+        pointer-events: none;
+        animation: btn-shine-sweep 5s var(--ease-elite) infinite;
+    }
+
+    @keyframes btn-shine-sweep {
+        0%,
+        72% {
+            left: -120%;
+            opacity: 0;
+        }
+        78% {
+            opacity: 1;
+        }
+        100% {
+            left: 160%;
+            opacity: 0;
+        }
+    }
+
+    /* ─── Testimonials slider ─── */
+    .testimonials-slider {
+        max-width: 42rem;
+        margin-inline: auto;
+    }
+
+    .testimonials-track {
+        position: relative;
+        min-height: 220px;
+    }
+
+    @media (min-width: 640px) {
+        .testimonials-track {
+            min-height: 200px;
+        }
+    }
+
+    .testimonial-card {
+        position: absolute;
+        inset: 0;
+        padding: 1.5rem;
+        border-radius: 1.5rem;
+        opacity: 0;
+        transform: translateX(24px) scale(0.98);
+        transition:
+            opacity 0.55s var(--ease-elite),
+            transform 0.55s var(--ease-elite);
+        pointer-events: none;
+    }
+
+    @media (min-width: 640px) {
+        .testimonial-card {
+            padding: 2rem;
+        }
+    }
+
+    .testimonial-card.is-active {
+        position: relative;
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        pointer-events: auto;
+    }
+
+    .testimonial-avatar {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 9999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: white;
+        letter-spacing: 0.05em;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        border: 2px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .testimonial-nav {
+        width: 2.75rem;
+        height: 2.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.45);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        color: var(--color-ink);
+        backdrop-filter: blur(12px);
+        transition:
+            transform 0.35s var(--ease-elite),
+            background 0.35s var(--ease-elite);
+    }
+
+    .testimonial-nav:hover {
+        transform: scale(1.06);
+        background: rgba(255, 255, 255, 0.65);
+    }
+
+    .testimonial-dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 9999px;
+        background: rgba(26, 23, 20, 0.15);
+        transition:
+            width 0.4s var(--ease-elite),
+            background 0.4s var(--ease-elite);
+    }
+
+    .testimonial-dot.is-active {
+        width: 1.75rem;
+        background: var(--color-luxury-gold);
+    }
+
+    /* ─── FAQ accordion ─── */
+    .faq-accordion {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .faq-item {
+        border-radius: 1.25rem;
+        overflow: hidden;
+        transition: box-shadow 0.4s var(--ease-elite);
+    }
+
+    .faq-item.is-open {
+        box-shadow: 0 8px 32px rgba(26, 23, 20, 0.08);
+    }
+
+    .faq-trigger {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1.125rem 1.25rem;
+        text-align: left;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 0.9375rem;
+    }
+
+    .faq-icon {
+        flex-shrink: 0;
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9999px;
+        background: rgba(201, 162, 39, 0.12);
+        color: var(--color-luxury-gold-dark);
+        transition:
+            transform 0.45s var(--ease-elite),
+            background 0.45s var(--ease-elite);
+    }
+
+    .faq-item.is-open .faq-icon {
+        transform: rotate(45deg);
+        background: rgba(201, 162, 39, 0.22);
+    }
+
+    .faq-panel {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.45s var(--ease-elite);
+    }
+
+    .faq-item.is-open .faq-panel {
+        grid-template-rows: 1fr;
+    }
+
+    .faq-panel > p {
+        overflow: hidden;
+        padding: 0 1.25rem;
+        margin: 0;
+    }
+
+    .faq-item.is-open .faq-panel > p {
+        padding-bottom: 1.25rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .btn-shine::after {
+            animation: none;
+        }
+    }
+
+    /* ─── Pricing mobile scroll ─── */
+    .pricing-sticky-header {
+        position: sticky;
+        top: 4.5rem;
+        z-index: 5;
+        padding-bottom: 0.5rem;
+        background: inherit;
+    }
+
+    @media (min-width: 640px) {
+        .pricing-sticky-header {
+            position: static;
+        }
+    }
+
+    .pricing-scroll-wrapper {
+        width: 100%;
+    }
+
+    @media (max-width: 639px) {
+        .pricing-scroll-wrapper {
+            margin-inline: -0.25rem;
+            padding-inline: 0.25rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-padding-inline: 1rem;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .pricing-scroll-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .pricing-scroll-track {
+            display: flex;
+            gap: 0.875rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .pricing-tier {
+            flex: 0 0 min(82vw, 272px);
+            scroll-snap-align: center;
+            min-height: 10.5rem;
+        }
+
+        .pricing-tier__label {
+            position: sticky;
+            top: 0;
+            padding-bottom: 0.25rem;
+            background: inherit;
+        }
+    }
 }
