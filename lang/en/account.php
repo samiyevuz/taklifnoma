@@ -42,6 +42,7 @@ return [
     'password_updated' => 'Password updated successfully.',
     'new_invitation' => '+ New invitation',
     'status_published' => 'Published',
+    'status_expired' => 'Expired',
     'status_draft' => 'Draft',
     'favorite_added' => 'Template added to favorites.',
     'favorite_removed' => 'Template removed from favorites.',

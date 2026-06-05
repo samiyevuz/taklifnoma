@@ -42,6 +42,7 @@ return [
     'password_updated' => 'Пароль успешно изменён.',
     'new_invitation' => '+ Новое приглашение',
     'status_published' => 'Опубликовано',
+    'status_expired' => 'Истёк',
     'status_draft' => 'Черновик',
     'favorite_added' => 'Шаблон добавлен в избранное.',
     'favorite_removed' => 'Шаблон удалён из избранного.',

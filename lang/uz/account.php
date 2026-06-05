@@ -42,6 +42,7 @@ return [
     'password_updated' => 'Parol muvaffaqiyatli yangilandi.',
     'new_invitation' => '+ Yangi taklifnoma',
     'status_published' => 'Nashr qilingan',
+    'status_expired' => 'Muddati tugagan',
     'status_draft' => 'Qoralama',
     'favorite_added' => 'Shablon yoqtirganlarga qo\'shildi.',
     'favorite_removed' => 'Shablon yoqtirganlardan olib tashlandi.',

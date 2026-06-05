@@ -3,28 +3,40 @@
 namespace App\Models;
 
 use App\Support\BuilderEventProfile;
+use App\Support\InvitationEventData;
 use App\Support\MusicUrlNormalizer;
+use App\Support\TemplateCatalog;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class Invitation extends Model
 {
     public const STATUS_DRAFT = 'draft';
 
-    public const STATUS_PUBLISHED = 'published';
+    public const STATUS_ACTIVE = 'active';
+
+    /** @deprecated Use STATUS_ACTIVE */
+    public const STATUS_PUBLISHED = 'active';
+
+    public const STATUS_EXPIRED = 'expired';
 
     public const TEMPLATE_NIKOH_PREMIUM = 'nikoh-premium';
 
     protected $fillable = [
         'user_id',
+        'uuid',
         'slug',
+        'custom_slug',
         'template',
+        'template_slug',
         'status',
         'groom_name',
         'bride_name',
         'profile_meta',
+        'event_data',
         'event_type',
         'event_at',
         'event_city',
@@ -39,6 +51,7 @@ class Invitation extends Model
         'music_url',
         'rsvp_enabled',
         'published_at',
+        'expires_at',
     ];
 
     protected function casts(): array
@@ -47,11 +60,49 @@ class Invitation extends Model
             'event_at' => 'datetime',
             'dress_colors' => 'array',
             'profile_meta' => 'array',
+            'event_data' => 'array',
             'map_lat' => 'float',
             'map_lng' => 'float',
             'published_at' => 'datetime',
+            'expires_at' => 'datetime',
             'rsvp_enabled' => 'boolean',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (Invitation $invitation) {
+            if (! $invitation->uuid) {
+                $invitation->uuid = (string) Str::uuid();
+            }
+
+            if (! $invitation->template_slug && $invitation->template) {
+                $catalog = TemplateCatalog::findByBlade($invitation->template);
+                $invitation->template_slug = $catalog['slug'] ?? 'nikoh';
+            }
+
+            if (! $invitation->custom_slug && $invitation->slug) {
+                $invitation->custom_slug = $invitation->slug;
+            }
+
+            if (! $invitation->event_data) {
+                $invitation->event_data = InvitationEventData::fromInvitation($invitation);
+            }
+        });
+
+        static::updating(function (Invitation $invitation) {
+            if ($invitation->isDirty('custom_slug') && $invitation->custom_slug) {
+                $invitation->slug = $invitation->custom_slug;
+            }
+
+            if ($invitation->isDirty([
+                'profile_meta', 'event_at', 'event_city', 'venue_name', 'venue_address',
+                'map_lat', 'map_lng', 'invitation_text_1', 'invitation_text_2',
+                'family_signature', 'music_url', 'dress_colors', 'rsvp_enabled', 'template',
+            ])) {
+                $invitation->event_data = InvitationEventData::fromInvitation($invitation);
+            }
+        });
     }
 
     public function user(): BelongsTo
@@ -67,14 +118,17 @@ class Invitation extends Model
     public function statusLabel(): string
     {
         return match ($this->status) {
-            self::STATUS_PUBLISHED => __('account.status_published'),
+            self::STATUS_ACTIVE => __('account.status_published'),
+            self::STATUS_EXPIRED => __('account.status_expired'),
             default => __('account.status_draft'),
         };
     }
 
     public function isPublished(): bool
     {
-        return $this->status === self::STATUS_PUBLISHED && $this->published_at !== null;
+        return $this->status === self::STATUS_ACTIVE
+            && $this->published_at !== null
+            && ($this->expires_at === null || $this->expires_at->isFuture());
     }
 
     public function coupleTitle(): string
@@ -85,6 +139,13 @@ class Invitation extends Model
     public function displayTitle(): string
     {
         return BuilderEventProfile::displayTitle($this);
+    }
+
+    public function publicUrl(): string
+    {
+        $slug = $this->custom_slug ?: $this->slug;
+
+        return url('/l/'.$slug);
     }
 
     public function defaultMusicUrl(): string
@@ -156,7 +217,7 @@ class Invitation extends Model
     public function publish(): void
     {
         $this->update([
-            'status' => self::STATUS_PUBLISHED,
+            'status' => self::STATUS_ACTIVE,
             'published_at' => Carbon::now(),
         ]);
     }
@@ -166,9 +227,9 @@ class Invitation extends Model
         $responses = $this->rsvpResponses();
 
         return [
-            'attending' => (clone $responses)->where('status', RsvpResponse::STATUS_ATTENDING)->count(),
-            'declined' => (clone $responses)->where('status', RsvpResponse::STATUS_DECLINED)->count(),
-            'total_guests' => (clone $responses)->where('status', RsvpResponse::STATUS_ATTENDING)
+            'attending' => (clone $responses)->where('is_attending', true)->count(),
+            'declined' => (clone $responses)->where('is_attending', false)->count(),
+            'total_guests' => (clone $responses)->where('is_attending', true)
                 ->selectRaw('SUM(adults_count + children_count) as total')
                 ->value('total') ?? 0,
         ];

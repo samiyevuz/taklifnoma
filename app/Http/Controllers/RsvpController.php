@@ -3,23 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRsvpRequest;
-use App\Models\Invitation;
 use App\Models\RsvpResponse;
+use App\Support\InvitationResolver;
 use Illuminate\Http\JsonResponse;
 
 class RsvpController extends Controller
 {
     public function store(StoreRsvpRequest $request, string $slug): JsonResponse
     {
-        $invitation = Invitation::query()
-            ->where('slug', $slug)
-            ->where('status', Invitation::STATUS_PUBLISHED)
-            ->firstOrFail();
+        $invitation = InvitationResolver::findPublic($slug);
 
         $validated = $request->validated();
+        $isAttending = $validated['status'] === RsvpResponse::STATUS_ATTENDING;
 
         $response = $invitation->rsvpResponses()->create([
             'guest_name' => $validated['guest_name'],
+            'is_attending' => $isAttending,
             'status' => $validated['status'],
             'adults_count' => $validated['status'] === RsvpResponse::STATUS_ATTENDING
                 ? ($validated['adults_count'] ?? 1)

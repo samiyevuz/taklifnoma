@@ -36,6 +36,24 @@ function formatEventTime(value) {
     return `Soat ${pad2(date.getHours())}:${pad2(date.getMinutes())}`;
 }
 
+const HERO_SCALE_CLASSES = ['is-compact', 'is-tight', 'is-micro'];
+
+function heroScaleTier(length) {
+    if (length > 50) return 'is-micro';
+    if (length > 35) return 'is-tight';
+    if (length > 20) return 'is-compact';
+    return '';
+}
+
+function applyHeroTypography(elements, text) {
+    const tier = heroScaleTier((text || '').length);
+
+    elements.filter(Boolean).forEach((el) => {
+        el.classList.remove(...HERO_SCALE_CLASSES);
+        if (tier) el.classList.add(tier);
+    });
+}
+
 function createProfileEngine(schema) {
     const layout = schema?.layout || LAYOUT_MODES.couple;
     const fields = Array.isArray(schema?.fields) ? schema.fields : [];
@@ -363,6 +381,19 @@ function initBuilderStudio() {
 
         setPreviewText('venue_name', state.venue_name);
         setPreviewText('venue_address', state.venue_address);
+
+        const heroNameEls = [...studio.querySelectorAll('.builder-preview-page .inv-welcome__names')];
+        const hostsEls = previewMap.hero_hosts || [];
+
+        if (layout === LAYOUT_MODES.child || layout === LAYOUT_MODES.celebrant) {
+            applyHeroTypography(heroNameEls, hero.primary);
+            applyHeroTypography(hostsEls, hero.secondary);
+        } else if (layout === LAYOUT_MODES.graduation) {
+            applyHeroTypography(heroNameEls, `${hero.primary} ${hero.secondary}`.trim());
+        } else {
+            const combined = [hero.primary, hero.secondary].filter(Boolean).join(' & ');
+            applyHeroTypography(heroNameEls, combined);
+        }
 
         renderDressPreview();
         syncRsvp();

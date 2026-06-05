@@ -29,8 +29,10 @@ Route::get('/ui-kit', function () {
     ]);
 });
 
-Route::get('/i/{slug}', [InvitationViewController::class, 'show'])->name('invitation.show');
-Route::post('/i/{slug}/rsvp', [RsvpController::class, 'store'])->name('rsvp.store');
+Route::get('/l/{slug}', [InvitationViewController::class, 'show'])->name('invitation.show');
+Route::get('/i/{slug}', [InvitationViewController::class, 'show']);
+Route::post('/l/{slug}/rsvp', [RsvpController::class, 'store'])->name('rsvp.store');
+Route::post('/i/{slug}/rsvp', [RsvpController::class, 'store']);
 
 Route::redirect('/invite/nikoh-premium', '/i/farhod-shirin');
 

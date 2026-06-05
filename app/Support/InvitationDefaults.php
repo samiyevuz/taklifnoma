@@ -40,7 +40,7 @@ class InvitationDefaults
         return [
             'slug' => 'farhod-shirin',
             'template' => 'nikoh-premium',
-            'status' => 'published',
+            'status' => 'active',
             'groom_name' => 'Farhod',
             'bride_name' => 'Shirin',
             'event_type' => 'Nikoh To\'yi',

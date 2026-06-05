@@ -19,7 +19,7 @@ class DashboardController extends Controller
 
         $stats = [
             'orders_total' => $user->invitations()->count(),
-            'orders_published' => $user->invitations()->where('status', Invitation::STATUS_PUBLISHED)->count(),
+            'orders_published' => $user->invitations()->where('status', Invitation::STATUS_ACTIVE)->count(),
             'orders_draft' => $user->invitations()->where('status', Invitation::STATUS_DRAFT)->count(),
             'favorites_total' => $user->favorites()->count(),
             'rsvp_total' => $user->invitations()
