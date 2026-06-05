@@ -188,7 +188,13 @@ function initBuilderStudio() {
     let currentStep = 1;
     const totalSteps = 3;
     let dressColors = Array.isArray(bootstrap.dress_colors) ? [...bootstrap.dress_colors] : [];
+    let activeDressIndex = 0;
     let rsvpEnabled = Boolean(bootstrap.rsvp_enabled ?? true);
+    let coverPreviewUrl = bootstrap.cover_image_url || null;
+    let previewMapInstance = null;
+    let previewMapMarker = null;
+    let pickerMapInstance = null;
+    let pickerMapMarker = null;
     let previewRaf = null;
     let countdownTimer = null;
 
@@ -259,21 +265,58 @@ function initBuilderStudio() {
         event_city: form.event_city?.value?.trim() || '',
         venue_name: form.venue_name?.value?.trim() || '',
         venue_address: form.venue_address?.value?.trim() || '',
+        map_lat: form.map_lat?.value || '',
+        map_lng: form.map_lng?.value || '',
         invitation_text_1: form.invitation_text_1?.value?.trim() || '',
         invitation_text_2: form.invitation_text_2?.value?.trim() || '',
         family_signature: form.family_signature?.value?.trim() || '',
     });
+
+    const activeDressColor = () => dressColors[activeDressIndex] || dressColors[0] || null;
+
+    const selectDressColor = (index) => {
+        if (!dressColors[index]) return;
+        activeDressIndex = index;
+        syncDressColors();
+        renderDressPalette();
+        renderDressPreview();
+        updateDressNote();
+        updateReviewSummary();
+    };
+
+    const updateDressNote = () => {
+        const noteEl = document.getElementById('builder-preview-dress-note');
+        const color = activeDressColor();
+        if (noteEl) {
+            noteEl.textContent = color?.note || '';
+        }
+    };
 
     const renderDressPreview = () => {
         const grid = document.getElementById('builder-preview-dress');
         if (!grid) return;
 
         grid.innerHTML = dressColors.map((color, index) => `
-            <button type="button" class="inv-dress-swatch ${index === 0 ? 'is-active' : ''}" role="listitem" aria-label="${color.name}" style="pointer-events:none">
+            <button
+                type="button"
+                class="inv-dress-swatch ${index === activeDressIndex ? 'is-active' : ''}"
+                role="listitem"
+                data-preview-dress-index="${index}"
+                aria-label="${color.name}"
+                aria-pressed="${index === activeDressIndex ? 'true' : 'false'}"
+            >
                 <span class="inv-dress-swatch__circle" style="background-color:${color.hex}"></span>
                 <span class="inv-dress-swatch__label">${color.name}</span>
             </button>
         `).join('');
+
+        grid.querySelectorAll('[data-preview-dress-index]').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                selectDressColor(Number(btn.dataset.previewDressIndex));
+            });
+        });
+
+        updateDressNote();
     };
 
     const renderDressPalette = () => {
@@ -282,11 +325,11 @@ function initBuilderStudio() {
         dressPalette.innerHTML = dressColors.map((color, index) => `
             <button
                 type="button"
-                class="builder-color-chip ${index === 0 ? 'is-active' : ''}"
+                class="builder-color-chip ${index === activeDressIndex ? 'is-active' : ''}"
                 data-color-index="${index}"
                 role="listitem"
                 aria-label="${color.name}"
-                aria-pressed="${index === 0 ? 'true' : 'false'}"
+                aria-pressed="${index === activeDressIndex ? 'true' : 'false'}"
             >
                 <span class="builder-color-chip__dot" style="background:${color.hex}"></span>
                 <span class="builder-color-chip__name">${color.name}</span>
@@ -295,19 +338,19 @@ function initBuilderStudio() {
 
         dressPalette.querySelectorAll('[data-color-index]').forEach((btn) => {
             btn.addEventListener('click', () => {
-                const index = Number(btn.dataset.colorIndex);
-                const selected = dressColors.splice(index, 1)[0];
-                dressColors.unshift(selected);
-                syncDressColors();
-                renderDressPalette();
-                schedulePreview();
+                selectDressColor(Number(btn.dataset.colorIndex));
             });
         });
     };
 
     const syncDressColors = () => {
         if (dressJsonInput) {
-            dressJsonInput.value = JSON.stringify(dressColors);
+            const ordered = [
+                dressColors[activeDressIndex],
+                ...dressColors.filter((_, index) => index !== activeDressIndex),
+            ].filter(Boolean);
+
+            dressJsonInput.value = JSON.stringify(ordered);
         }
     };
 
@@ -400,6 +443,7 @@ function initBuilderStudio() {
         renderDressPreview();
         syncRsvp();
         updateCountdown();
+        updatePreviewMap(state.map_lat, state.map_lng);
         updateReviewSummary();
     };
 
@@ -452,6 +496,10 @@ function initBuilderStudio() {
         }
 
         studio.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        if (currentStep === 3 && pickerMapInstance) {
+            window.setTimeout(() => pickerMapInstance.invalidateSize(), 350);
+        }
     };
 
     const updateReviewSummary = () => {
@@ -459,6 +507,18 @@ function initBuilderStudio() {
 
         const state = readFormState();
         const rows = profileEngine.buildReviewRows(state, rsvpEnabled);
+
+        const dress = activeDressColor();
+        const lat = form.map_lat?.value;
+        const lng = form.map_lng?.value;
+
+        if (dress) {
+            rows.splice(4, 0, ['Dress code', `${dress.name} — ${dress.note || ''}`]);
+        }
+
+        if (lat && lng) {
+            rows.push(['Xarita', `${Number(lat).toFixed(5)}, ${Number(lng).toFixed(5)}`]);
+        }
 
         reviewList.innerHTML = rows.map(([label, value]) => `
             <div class="builder-review__row">
@@ -529,17 +589,184 @@ function initBuilderStudio() {
         }
     };
 
+    const musicFileWrap = document.getElementById('music-file-wrap');
+
     const syncMusicPreset = () => {
         if (!musicPreset || !musicUrlInput || !musicUrlWrap) return;
 
         const option = musicPreset.options[musicPreset.selectedIndex];
         const isCustom = musicPreset.value === 'custom';
+        const isUpload = musicPreset.value === 'upload';
 
         musicUrlWrap.classList.toggle('hidden', !isCustom);
+        musicFileWrap?.classList.toggle('hidden', !isUpload);
 
-        if (!isCustom && option?.dataset.url) {
+        if (!isCustom && !isUpload && option?.dataset.url) {
             musicUrlInput.value = option.dataset.url;
         }
+    };
+
+    const parseCoordinate = (value) => {
+        const num = Number(value);
+        return Number.isFinite(num) ? num : null;
+    };
+
+    const syncMapInputs = (lat, lng) => {
+        if (form.map_lat) form.map_lat.value = lat ?? '';
+        if (form.map_lng) form.map_lng.value = lng ?? '';
+        schedulePreview();
+    };
+
+    const initPickerMap = () => {
+        const container = document.getElementById('builder-map-picker');
+        if (!container || typeof window.L === 'undefined') return;
+
+        const lat = parseCoordinate(form.map_lat?.value) ?? 41.311081;
+        const lng = parseCoordinate(form.map_lng?.value) ?? 69.240562;
+
+        pickerMapInstance = window.L.map(container, {
+            zoomControl: true,
+            scrollWheelZoom: true,
+        }).setView([lat, lng], 15);
+
+        window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap',
+        }).addTo(pickerMapInstance);
+
+        pickerMapMarker = window.L.marker([lat, lng], { draggable: true }).addTo(pickerMapInstance);
+
+        const onMove = (position) => {
+            syncMapInputs(position.lat.toFixed(7), position.lng.toFixed(7));
+            if (previewMapMarker && previewMapInstance) {
+                previewMapMarker.setLatLng(position);
+                previewMapInstance.setView(position, previewMapInstance.getZoom());
+            }
+        };
+
+        pickerMapMarker.on('dragend', () => onMove(pickerMapMarker.getLatLng()));
+        pickerMapInstance.on('click', (event) => {
+            pickerMapMarker.setLatLng(event.latlng);
+            onMove(event.latlng);
+        });
+
+        window.setTimeout(() => pickerMapInstance.invalidateSize(), 250);
+    };
+
+    const updatePreviewMap = (latValue, lngValue) => {
+        const container = document.getElementById('builder-preview-map');
+        if (!container || typeof window.L === 'undefined') return;
+
+        const lat = parseCoordinate(latValue);
+        const lng = parseCoordinate(lngValue);
+        const hasCoords = lat !== null && lng !== null;
+
+        container.classList.toggle('hidden', !hasCoords);
+        container.setAttribute('aria-hidden', hasCoords ? 'false' : 'true');
+
+        if (!hasCoords) return;
+
+        const position = [lat, lng];
+
+        if (!previewMapInstance) {
+            previewMapInstance = window.L.map(container, {
+                zoomControl: false,
+                dragging: false,
+                scrollWheelZoom: false,
+                doubleClickZoom: false,
+                boxZoom: false,
+                keyboard: false,
+                tap: false,
+            }).setView(position, 15);
+
+            window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; OSM',
+            }).addTo(previewMapInstance);
+
+            previewMapMarker = window.L.marker(position).addTo(previewMapInstance);
+            window.setTimeout(() => previewMapInstance.invalidateSize(), 200);
+            return;
+        }
+
+        previewMapMarker.setLatLng(position);
+        previewMapInstance.setView(position, previewMapInstance.getZoom());
+        window.setTimeout(() => previewMapInstance.invalidateSize(), 100);
+    };
+
+    const geocodeAddress = async () => {
+        const venue = form.venue_name?.value?.trim() || '';
+        const address = form.venue_address?.value?.trim() || '';
+        const city = form.event_city?.value?.trim() || '';
+        const query = [venue, address, city, 'Uzbekistan'].filter(Boolean).join(', ');
+
+        if (!query) return;
+
+        const button = document.getElementById('map-geocode-btn');
+        if (button) button.disabled = true;
+
+        try {
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query)}`,
+                { headers: { Accept: 'application/json' } }
+            );
+
+            if (!response.ok) throw new Error('Geocode failed');
+
+            const results = await response.json();
+            const hit = results?.[0];
+
+            if (!hit) throw new Error('Manzil topilmadi');
+
+            const lat = Number(hit.lat);
+            const lng = Number(hit.lon);
+
+            syncMapInputs(lat.toFixed(7), lng.toFixed(7));
+
+            if (pickerMapInstance && pickerMapMarker) {
+                pickerMapMarker.setLatLng([lat, lng]);
+                pickerMapInstance.setView([lat, lng], 16);
+            }
+        } catch {
+            window.alert('Manzil bo\'yicha joy topilmadi. Xaritadan qo\'lda belgilang.');
+        } finally {
+            if (button) button.disabled = false;
+        }
+    };
+
+    const initMediaUploads = () => {
+        const coverInput = document.getElementById('cover_image');
+        const coverPreview = document.getElementById('cover-upload-preview');
+        const coverFilename = document.getElementById('cover-filename');
+        const musicInput = document.getElementById('music_file');
+        const musicFilename = document.getElementById('music-filename');
+
+        coverInput?.addEventListener('change', () => {
+            const file = coverInput.files?.[0];
+            if (!file) return;
+
+            if (coverFilename) {
+                coverFilename.textContent = file.name;
+                coverFilename.classList.remove('hidden');
+            }
+
+            const reader = new FileReader();
+            reader.onload = () => {
+                coverPreviewUrl = reader.result;
+                if (coverPreview) {
+                    coverPreview.src = reader.result;
+                    coverPreview.classList.remove('hidden');
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+
+        musicInput?.addEventListener('change', () => {
+            const file = musicInput.files?.[0];
+            if (!file || !musicFilename) return;
+            musicFilename.textContent = file.name;
+            musicFilename.classList.remove('hidden');
+        });
     };
 
     studio.querySelectorAll('[data-preview-input]').forEach((input) => {
@@ -550,6 +777,28 @@ function initBuilderStudio() {
     form.event_at?.addEventListener('change', schedulePreview);
 
     musicPreset?.addEventListener('change', syncMusicPreset);
+
+    document.getElementById('map-geocode-btn')?.addEventListener('click', geocodeAddress);
+
+    form.map_lat?.addEventListener('change', () => {
+        const lat = parseCoordinate(form.map_lat.value);
+        const lng = parseCoordinate(form.map_lng?.value);
+        if (lat !== null && lng !== null && pickerMapMarker && pickerMapInstance) {
+            pickerMapMarker.setLatLng([lat, lng]);
+            pickerMapInstance.setView([lat, lng], pickerMapInstance.getZoom());
+        }
+        schedulePreview();
+    });
+
+    form.map_lng?.addEventListener('change', () => {
+        const lat = parseCoordinate(form.map_lat?.value);
+        const lng = parseCoordinate(form.map_lng.value);
+        if (lat !== null && lng !== null && pickerMapMarker && pickerMapInstance) {
+            pickerMapMarker.setLatLng([lat, lng]);
+            pickerMapInstance.setView([lat, lng], pickerMapInstance.getZoom());
+        }
+        schedulePreview();
+    });
 
     rsvpToggle?.addEventListener('click', () => {
         rsvpEnabled = !rsvpEnabled;
@@ -731,6 +980,8 @@ function initBuilderStudio() {
     syncDressColors();
     syncRsvp();
     syncMusicPreset();
+    initMediaUploads();
+    initPickerMap();
     setStep(1);
     schedulePreview();
 

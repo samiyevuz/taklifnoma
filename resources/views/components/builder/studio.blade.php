@@ -73,6 +73,7 @@
                 action="{{ $b['action'] }}"
                 method="POST"
                 class="builder-form"
+                enctype="multipart/form-data"
                 novalidate
             >
                 @csrf
@@ -136,13 +137,20 @@
                         <h2 class="builder-panel-title">{{ __('builder.tab_media') }}</h2>
                         <p class="builder-panel-desc">{{ __('builder.tab_media_desc') }}</p>
 
-                        <div class="builder-upload-zone" aria-label="{{ __('builder.cover_upload') }}">
+                        <label class="builder-upload-zone" id="cover-upload-zone" for="cover_image">
+                            <input type="file" id="cover_image" name="cover_image" accept="image/jpeg,image/png,image/webp" class="sr-only">
                             <div class="builder-upload-zone__icon" aria-hidden="true">
                                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                             </div>
                             <p class="builder-upload-zone__title">{{ __('builder.cover_upload') }}</p>
                             <p class="builder-upload-zone__hint">{{ __('builder.cover_upload_hint') }}</p>
-                        </div>
+                            <p class="builder-upload-zone__filename hidden" id="cover-filename"></p>
+                            <img src="" alt="" class="builder-upload-preview hidden" id="cover-upload-preview">
+                        </label>
+                        @if (!empty($b['cover_image_url']))
+                            <p class="builder-field-hint mt-2">{{ __('builder.cover_current') }}</p>
+                            <img src="{{ $b['cover_image_url'] }}" alt="" class="builder-upload-preview mt-2" id="cover-current-preview">
+                        @endif
 
                         <div class="builder-field mt-5">
                             <label for="music_preset">{{ __('builder.music_preset') }}</label>
@@ -157,6 +165,13 @@
                             <input type="url" id="music_url" name="music_url" value="{{ old('music_url', $b['music_url']) }}" placeholder=" ">
                             <label for="music_url">{{ __('builder.music_url') }}</label>
                             <p class="builder-field-hint">{!! __('builder.music_hint') !!}</p>
+                        </div>
+
+                        <div class="builder-field mt-4 hidden" id="music-file-wrap">
+                            <label for="music_file" class="builder-field-label">{{ __('builder.music_file') }}</label>
+                            <input type="file" id="music_file" name="music_file" accept="audio/mpeg,audio/mp3,audio/mp4,audio/aac,audio/ogg,audio/wav,.mp3,.m4a,.aac,.ogg,.wav" class="builder-input w-full">
+                            <p class="builder-field-hint">{{ __('builder.music_file_hint') }}</p>
+                            <p class="builder-upload-zone__filename hidden" id="music-filename"></p>
                         </div>
 
                         <div class="builder-field builder-field--float mt-4">
@@ -202,14 +217,20 @@
                             <div class="builder-color-palette" id="dress-palette" role="list"></div>
                         </div>
 
-                        <div class="builder-grid-2 mt-6">
-                            <div class="builder-field builder-field--float">
-                                <input type="number" step="any" id="map_lat" name="map_lat" value="{{ old('map_lat', $b['map_lat']) }}" placeholder=" ">
-                                <label for="map_lat">{{ __('builder.map_lat') }}</label>
-                            </div>
-                            <div class="builder-field builder-field--float">
-                                <input type="number" step="any" id="map_lng" name="map_lng" value="{{ old('map_lng', $b['map_lng']) }}" placeholder=" ">
-                                <label for="map_lng">{{ __('builder.map_lng') }}</label>
+                        <div class="mt-6">
+                            <p class="builder-field-label">{{ __('builder.map_title') }}</p>
+                            <p class="builder-panel-desc mb-3">{{ __('builder.map_desc') }}</p>
+                            <button type="button" class="btn-outline-luxury text-sm mb-3" id="map-geocode-btn">{{ __('builder.map_geocode') }}</button>
+                            <div id="builder-map-picker" class="builder-map-picker" aria-label="{{ __('builder.map_title') }}"></div>
+                            <div class="builder-grid-2 mt-3">
+                                <div class="builder-field builder-field--float">
+                                    <input type="number" step="any" id="map_lat" name="map_lat" value="{{ old('map_lat', $b['map_lat']) }}" placeholder=" " data-preview-input>
+                                    <label for="map_lat">{{ __('builder.map_lat') }}</label>
+                                </div>
+                                <div class="builder-field builder-field--float">
+                                    <input type="number" step="any" id="map_lng" name="map_lng" value="{{ old('map_lng', $b['map_lng']) }}" placeholder=" " data-preview-input>
+                                    <label for="map_lng">{{ __('builder.map_lng') }}</label>
+                                </div>
                             </div>
                         </div>
 
@@ -342,3 +363,8 @@
         </div>
     </div>
 </div>
+
+@push('head')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+@endpush

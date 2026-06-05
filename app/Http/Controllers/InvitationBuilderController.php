@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreInvitationRequest;
 use App\Models\Invitation;
+use App\Services\InvitationMediaService;
 use App\Services\InvitationService;
 use App\Services\Rsvp\RsvpDashboardService;
 use App\Support\BuilderEventProfile;
@@ -17,6 +18,7 @@ class InvitationBuilderController extends Controller
 {
     public function __construct(
         private readonly InvitationService $invitationService,
+        private readonly InvitationMediaService $mediaService,
         private readonly RsvpDashboardService $rsvpDashboardService,
     ) {}
 
@@ -53,6 +55,8 @@ class InvitationBuilderController extends Controller
             $data,
             $request->boolean('publish')
         );
+
+        $this->mediaService->sync($request, $invitation);
 
         return redirect()
             ->route('builder.edit', $invitation)
@@ -99,6 +103,8 @@ class InvitationBuilderController extends Controller
             'invitation_text_2' => $source->invitation_text_2 ?? '',
             'family_signature' => $source->family_signature ?? '',
             'music_url' => $source->music_url ?? '',
+            'cover_image' => $source->cover_image ?? '',
+            'cover_image_url' => filled($source->cover_image ?? null) ? asset($source->cover_image) : '',
             'dress_colors' => $source->dress_colors ?? InvitationDefaults::dressColors(),
             'rsvp_enabled' => $source->rsvp_enabled ?? true,
             'slug' => $invitation?->slug,
@@ -130,6 +136,7 @@ class InvitationBuilderController extends Controller
             : null;
 
         $this->invitationService->update($invitation, $request->validated(), $publish);
+        $this->mediaService->sync($request, $invitation);
 
         return redirect()
             ->route('builder.edit', $invitation)

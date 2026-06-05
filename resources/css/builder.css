@@ -1343,4 +1343,82 @@
         background: rgba(255, 255, 255, 0.04);
         border-color: rgba(255, 255, 255, 0.08);
     }
+
+    .builder-preview-page .inv-countdown {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.35rem;
+        margin-top: 1.25rem;
+    }
+
+    .builder-preview-page .inv-countdown__item {
+        min-width: 0;
+        padding: 0.55rem 0.15rem;
+    }
+
+    .builder-preview-page .inv-countdown__value {
+        font-size: 1.05rem;
+        line-height: 1.1;
+    }
+
+    .builder-preview-page .inv-countdown__label {
+        font-size: 0.5rem;
+        letter-spacing: 0.06em;
+        line-height: 1.2;
+        word-break: break-word;
+    }
+
+    .builder-preview-interactive {
+        pointer-events: auto;
+    }
+
+    .builder-preview-scaler .builder-preview-interactive {
+        pointer-events: auto;
+    }
+
+    .builder-map-picker {
+        height: 16rem;
+        border-radius: 1rem;
+        overflow: hidden;
+        border: 1px solid rgba(201, 162, 39, 0.25);
+        z-index: 1;
+    }
+
+    .builder-preview-map {
+        height: 9rem;
+        margin-top: 0.85rem;
+        border-radius: 0.85rem;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+    }
+
+    .builder-upload-zone {
+        cursor: pointer;
+        transition: border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .builder-upload-zone:hover {
+        border-color: rgba(201, 162, 39, 0.55);
+        background: rgba(201, 162, 39, 0.04);
+    }
+
+    .builder-upload-preview {
+        width: 100%;
+        max-width: 12rem;
+        border-radius: 0.85rem;
+        object-fit: cover;
+        aspect-ratio: 3 / 4;
+        margin-top: 0.65rem;
+    }
+
+    .builder-upload-zone__filename {
+        margin-top: 0.35rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--color-luxury-emerald);
+    }
+
+    .builder-color-chip.is-active {
+        border-color: var(--color-luxury-gold);
+        box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.2);
+    }
 }

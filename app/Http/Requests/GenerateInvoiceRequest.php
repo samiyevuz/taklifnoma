@@ -64,6 +64,8 @@ class GenerateInvoiceRequest extends FormRequest
             'invitation_text_2' => ['nullable', 'string', 'max:1000'],
             'family_signature' => ['nullable', 'string', 'max:150'],
             'music_url' => ['nullable', 'string', 'max:500'],
+            'cover_image' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
+            'music_file' => ['nullable', 'file', 'mimes:mp3,m4a,aac,ogg,wav', 'max:15360'],
             'dress_colors' => ['nullable', 'array', 'max:8'],
             'dress_colors.*.name' => ['required_with:dress_colors', 'string', 'max:40'],
             'dress_colors.*.hex' => ['required_with:dress_colors', 'string', 'max:7'],

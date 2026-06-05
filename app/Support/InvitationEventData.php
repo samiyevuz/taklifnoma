@@ -30,6 +30,7 @@ class InvitationEventData
             ],
             'media' => [
                 'music_url' => $payload['music_url'] ?? null,
+                'cover_image' => $payload['cover_image'] ?? null,
                 'template_blade' => $payload['template'] ?? null,
             ],
             'dress_colors' => $payload['dress_colors'] ?? [],
@@ -53,6 +54,7 @@ class InvitationEventData
             'invitation_text_2' => Arr::get($eventData, 'copy.invitation_text_2'),
             'family_signature' => Arr::get($eventData, 'copy.family_signature'),
             'music_url' => Arr::get($eventData, 'media.music_url'),
+            'cover_image' => Arr::get($eventData, 'media.cover_image'),
             'template' => Arr::get($eventData, 'media.template_blade'),
             'dress_colors' => $eventData['dress_colors'] ?? [],
             'rsvp_enabled' => (bool) ($eventData['rsvp_enabled'] ?? true),
@@ -77,6 +79,7 @@ class InvitationEventData
             'invitation_text_2' => $invitation->invitation_text_2,
             'family_signature' => $invitation->family_signature,
             'music_url' => $invitation->music_url,
+            'cover_image' => $invitation->cover_image,
             'template' => $invitation->template,
             'dress_colors' => $invitation->dress_colors,
             'rsvp_enabled' => $invitation->rsvp_enabled,

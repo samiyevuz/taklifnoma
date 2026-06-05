@@ -80,7 +80,8 @@
                                 <div class="inv-reveal is-visible">
                                     <p class="inv-section-label">{{ __('invitation.dress_code') }}</p>
                                     <h2 class="inv-section-title">{{ __('invitation.dress_code_title') }}</h2>
-                                    <div class="inv-dress-grid" id="builder-preview-dress" role="list"></div>
+                                    <div class="inv-dress-grid builder-preview-interactive" id="builder-preview-dress" role="list"></div>
+                                    <p class="inv-dress-note" id="builder-preview-dress-note" aria-live="polite"></p>
                                 </div>
                             </section>
 
@@ -101,6 +102,7 @@
                                     <div class="inv-location-card inv-glass">
                                         <p class="font-serif text-lg font-semibold text-inv-ink" data-preview="venue_name"></p>
                                         <p class="mt-2 text-sm text-inv-ink-soft" data-preview="venue_address"></p>
+                                        <div id="builder-preview-map" class="builder-preview-map builder-preview-interactive hidden" aria-hidden="true"></div>
                                     </div>
                                 </div>
                             </section>

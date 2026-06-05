@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GenerateInvoiceRequest;
 use App\Models\PaymentInvoice;
+use App\Services\InvitationMediaService;
 use App\Services\Payments\ClickMerchantService;
 use App\Services\Payments\PaymentCheckoutService;
 use App\Services\Payments\PaymeMerchantService;
@@ -15,6 +16,7 @@ class PaymentController extends Controller
 {
     public function __construct(
         private readonly PaymentCheckoutService $checkoutService,
+        private readonly InvitationMediaService $mediaService,
         private readonly PaymeMerchantService $paymeMerchantService,
         private readonly ClickMerchantService $clickMerchantService,
     ) {}
@@ -28,6 +30,10 @@ class PaymentController extends Controller
 
         $invoice = $result['invoice'];
         $checkout = $result['checkout'];
+
+        if ($invoice->invitation) {
+            $this->mediaService->sync($request, $invoice->invitation);
+        }
 
         return response()->json([
             'success' => true,

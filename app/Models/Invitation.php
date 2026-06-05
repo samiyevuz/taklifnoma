@@ -50,6 +50,7 @@ class Invitation extends Model
         'family_signature',
         'dress_colors',
         'music_url',
+        'cover_image',
         'rsvp_enabled',
         'published_at',
         'expires_at',
@@ -99,7 +100,7 @@ class Invitation extends Model
             if ($invitation->isDirty([
                 'profile_meta', 'event_at', 'event_city', 'venue_name', 'venue_address',
                 'map_lat', 'map_lng', 'invitation_text_1', 'invitation_text_2',
-                'family_signature', 'music_url', 'dress_colors', 'rsvp_enabled', 'template',
+                'family_signature', 'music_url', 'cover_image', 'dress_colors', 'rsvp_enabled', 'template',
             ])) {
                 $invitation->event_data = InvitationEventData::fromInvitation($invitation);
             }

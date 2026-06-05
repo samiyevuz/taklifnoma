@@ -35,6 +35,11 @@ class InvitationDefaults
                 'label' => 'O\'z musiqam (MP3 havola)',
                 'url' => '',
             ],
+            [
+                'id' => 'upload',
+                'label' => 'Kompyuterdan yuklash (MP3)',
+                'url' => '',
+            ],
         ];
     }
 
