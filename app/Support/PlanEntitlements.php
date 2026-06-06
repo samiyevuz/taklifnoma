@@ -74,7 +74,7 @@ class PlanEntitlements
                 'cover_upload' => true,
                 'story_gallery' => true,
                 'custom_slug' => true,
-                'custom_domain' => true,
+                'custom_domain' => false,
                 'rsvp_enabled' => true,
                 'map_enabled' => true,
                 'telegram_notifications' => true,
@@ -126,10 +126,6 @@ class PlanEntitlements
             $labels[] = 'Maxsus havola';
         }
 
-        if ($plan['custom_domain']) {
-            $labels[] = 'Maxsus domen';
-        }
-
         if ($plan['telegram_notifications']) {
             $labels[] = 'Telegram xabarnoma';
         }
@@ -165,9 +161,7 @@ class PlanEntitlements
         $data['plan_tier'] = $plan['tier'];
         $data['guest_limit'] = $plan['guest_limit'];
 
-        if (! $plan['custom_domain']) {
-            $data['custom_domain'] = null;
-        }
+        $data['custom_domain'] = null;
 
         if (! $plan['music_enabled']) {
             $data['music_url'] = null;
@@ -198,10 +192,6 @@ class PlanEntitlements
 
         if (! $plan['custom_slug'] && isset($data['slug']) && $invitation && $data['slug'] !== $invitation->slug) {
             $errors['slug'] = 'Tanlangan tarifda maxsus havola mavjud emas. Premium yoki yuqori tarifni tanlang.';
-        }
-
-        if (! $plan['custom_domain'] && filled($data['custom_domain'] ?? null)) {
-            $errors['custom_domain'] = 'Maxsus domen faqat Royal VIP tarifida mavjud.';
         }
 
         if (! $plan['music_enabled'] && (filled($data['music_url'] ?? null) || ! empty($data['music_file']))) {

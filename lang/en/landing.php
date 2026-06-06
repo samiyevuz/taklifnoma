@@ -68,7 +68,7 @@ return [
     'pricing_recommended' => 'Recommended',
     'pricing_starter_desc' => '30 guests · 1 template',
     'pricing_premium_desc' => 'Unlimited guests · RSVP · Music',
-    'pricing_vip_desc' => 'Custom domain · Designer support',
+    'pricing_vip_desc' => 'Unlimited guests · Love story gallery · VIP effects',
     'pricing_cta' => 'Get Started',
 
     'footer_tagline' => 'Uzbekistan\'s most elegant digital invitation platform for weddings and premium events.',

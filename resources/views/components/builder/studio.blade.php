@@ -354,29 +354,6 @@
                             <p class="builder-field-hint" id="builder-slug-hint">{{ __('builder.slug_plan_hint') }}</p>
                         </div>
 
-                        <div class="builder-field mt-4 hidden" id="builder-custom-domain-wrap">
-                            <label class="builder-field-label" for="custom_domain_subdomain">{{ __('builder.custom_domain') }}</label>
-                            <p class="builder-field-explainer">{{ __('builder.custom_domain_explainer') }}</p>
-                            <div class="builder-composite-input">
-                                <span class="builder-composite-input__affix" id="custom_domain_prefix">{{ $b['custom_domain_prefix'] ?? 'nikoh.' }}</span>
-                                <input
-                                    type="text"
-                                    id="custom_domain_subdomain"
-                                    name="custom_domain_subdomain"
-                                    value="{{ old('custom_domain_subdomain', $b['custom_domain_subdomain'] ?? '') }}"
-                                    pattern="[a-z0-9\-]+"
-                                    placeholder="{{ __('builder.custom_domain_placeholder') }}"
-                                    autocomplete="off"
-                                >
-                                <span class="builder-composite-input__affix" id="custom_domain_suffix">{{ $b['custom_domain_suffix'] ?? '.uz' }}</span>
-                            </div>
-                            <input type="hidden" id="custom_domain" name="custom_domain" value="{{ old('custom_domain', $b['custom_domain'] ?? '') }}">
-                            <p class="builder-url-preview" id="custom-domain-preview" aria-live="polite"></p>
-                            <p class="builder-field-hint">
-                                {{ __('builder.custom_domain_hint', ['example' => $b['custom_domain_example'] ?? 'nikoh.farhod.uz']) }}
-                            </p>
-                        </div>
-
                         <div class="builder-plan-notice glass-luxury mt-4" id="builder-plan-notice" aria-live="polite"></div>
 
                         <div class="builder-review glass-luxury mt-6" id="builder-review">

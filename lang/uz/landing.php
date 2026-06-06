@@ -105,7 +105,7 @@ return [
 
     'pricing_label' => 'Narxlar',
     'pricing_title' => 'Har Bir Byudjet Uchun Premium Tajriba',
-    'pricing_desc' => 'Bepul sinovdan boshlang. Professional tadbirlar uchun VIP paketlar mavjud — cheklovsiz mehmon, musiqa va maxsus domen.',
+    'pricing_desc' => 'Bepul sinovdan boshlang. Professional tadbirlar uchun VIP paketlar mavjud — cheklovsiz mehmon, musiqa va premium effektlar.',
     'pricing_scroll' => '← Suring →',
     'pricing_tier_starter' => 'Boshlang\'ich',
     'pricing_tier_premium' => 'Premium',
@@ -114,7 +114,7 @@ return [
     'pricing_recommended' => 'Tavsiya',
     'pricing_starter_desc' => '30 mehmon · Asosiy shablon',
     'pricing_premium_desc' => '200 mehmon · Musiqa · Maxsus havola',
-    'pricing_vip_desc' => 'Cheksiz mehmon · Maxsus domen · VIP',
+    'pricing_vip_desc' => 'Cheksiz mehmon · Sevgi tarixi · VIP effektlar',
     'pricing_cta' => 'Hoziroq Boshlash',
 
     'footer_tagline' => 'O\'zbekistondagi eng nafis raqamli taklifnoma platformasi. To\'y, uzatish va maxsus tadbirlar uchun premium tajriba.',

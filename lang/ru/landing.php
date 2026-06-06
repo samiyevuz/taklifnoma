@@ -68,7 +68,7 @@ return [
     'pricing_recommended' => 'Рекомендуем',
     'pricing_starter_desc' => '30 гостей · 1 шаблон',
     'pricing_premium_desc' => 'Безлимит гостей · RSVP · Музыка',
-    'pricing_vip_desc' => 'Свой домен · Помощь дизайнера',
+    'pricing_vip_desc' => 'Безлимит гостей · Галерея истории · VIP эффекты',
     'pricing_cta' => 'Начать сейчас',
 
     'footer_tagline' => 'Самая изысканная платформа цифровых приглашений в Узбекистане.',

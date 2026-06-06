@@ -29,7 +29,7 @@
             'role' => 'Korporativ tadbir · Andijon',
             'initials' => 'BN',
             'gradient' => 'from-royal-700 to-luxury-gold',
-            'quote' => 'VIP paket bilan maxsus domen olish imkoniyati biznesimiz uchun professional ko\'rinish berdi. Qo\'llab-quvvatlash jamoasi tez javob beradi.',
+            'quote' => 'VIP paket bilan premium effektlar va sevgi tarixi galereyasi biznesimiz uchun professional ko\'rinish berdi. Qo\'llab-quvvatlash jamoasi tez javob beradi.',
             'rating' => 5,
         ],
     ];

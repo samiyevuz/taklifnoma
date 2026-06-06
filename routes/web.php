@@ -31,7 +31,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
 
 Route::get('/', LandingController::class);
-Route::post('/rsvp', [RsvpController::class, 'storeFromDomain']);
 
 Route::get('/ui-kit', function () {
     return view('pages.ui-kit-preview', [

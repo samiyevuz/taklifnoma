@@ -42,7 +42,7 @@ return [
         'classic' => 'Classic — 30 mehmon',
         'premium' => 'Premium — 200 mehmon, musiqa',
         'luxury' => 'Luxury — 500 mehmon, animatsiya',
-        'royal' => 'Royal VIP — cheksiz, maxsus domen',
+        'royal' => 'Royal VIP — cheksiz mehmon',
     ],
     'faqs' => 'Savol-javoblar',
     'faqs_title' => 'FAQ boshqaruvi',

@@ -166,18 +166,9 @@ class Invitation extends Model
         return url('/l/'.$slug);
     }
 
-    public function customDomainUrl(): ?string
-    {
-        if (! filled($this->custom_domain) || ! $this->allowsCustomDomain()) {
-            return null;
-        }
-
-        return 'https://'.strtolower($this->custom_domain);
-    }
-
     public function primaryShareUrl(): string
     {
-        return $this->customDomainUrl() ?? $this->publicUrl();
+        return $this->publicUrl();
     }
 
     public function defaultMusicUrl(): string
@@ -308,11 +299,6 @@ class Invitation extends Model
     public function allowsMusic(): bool
     {
         return (bool) $this->entitlements()['music_enabled'];
-    }
-
-    public function allowsCustomDomain(): bool
-    {
-        return (bool) $this->entitlements()['custom_domain'];
     }
 
     public function allowsStoryGallery(): bool

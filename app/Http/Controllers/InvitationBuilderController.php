@@ -9,7 +9,6 @@ use App\Services\InvitationService;
 use App\Services\Rsvp\RsvpDashboardService;
 use App\Support\BuilderEventProfile;
 use App\Support\ComplimentaryAccess;
-use App\Support\CustomDomainFormatter;
 use App\Support\InvitationDefaults;
 use App\Support\TemplateCatalog;
 use App\Support\PlanEntitlements;
@@ -98,8 +97,6 @@ class InvitationBuilderController extends Controller
             ?? TemplateVariantCatalog::defaultForFamily($slug);
         $siteHost = parse_url(config('app.url'), PHP_URL_HOST) ?: 'taklifnoma.net';
         $defaultMusicUrl = asset('audio/romantic-wedding.mp3');
-        $storedDomain = $invitation?->custom_domain ?? '';
-
         return [
             'template_slug' => $slug,
             'template_variant' => $selectedVariant['id'] ?? null,
@@ -148,11 +145,6 @@ class InvitationBuilderController extends Controller
             'plan_entitlements' => $selectedVariant['entitlements'] ?? PlanEntitlements::forTheme('premium'),
             'guest_limit' => $selectedVariant['guest_limit'] ?? null,
             'guest_limit_label' => $selectedVariant['guest_limit_label'] ?? '',
-            'custom_domain' => $storedDomain,
-            'custom_domain_subdomain' => CustomDomainFormatter::extractSubdomain($storedDomain, $slug),
-            'custom_domain_prefix' => CustomDomainFormatter::prefix($slug),
-            'custom_domain_suffix' => CustomDomainFormatter::suffix(),
-            'custom_domain_example' => CustomDomainFormatter::example($slug),
             'slug_host' => $siteHost,
             'music_presets' => InvitationDefaults::musicPresets(),
             'default_music_url' => asset('audio/romantic-wedding.mp3'),

@@ -246,12 +246,7 @@ function initBuilderStudio() {
     const checkoutPrice = document.getElementById('checkout-price');
     const checkoutTemplate = document.getElementById('checkout-template');
     const slugInput = document.getElementById('slug');
-    const customDomainSubInput = document.getElementById('custom_domain_subdomain');
-    const customDomainHidden = document.getElementById('custom_domain');
-    const customDomainPrefixEl = document.getElementById('custom_domain_prefix');
-    const customDomainSuffixEl = document.getElementById('custom_domain_suffix');
     const slugUrlPreview = document.getElementById('slug-url-preview');
-    const customDomainPreview = document.getElementById('custom-domain-preview');
     let slugManuallyEdited = Boolean(slugInput?.value?.trim());
     const previewPage = document.getElementById('builder-preview');
     const previewPhone = document.getElementById('builder-phone');
@@ -570,11 +565,6 @@ function initBuilderStudio() {
             rows.push(['Havola', `${siteHost}/l/${slugValue}`]);
         }
 
-        syncCustomDomain();
-        if (customDomainHidden?.value) {
-            rows.push(['Maxsus domen', customDomainHidden.value]);
-        }
-
         reviewList.innerHTML = rows.map(([label, value]) => `
             <div class="builder-review__row">
                 <dt>${label}</dt>
@@ -589,31 +579,6 @@ function initBuilderStudio() {
         .replace(/[\u0300-\u036f]/g, '')
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-+|-+$/g, '') || 'taklifnoma';
-
-    const syncCustomDomain = () => {
-        if (!customDomainSubInput || !customDomainHidden) return;
-
-        const prefix = (customDomainPrefixEl?.textContent || '').trim();
-        const suffix = (customDomainSuffixEl?.textContent || '').trim();
-        const sub = customDomainSubInput.value
-            .trim()
-            .toLowerCase()
-            .replace(/[^a-z0-9-]+/g, '-')
-            .replace(/^-+|-+$/g, '');
-
-        if (customDomainSubInput.value !== sub) {
-            customDomainSubInput.value = sub;
-        }
-
-        const fullDomain = sub ? `${prefix}${sub}${suffix}` : '';
-        customDomainHidden.value = fullDomain;
-
-        if (customDomainPreview) {
-            customDomainPreview.textContent = fullDomain
-                ? `→ ${fullDomain}`
-                : '';
-        }
-    };
 
     const syncSlugPreview = () => {
         if (!slugUrlPreview || !slugInput) return;
@@ -640,7 +605,6 @@ function initBuilderStudio() {
         syncDressColors();
         syncRsvp();
         syncMusicPreset();
-        syncCustomDomain();
         syncSlugPreview();
     };
 
@@ -735,7 +699,7 @@ function initBuilderStudio() {
             case 'luxury':
                 return `Luxury tarif: ${limit} mehmongacha. Kinematik animatsiya, musiqa va rasm galereyasi mavjud.`;
             case 'royal':
-                return 'Royal VIP: cheksiz mehmon, maxsus domen, sevgi tarixi galereyasi va VIP effektlar.';
+                return 'Royal VIP: cheksiz mehmon, sevgi tarixi galereyasi va VIP effektlar.';
             default:
                 return `Premium tarif: ${limit} mehmongacha. Musiqa va maxsus havola mavjud.`;
         }
@@ -743,7 +707,6 @@ function initBuilderStudio() {
 
     const syncPlanEntitlements = (entitlements = {}) => {
         const slugWrap = document.getElementById('builder-slug-wrap');
-        const customDomainWrap = document.getElementById('builder-custom-domain-wrap');
         const planNotice = document.getElementById('builder-plan-notice');
         const musicPresetField = musicPreset?.closest('.builder-field');
         const allowsMusic = Boolean(entitlements.music_enabled);
@@ -752,13 +715,6 @@ function initBuilderStudio() {
             slugInput.disabled = !entitlements.custom_slug;
         }
         slugWrap?.classList.toggle('is-locked', !entitlements.custom_slug);
-
-        customDomainWrap?.classList.toggle('hidden', !entitlements.custom_domain);
-        customDomainWrap?.classList.toggle('is-locked', !entitlements.custom_domain);
-
-        if (customDomainSubInput) {
-            customDomainSubInput.disabled = !entitlements.custom_domain;
-        }
 
         musicPresetField?.classList.toggle('hidden', !allowsMusic);
         musicUrlWrap?.classList.toggle('hidden', !allowsMusic || musicPreset?.value === 'upload');
@@ -925,6 +881,28 @@ function initBuilderStudio() {
         document.body.style.overflow = '';
     };
 
+    const pruneFormDataFiles = (formData) => {
+        const shouldIncludeMusic = musicPreset?.value === 'upload';
+        const musicFileInput = document.getElementById('music_file');
+
+        if (!shouldIncludeMusic || !musicFileInput?.files?.[0]) {
+            formData.delete('music_file');
+        }
+
+        const coverInput = document.getElementById('cover_image');
+        if (!coverInput?.files?.[0]) {
+            formData.delete('cover_image');
+        }
+
+        document.querySelectorAll('[data-story-slot]').forEach((slotEl) => {
+            const slotKey = slotEl.dataset.storySlot;
+            const input = document.getElementById(`story_image_${slotKey}`);
+            if (!input?.files?.[0]) {
+                formData.delete(`story_image_${slotKey}`);
+            }
+        });
+    };
+
     const submitForm = (publish) => {
         if (publishInput) publishInput.value = publish ? '1' : '0';
         prepareFormForSubmit();
@@ -960,6 +938,12 @@ function initBuilderStudio() {
 
         musicUrlWrap.classList.toggle('hidden', !isCustom);
         musicFileWrap?.classList.toggle('hidden', !isUpload);
+
+        const musicFileInput = document.getElementById('music_file');
+        if (!isUpload && musicFileInput) {
+            musicFileInput.value = '';
+            document.getElementById('music-filename')?.classList.add('hidden');
+        }
 
         if (!isCustom && !isUpload && option?.dataset.url) {
             musicUrlInput.value = option.dataset.url;
@@ -1170,11 +1154,6 @@ function initBuilderStudio() {
         schedulePreview();
     });
 
-    customDomainSubInput?.addEventListener('input', () => {
-        syncCustomDomain();
-        schedulePreview();
-    });
-
     studio.querySelectorAll('[data-preview-input]').forEach((input) => {
         input.addEventListener('input', () => {
             schedulePreview();
@@ -1295,6 +1274,7 @@ function initBuilderStudio() {
         const formData = new FormData(form);
         // Edit mode adds _method=PUT for builder.update — must not leak to payments/invoice.
         formData.delete('_method');
+        pruneFormDataFiles(formData);
         formData.append('payment_provider', provider);
 
         if (payBtn) payBtn.disabled = true;
@@ -1406,7 +1386,6 @@ function initBuilderStudio() {
         }
     }
 
-    syncCustomDomain();
     syncSlugPreview();
     suggestSlugFromProfile();
 

@@ -55,6 +55,7 @@ return [
     'story_moment_label' => 'Воспоминание :num',
     'story_moment_hint' => 'Добавьте фото важного момента и короткую подпись.',
     'story_caption' => 'Подпись (например: 2019 — Знакомство)',
+    'music_file_invalid' => 'Неверный аудиофайл. Загрузите MP3, M4A, AAC, OGG или WAV.',
     'cover_upload_hint' => 'JPG или PNG, рекомендуется 1200×1600. Скоро будет доступно.',
     'dress_palette' => 'Цвета дресс-кода',
     'dress_palette_desc' => 'Выберите цвет и задайте приоритет.',

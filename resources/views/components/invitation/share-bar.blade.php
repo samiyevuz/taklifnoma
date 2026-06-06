@@ -6,10 +6,7 @@
 
 @if ($invitation->isPublished())
     @php
-        $primaryUrl = $invitation->primaryShareUrl();
-        $platformUrl = $invitation->publicUrl();
-        $customUrl = $invitation->customDomainUrl();
-        $showBoth = $showPlatformLink && $customUrl && $customUrl !== $platformUrl;
+        $shareUrl = $invitation->publicUrl();
     @endphp
 
     <div class="share-bar {{ $compact ? 'share-bar--compact' : '' }}" data-copy-link-root>
@@ -26,16 +23,14 @@
             </div>
         </div>
 
-        <div class="share-bar__group {{ $showBoth ? '' : 'share-bar__group--single' }}">
+        <div class="share-bar__group share-bar__group--single">
             <div class="share-bar__field">
-                <label class="share-bar__field-label">
-                    {{ $customUrl ? __('share.primary_custom') : __('share.primary') }}
-                </label>
+                <label class="share-bar__field-label">{{ __('share.primary') }}</label>
                 <div class="share-bar__row">
                     <input
                         type="text"
                         class="share-bar__input"
-                        value="{{ $primaryUrl }}"
+                        value="{{ $shareUrl }}"
                         readonly
                         data-copy-target
                         aria-label="{{ __('share.primary') }}"
@@ -49,39 +44,11 @@
                     >
                         {{ __('share.copy') }}
                     </button>
-                    <a href="{{ $primaryUrl }}" target="_blank" rel="noopener" class="share-bar__btn share-bar__btn--open">
+                    <a href="{{ $shareUrl }}" target="_blank" rel="noopener" class="share-bar__btn share-bar__btn--open">
                         {{ __('share.open') }}
                     </a>
                 </div>
             </div>
-
-            @if ($showBoth)
-                <div class="share-bar__field">
-                    <label class="share-bar__field-label">{{ __('share.platform') }}</label>
-                    <div class="share-bar__row">
-                        <input
-                            type="text"
-                            class="share-bar__input"
-                            value="{{ $platformUrl }}"
-                            readonly
-                            data-copy-target
-                            aria-label="{{ __('share.platform') }}"
-                        >
-                        <button
-                            type="button"
-                            class="share-bar__btn share-bar__btn--copy"
-                            data-copy-btn
-                            data-copy-default="{{ __('share.copy') }}"
-                            data-copy-success="{{ __('share.copied') }}"
-                        >
-                            {{ __('share.copy') }}
-                        </button>
-                        <a href="{{ $platformUrl }}" target="_blank" rel="noopener" class="share-bar__btn share-bar__btn--open">
-                            {{ __('share.open') }}
-                        </a>
-                    </div>
-                </div>
-            @endif
         </div>
     </div>
 @endif

@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Support\BuilderEventProfile;
-use App\Support\CustomDomainFormatter;
 use App\Support\TemplateCatalog;
 use App\Support\PlanEntitlements;
+use App\Support\InvitationUploadRules;
 use App\Support\StoryGallerySlots;
 use App\Support\TemplateVariantCatalog;
 use Illuminate\Foundation\Http\FormRequest;
@@ -38,22 +38,7 @@ class StoreInvitationRequest extends FormRequest
             'profile_meta' => $normalized['profile_meta'],
         ]);
 
-        $this->mergeCustomDomain($slug);
-    }
-
-    private function mergeCustomDomain(string $templateSlug): void
-    {
-        if (! $this->has('custom_domain_subdomain')) {
-            return;
-        }
-
-        $subdomain = trim((string) $this->input('custom_domain_subdomain'));
-
-        $this->merge([
-            'custom_domain' => $subdomain !== ''
-                ? CustomDomainFormatter::assemble($templateSlug, $subdomain)
-                : null,
-        ]);
+        $this->merge(['custom_domain' => null]);
     }
 
     public function rules(): array
@@ -76,7 +61,7 @@ class StoreInvitationRequest extends FormRequest
             'family_signature' => ['nullable', 'string', 'max:150'],
             'music_url' => ['nullable', 'string', 'max:500'],
             'cover_image' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
-            'music_file' => ['nullable', 'file', 'mimes:mp3,m4a,aac,ogg,wav', 'max:15360'],
+            'music_file' => InvitationUploadRules::musicFile(),
             'story_caption_primary' => ['nullable', 'string', 'max:120'],
             'story_caption_secondary' => ['nullable', 'string', 'max:120'],
             'story_caption_moment_0' => ['nullable', 'string', 'max:120'],
@@ -102,8 +87,6 @@ class StoreInvitationRequest extends FormRequest
             'publish' => ['sometimes', 'boolean'],
             'template_slug' => ['nullable', 'string', Rule::in(TemplateCatalog::slugs())],
             'template_variant' => ['nullable', 'string', 'max:80'],
-            'custom_domain' => ['nullable', 'string', 'max:120', 'regex:/^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}$/i'],
-            'custom_domain_subdomain' => ['nullable', 'string', 'max:63', 'regex:/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i'],
             'template' => [
                 'nullable',
                 'string',
@@ -168,14 +151,6 @@ class StoreInvitationRequest extends FormRequest
                 }
             }
 
-            if ($this->filled('custom_domain')) {
-                $domain = strtolower($this->input('custom_domain'));
-                $appHost = parse_url(config('app.url'), PHP_URL_HOST);
-
-                if ($appHost && $domain === strtolower($appHost)) {
-                    $validator->errors()->add('custom_domain', 'Asosiy platforma domenidan foydalanib bo\'lmaydi.');
-                }
-            }
         });
     }
 

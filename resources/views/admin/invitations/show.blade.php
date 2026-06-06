@@ -16,9 +16,6 @@
                 <div class="flex justify-between gap-4"><dt class="text-ink-muted">Shablon</dt><dd>{{ $invitation->template_slug }} @if($invitation->template_variant)<span class="text-ink-muted">/ {{ $invitation->template_variant }}</span>@endif</dd></div>
                 <div class="flex justify-between gap-4"><dt class="text-ink-muted">Tarif</dt><dd>{{ ucfirst($invitation->plan_tier ?? '—') }}</dd></div>
                 <div class="flex justify-between gap-4"><dt class="text-ink-muted">Mehmon limiti</dt><dd>{{ $invitation->resolvedGuestLimit() ?? 'Cheksiz' }}</dd></div>
-                @if ($invitation->custom_domain)
-                    <div class="flex justify-between gap-4"><dt class="text-ink-muted">Maxsus domen</dt><dd><code>{{ $invitation->custom_domain }}</code></dd></div>
-                @endif
                 <div class="flex justify-between gap-4"><dt class="text-ink-muted">Joy</dt><dd>{{ $invitation->venue_name }}</dd></div>
                 <div class="flex justify-between gap-4"><dt class="text-ink-muted">RSVP</dt><dd>{{ $invitation->rsvp_enabled ? 'Yoqilgan' : 'O\'chirilgan' }}</dd></div>
             </dl>

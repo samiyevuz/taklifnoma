@@ -55,6 +55,7 @@ return [
     'story_moment_label' => 'Memory :num',
     'story_moment_hint' => 'Add a milestone photo and short caption.',
     'story_caption' => 'Caption (e.g. 2019 — First meeting)',
+    'music_file_invalid' => 'Invalid audio file. Please upload MP3, M4A, AAC, OGG, or WAV.',
     'cover_upload_hint' => 'JPG or PNG, 1200×1600 recommended. Coming soon.',
     'dress_palette' => 'Dress code palette',
     'dress_palette_desc' => 'Pick a color and set priority order.',

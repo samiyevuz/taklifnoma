@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Models\PaymentInvoice;
 use App\Support\BuilderEventProfile;
 use App\Support\ComplimentaryAccess;
-use App\Support\CustomDomainFormatter;
+use App\Support\InvitationUploadRules;
 use App\Support\TemplateCatalog;
 use App\Support\PlanEntitlements;
 use App\Support\TemplateVariantCatalog;
@@ -43,15 +43,7 @@ class GenerateInvoiceRequest extends FormRequest
 
         $slug = (string) $this->input('template_slug', 'nikoh');
 
-        if ($this->has('custom_domain_subdomain')) {
-            $subdomain = trim((string) $this->input('custom_domain_subdomain'));
-
-            $this->merge([
-                'custom_domain' => $subdomain !== ''
-                    ? CustomDomainFormatter::assemble($slug, $subdomain)
-                    : null,
-            ]);
-        }
+        $this->merge(['custom_domain' => null]);
     }
 
     public function rules(): array
@@ -71,8 +63,6 @@ class GenerateInvoiceRequest extends FormRequest
             ],
             'template_slug' => ['required', 'string', Rule::in(TemplateCatalog::slugs())],
             'template_variant' => ['nullable', 'string', 'max:80'],
-            'custom_domain' => ['nullable', 'string', 'max:120', 'regex:/^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}$/i'],
-            'custom_domain_subdomain' => ['nullable', 'string', 'max:63', 'regex:/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i'],
             'invitation_id' => ['nullable', 'integer', 'exists:invitations,id'],
             'profile' => ['nullable', 'array'],
             'profile_meta' => ['nullable', 'array'],
@@ -90,7 +80,7 @@ class GenerateInvoiceRequest extends FormRequest
             'family_signature' => ['nullable', 'string', 'max:150'],
             'music_url' => ['nullable', 'string', 'max:500'],
             'cover_image' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
-            'music_file' => ['nullable', 'file', 'mimes:mp3,m4a,aac,ogg,wav', 'max:15360'],
+            'music_file' => InvitationUploadRules::musicFile(),
             'dress_colors' => ['nullable', 'array', 'max:8'],
             'dress_colors.*.name' => ['required_with:dress_colors', 'string', 'max:40'],
             'dress_colors.*.hex' => ['required_with:dress_colors', 'string', 'max:7'],

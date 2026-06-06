@@ -16,7 +16,7 @@ class TemplateVariantCatalog
                 ['suffix' => 'Classic', 'subtitle' => 'Sodda va nafis dizayn', 'price' => 69000, 'theme' => 'classic'],
                 ['suffix' => 'Premium', 'subtitle' => 'Oltin naqshlar va romantik fon', 'price' => 89000, 'theme' => 'premium', 'badge' => 'Eng mashhur'],
                 ['suffix' => 'Luxury', 'subtitle' => 'Kinematik animatsiya va musiqa', 'price' => 119000, 'theme' => 'luxury', 'badge' => 'Yangi'],
-                ['suffix' => 'Royal', 'subtitle' => 'VIP effektlar va maxsus domen', 'price' => 149000, 'theme' => 'royal', 'badge' => 'VIP'],
+                ['suffix' => 'Royal', 'subtitle' => 'VIP effektlar va sevgi tarixi galereyasi', 'price' => 149000, 'theme' => 'royal', 'badge' => 'VIP'],
             ]),
             'qiz' => self::tiers('qiz', 'Qiz Uzatish', 'qiz-uzatish', 'images/templates/qiz.jpg', [
                 ['suffix' => 'Standard', 'subtitle' => 'Nozik pushti palitra', 'price' => 69000, 'theme' => 'classic'],
