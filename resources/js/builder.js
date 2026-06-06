@@ -249,6 +249,8 @@ function initBuilderStudio() {
     const customDomainHidden = document.getElementById('custom_domain');
     const customDomainPrefixEl = document.getElementById('custom_domain_prefix');
     const customDomainSuffixEl = document.getElementById('custom_domain_suffix');
+    const slugUrlPreview = document.getElementById('slug-url-preview');
+    const customDomainPreview = document.getElementById('custom-domain-preview');
     let slugManuallyEdited = Boolean(slugInput?.value?.trim());
     const previewPage = document.getElementById('builder-preview');
     const previewPhone = document.getElementById('builder-phone');
@@ -602,7 +604,25 @@ function initBuilderStudio() {
             customDomainSubInput.value = sub;
         }
 
-        customDomainHidden.value = sub ? `${prefix}${sub}${suffix}` : '';
+        const fullDomain = sub ? `${prefix}${sub}${suffix}` : '';
+        customDomainHidden.value = fullDomain;
+
+        if (customDomainPreview) {
+            customDomainPreview.textContent = fullDomain
+                ? `→ ${fullDomain}`
+                : '';
+        }
+    };
+
+    const syncSlugPreview = () => {
+        if (!slugUrlPreview || !slugInput) return;
+
+        const siteHost = bootstrap.slug_host || bootstrap.payments?.site_host || 'taklifnoma.net';
+        const slugValue = slugInput.value.trim();
+
+        slugUrlPreview.textContent = slugValue
+            ? `→ https://${siteHost}/l/${slugValue}`
+            : '';
     };
 
     const suggestSlugFromProfile = () => {
@@ -611,6 +631,7 @@ function initBuilderStudio() {
         const state = readFormState();
         const title = profileEngine.buildDisplayTitle(state.profile);
         slugInput.value = slugifyPreview(title);
+        syncSlugPreview();
     };
 
     const prepareFormForSubmit = () => {
@@ -619,6 +640,7 @@ function initBuilderStudio() {
         syncRsvp();
         syncMusicPreset();
         syncCustomDomain();
+        syncSlugPreview();
     };
 
     const renderPreviewParticles = (animationTier) => {
@@ -1112,6 +1134,7 @@ function initBuilderStudio() {
 
     slugInput?.addEventListener('input', () => {
         slugManuallyEdited = true;
+        syncSlugPreview();
         schedulePreview();
     });
 
@@ -1344,6 +1367,7 @@ function initBuilderStudio() {
     }
 
     syncCustomDomain();
+    syncSlugPreview();
     suggestSlugFromProfile();
 
     initVariantCarousel();

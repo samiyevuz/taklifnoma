@@ -482,9 +482,80 @@
         min-width: 7rem;
     }
 
-    #builder-slug-wrap.is-locked .builder-slug-field input,
-    #builder-custom-domain-wrap.is-locked .builder-slug-field input {
+    .builder-field-explainer {
+        margin: 0 0 0.65rem;
+        font-size: 0.8125rem;
+        line-height: 1.5;
+        color: var(--color-ink-soft);
+    }
+
+    .builder-composite-input {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        width: 100%;
+        border-radius: 0.875rem;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        background: rgba(255, 255, 255, 0.45);
+        backdrop-filter: blur(12px);
+        padding: 0.7rem 0.9rem;
+        transition:
+            border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+            box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .builder-composite-input:focus-within {
+        border-color: rgba(201, 162, 39, 0.55);
+        box-shadow: 0 0 0 1px rgba(201, 162, 39, 0.4);
+    }
+
+    .builder-composite-input__affix {
+        font-size: 0.875rem;
+        color: var(--color-ink-muted);
+        white-space: nowrap;
+        flex-shrink: 0;
+        user-select: none;
+    }
+
+    .builder-composite-input input {
+        flex: 1;
+        min-width: 5rem;
+        border: none;
+        background: transparent;
+        padding: 0.15rem 0.4rem;
+        font-size: 0.9375rem;
+        color: var(--color-ink);
+        outline: none;
+    }
+
+    .builder-composite-input input::placeholder {
+        color: rgba(107, 114, 128, 0.75);
+    }
+
+    .builder-composite-input input:disabled {
         opacity: 0.55;
+        cursor: not-allowed;
+    }
+
+    .builder-url-preview {
+        margin-top: 0.45rem;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--color-luxury-gold-dark);
+        word-break: break-all;
+    }
+
+    .builder-url-preview:empty {
+        display: none;
+    }
+
+    #builder-slug-wrap.is-locked .builder-composite-input,
+    #builder-custom-domain-wrap.is-locked .builder-composite-input {
+        opacity: 0.72;
+    }
+
+    #builder-slug-wrap.is-locked .builder-composite-input input,
+    #builder-custom-domain-wrap.is-locked .builder-composite-input input {
         cursor: not-allowed;
     }
 

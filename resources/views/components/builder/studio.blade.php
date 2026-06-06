@@ -235,31 +235,43 @@
                             </div>
                         </div>
 
-                        <div class="builder-field builder-field--float mt-4" id="builder-slug-wrap">
-                            <div class="builder-slug-field">
-                                <span class="builder-slug-prefix" id="builder-slug-prefix">{{ ($b['slug_host'] ?? 'taklifnoma.net') }}/l/</span>
-                                <input type="text" id="slug" name="slug" value="{{ old('slug', $b['slug'] ?? '') }}" pattern="[a-z0-9\-]+" placeholder=" " autocomplete="off">
+                        <div class="builder-field mt-4" id="builder-slug-wrap">
+                            <label class="builder-field-label" for="slug">{{ __('builder.slug') }}</label>
+                            <p class="builder-field-explainer">{{ __('builder.slug_explainer') }}</p>
+                            <div class="builder-composite-input">
+                                <span class="builder-composite-input__affix" id="builder-slug-prefix">{{ ($b['slug_host'] ?? 'taklifnoma.net') }}/l/</span>
+                                <input
+                                    type="text"
+                                    id="slug"
+                                    name="slug"
+                                    value="{{ old('slug', $b['slug'] ?? '') }}"
+                                    pattern="[a-z0-9\-]+"
+                                    placeholder="{{ __('builder.slug_placeholder') }}"
+                                    autocomplete="off"
+                                >
                             </div>
-                            <label for="slug">{{ __('builder.slug') }}</label>
+                            <p class="builder-url-preview" id="slug-url-preview" aria-live="polite"></p>
                             <p class="builder-field-hint" id="builder-slug-hint">{{ __('builder.slug_plan_hint') }}</p>
                         </div>
 
-                        <div class="builder-field builder-field--float mt-4 hidden" id="builder-custom-domain-wrap">
-                            <div class="builder-slug-field">
-                                <span class="builder-slug-prefix" id="custom_domain_prefix">{{ $b['custom_domain_prefix'] ?? 'nikoh.' }}</span>
+                        <div class="builder-field mt-4 hidden" id="builder-custom-domain-wrap">
+                            <label class="builder-field-label" for="custom_domain_subdomain">{{ __('builder.custom_domain') }}</label>
+                            <p class="builder-field-explainer">{{ __('builder.custom_domain_explainer') }}</p>
+                            <div class="builder-composite-input">
+                                <span class="builder-composite-input__affix" id="custom_domain_prefix">{{ $b['custom_domain_prefix'] ?? 'nikoh.' }}</span>
                                 <input
                                     type="text"
                                     id="custom_domain_subdomain"
                                     name="custom_domain_subdomain"
                                     value="{{ old('custom_domain_subdomain', $b['custom_domain_subdomain'] ?? '') }}"
                                     pattern="[a-z0-9\-]+"
-                                    placeholder=" "
+                                    placeholder="{{ __('builder.custom_domain_placeholder') }}"
                                     autocomplete="off"
                                 >
-                                <span class="builder-slug-prefix" id="custom_domain_suffix">{{ $b['custom_domain_suffix'] ?? '.uz' }}</span>
+                                <span class="builder-composite-input__affix" id="custom_domain_suffix">{{ $b['custom_domain_suffix'] ?? '.uz' }}</span>
                             </div>
                             <input type="hidden" id="custom_domain" name="custom_domain" value="{{ old('custom_domain', $b['custom_domain'] ?? '') }}">
-                            <label for="custom_domain_subdomain">{{ __('builder.custom_domain') }}</label>
+                            <p class="builder-url-preview" id="custom-domain-preview" aria-live="polite"></p>
                             <p class="builder-field-hint">
                                 {{ __('builder.custom_domain_hint', ['example' => $b['custom_domain_example'] ?? 'nikoh.farhod.uz']) }}
                             </p>
