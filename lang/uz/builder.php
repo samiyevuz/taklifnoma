@@ -53,6 +53,7 @@ return [
     'story_gallery_desc' => 'Luxury va Royal VIP tariflarida marosimingizga mos portret va xotira rasmlarini joylashtiring.',
     'story_upload' => 'Rasm yuklash',
     'story_portrait_hint' => 'Vertikal portret tavsiya etiladi (3:4). Maks. 5 MB.',
+    'story_moments_title' => 'Xotira lahzalari',
     'story_moment_label' => ':num-xotira',
     'story_moment_hint' => 'Muhim lahza rasmi va qisqa izoh qo\'shing.',
     'story_caption' => 'Izoh (masalan: 2019 — Tanishuv)',

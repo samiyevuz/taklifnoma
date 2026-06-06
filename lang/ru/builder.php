@@ -51,6 +51,7 @@ return [
     'story_gallery_desc' => 'Тарифы Luxury и Royal VIP позволяют добавить портреты и фото воспоминаний.',
     'story_upload' => 'Загрузить фото',
     'story_portrait_hint' => 'Рекомендуется вертикальный портрет (3:4). Макс. 5 МБ.',
+    'story_moments_title' => 'Моменты воспоминаний',
     'story_moment_label' => 'Воспоминание :num',
     'story_moment_hint' => 'Добавьте фото важного момента и короткую подпись.',
     'story_caption' => 'Подпись (например: 2019 — Знакомство)',

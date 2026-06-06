@@ -51,6 +51,7 @@ return [
     'story_gallery_desc' => 'Luxury and Royal VIP plans can add portraits and memory photos for your event.',
     'story_upload' => 'Upload photo',
     'story_portrait_hint' => 'Vertical portrait recommended (3:4). Max 5 MB.',
+    'story_moments_title' => 'Memory moments',
     'story_moment_label' => 'Memory :num',
     'story_moment_hint' => 'Add a milestone photo and short caption.',
     'story_caption' => 'Caption (e.g. 2019 — First meeting)',

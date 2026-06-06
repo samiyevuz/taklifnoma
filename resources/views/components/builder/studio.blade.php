@@ -157,41 +157,86 @@
                             <img src="{{ $b['cover_image_url'] }}" alt="" class="builder-upload-preview mt-2" id="cover-current-preview">
                         @endif
 
-                        <div class="builder-story-gallery hidden mt-6" id="builder-story-gallery-wrap">
-                            <h3 class="builder-panel-title text-base">{{ $b['story_gallery_title'] ?? __('builder.story_gallery_title') }}</h3>
-                            <p class="builder-panel-desc">{{ $b['story_gallery_subtitle'] ?? __('builder.story_gallery_desc') }}</p>
+                        @php
+                            $storySlots = collect($b['story_gallery_slots'] ?? []);
+                            $storyPortraits = $storySlots->where('type', 'portrait')->values();
+                            $storyMoments = $storySlots->where('type', 'moment')->values();
+                            $storyImagesBySlot = collect($b['story_images'] ?? [])->keyBy('slot');
+                        @endphp
+                        <div class="builder-story-gallery hidden mt-5" id="builder-story-gallery-wrap">
+                            <div class="builder-story-gallery__head">
+                                <h3 class="builder-story-gallery__title">{{ $b['story_gallery_title'] ?? __('builder.story_gallery_title') }}</h3>
+                                <p class="builder-story-gallery__desc">{{ $b['story_gallery_subtitle'] ?? __('builder.story_gallery_desc') }}</p>
+                            </div>
 
-                            <div class="builder-story-slots mt-4" id="builder-story-slots">
-                                @foreach ($b['story_gallery_slots'] ?? [] as $slot)
-                                    @php
-                                        $existing = collect($b['story_images'] ?? [])->firstWhere('slot', $slot['key']);
-                                    @endphp
-                                    <div class="builder-story-slot" data-story-slot="{{ $slot['key'] }}" data-story-type="{{ $slot['type'] }}">
-                                        <p class="builder-field-label">{{ $slot['label'] }}</p>
-                                        <label class="builder-upload-zone builder-upload-zone--compact" for="story_image_{{ $slot['key'] }}">
-                                            <input
-                                                type="file"
-                                                id="story_image_{{ $slot['key'] }}"
-                                                name="story_image_{{ $slot['key'] }}"
-                                                accept="image/jpeg,image/png,image/webp"
-                                                class="sr-only"
-                                            >
-                                            <div class="builder-upload-zone__icon" aria-hidden="true">
-                                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                            </div>
-                                            <p class="builder-upload-zone__title">{{ __('builder.story_upload') }}</p>
-                                            <p class="builder-upload-zone__hint">{{ $slot['hint'] ?? __('builder.story_portrait_hint') }}</p>
-                                            <p class="builder-upload-zone__filename hidden" id="story-filename-{{ $slot['key'] }}"></p>
-                                            <img
-                                                src="{{ $existing['url'] ?? '' }}"
-                                                alt=""
-                                                class="builder-upload-preview {{ empty($existing['url']) ? 'hidden' : '' }}"
-                                                id="story-preview-{{ $slot['key'] }}"
-                                            >
-                                        </label>
+                            @if ($storyPortraits->isNotEmpty())
+                                <div class="builder-story-grid builder-story-grid--portraits" id="builder-story-portraits">
+                                    @foreach ($storyPortraits as $slot)
+                                        @php $existing = $storyImagesBySlot->get($slot['key'], []); @endphp
+                                        <div class="builder-story-card" data-story-slot="{{ $slot['key'] }}" data-story-type="{{ $slot['type'] }}">
+                                            <label class="builder-story-picker" for="story_image_{{ $slot['key'] }}">
+                                                <input
+                                                    type="file"
+                                                    id="story_image_{{ $slot['key'] }}"
+                                                    name="story_image_{{ $slot['key'] }}"
+                                                    accept="image/jpeg,image/png,image/webp"
+                                                    class="sr-only"
+                                                >
+                                                <span class="builder-story-picker__thumb {{ empty($existing['url']) ? 'is-empty' : '' }}">
+                                                    <img
+                                                        src="{{ $existing['url'] ?? '' }}"
+                                                        alt=""
+                                                        class="builder-story-picker__img {{ empty($existing['url']) ? 'hidden' : '' }}"
+                                                        id="story-preview-{{ $slot['key'] }}"
+                                                    >
+                                                    <span class="builder-story-picker__placeholder" aria-hidden="true">
+                                                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" d="M12 4v16m8-8H4"/></svg>
+                                                    </span>
+                                                </span>
+                                                <span class="builder-story-picker__meta">
+                                                    <span class="builder-story-picker__label">{{ $slot['label'] }}</span>
+                                                    <span class="builder-story-picker__action">{{ __('builder.story_upload') }}</span>
+                                                    <span class="builder-story-picker__hint">{{ $slot['hint'] ?? __('builder.story_portrait_hint') }}</span>
+                                                    <span class="builder-story-picker__filename hidden" id="story-filename-{{ $slot['key'] }}"></span>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
 
-                                        @if (!empty($slot['caption']))
-                                            <div class="builder-field builder-field--float mt-3">
+                            @if ($storyMoments->isNotEmpty())
+                                <div class="builder-story-moments" id="builder-story-moments">
+                                    <p class="builder-story-moments__label">{{ __('builder.story_moments_title') }}</p>
+                                    @foreach ($storyMoments as $slot)
+                                        @php $existing = $storyImagesBySlot->get($slot['key'], []); @endphp
+                                        <div class="builder-story-card builder-story-card--moment" data-story-slot="{{ $slot['key'] }}" data-story-type="{{ $slot['type'] }}">
+                                            <label class="builder-story-picker builder-story-picker--moment" for="story_image_{{ $slot['key'] }}">
+                                                <input
+                                                    type="file"
+                                                    id="story_image_{{ $slot['key'] }}"
+                                                    name="story_image_{{ $slot['key'] }}"
+                                                    accept="image/jpeg,image/png,image/webp"
+                                                    class="sr-only"
+                                                >
+                                                <span class="builder-story-picker__thumb builder-story-picker__thumb--square {{ empty($existing['url']) ? 'is-empty' : '' }}">
+                                                    <img
+                                                        src="{{ $existing['url'] ?? '' }}"
+                                                        alt=""
+                                                        class="builder-story-picker__img {{ empty($existing['url']) ? 'hidden' : '' }}"
+                                                        id="story-preview-{{ $slot['key'] }}"
+                                                    >
+                                                    <span class="builder-story-picker__placeholder" aria-hidden="true">
+                                                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" d="M12 4v16m8-8H4"/></svg>
+                                                    </span>
+                                                </span>
+                                                <span class="builder-story-picker__meta">
+                                                    <span class="builder-story-picker__label">{{ $slot['label'] }}</span>
+                                                    <span class="builder-story-picker__action">{{ __('builder.story_upload') }}</span>
+                                                    <span class="builder-story-picker__filename hidden" id="story-filename-{{ $slot['key'] }}"></span>
+                                                </span>
+                                            </label>
+                                            <div class="builder-field builder-field--float builder-story-caption">
                                                 <input
                                                     type="text"
                                                     id="story_caption_{{ $slot['key'] }}"
@@ -202,10 +247,10 @@
                                                 >
                                                 <label for="story_caption_{{ $slot['key'] }}">{{ __('builder.story_caption') }}</label>
                                             </div>
-                                        @endif
-                                    </div>
-                                @endforeach
-                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
 
                         <div class="builder-field mt-5">

@@ -1140,6 +1140,7 @@ function initBuilderStudio() {
             const input = document.getElementById(`story_image_${slotKey}`);
             const preview = document.getElementById(`story-preview-${slotKey}`);
             const filename = document.getElementById(`story-filename-${slotKey}`);
+            const thumb = slotEl.querySelector('.builder-story-picker__thumb');
 
             input?.addEventListener('change', () => {
                 const file = input.files?.[0];
@@ -1156,6 +1157,7 @@ function initBuilderStudio() {
                         preview.src = reader.result;
                         preview.classList.remove('hidden');
                     }
+                    thumb?.classList.remove('is-empty');
                 };
                 reader.readAsDataURL(file);
             });
