@@ -938,7 +938,7 @@
         color: var(--color-inv-ink-muted);
     }
 
-    /* ─── Love story gallery (performance-first: no backdrop blur) ─── */
+    /* ─── Love story gallery (polaroid album · no horizontal carousel) ─── */
     .inv-story {
         padding-top: 2.5rem;
         padding-bottom: 2.5rem;
@@ -956,10 +956,10 @@
 
     .inv-story-reveal {
         opacity: 0;
-        transform: translate3d(0, 20px, 0);
+        transform: translate3d(0, 22px, 0);
         transition:
-            opacity 0.65s var(--inv-ease),
-            transform 0.65s var(--inv-ease);
+            opacity 0.7s var(--inv-ease),
+            transform 0.75s var(--inv-ease);
     }
 
     .inv-story-reveal.is-visible {
@@ -971,287 +971,257 @@
         position: relative;
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.75rem;
-        margin-top: 1.5rem;
-        padding: 1rem 0.75rem 0.5rem;
-    }
-
-    .inv-story-duo__heart {
-        position: absolute;
-        top: 42%;
-        left: 50%;
-        z-index: 2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 2rem;
-        height: 2rem;
-        border-radius: 9999px;
-        color: var(--color-inv-gold);
-        background: rgba(255, 250, 245, 0.95);
-        border: 1px solid rgba(201, 162, 39, 0.28);
-        box-shadow: 0 6px 18px rgba(42, 36, 32, 0.08);
-        transform: translate(-50%, -50%) scale(0.6);
-        opacity: 0;
-        transition:
-            transform 0.7s var(--inv-ease) 0.25s,
-            opacity 0.55s ease 0.2s;
-    }
-
-    .inv-story-duo__heart svg {
-        width: 1rem;
-        height: 1rem;
-    }
-
-    .inv-story-duo.is-visible .inv-story-duo__heart {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-        animation: inv-story-heart-pulse 2.8s var(--inv-ease) 0.5s infinite;
-    }
-
-    @keyframes inv-story-heart-pulse {
-        0%, 100% { box-shadow: 0 6px 18px rgba(42, 36, 32, 0.08); }
-        50% { box-shadow: 0 8px 22px rgba(201, 162, 39, 0.28); }
+        gap: 0.55rem;
+        margin-top: 1.75rem;
+        padding: 0.35rem 0.65rem 0.15rem;
+        align-items: end;
     }
 
     .inv-story-duo__card {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.55rem;
         margin: 0;
         opacity: 0;
-        transform: translate3d(0, 18px, 0) rotate(calc((var(--story-i, 0) - 0.5) * 3deg));
+        transform: translate3d(0, 22px, 0) rotate(calc((var(--story-i, 0) - 0.5) * 4deg));
+        transform-origin: bottom center;
         transition:
-            opacity 0.6s var(--inv-ease),
-            transform 0.7s var(--inv-ease);
-        transition-delay: calc(0.08s + (var(--story-i, 0) * 0.12s));
+            opacity 0.65s var(--inv-ease),
+            transform 0.8s var(--inv-ease);
+        transition-delay: calc(0.12s + (var(--story-i, 0) * 0.15s));
     }
 
     .inv-story-duo.is-visible .inv-story-duo__card {
         opacity: 1;
-        transform: translate3d(0, 0, 0) rotate(calc((var(--story-i, 0) - 0.5) * 2deg));
+        transform: translate3d(0, 0, 0) rotate(calc((var(--story-i, 0) - 0.5) * 2.5deg));
     }
 
-    .inv-story-duo__frame {
-        width: 100%;
-        aspect-ratio: 4 / 5;
-        border-radius: 1rem;
-        overflow: hidden;
-        background: rgba(255, 250, 245, 0.9);
-        border: 1px solid rgba(201, 162, 39, 0.2);
-        box-shadow:
-            0 10px 24px rgba(42, 36, 32, 0.07),
-            inset 0 1px 0 rgba(255, 255, 255, 0.65);
-    }
-
-    .inv-story-duo__frame img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transform: scale(1.06);
-        transition: transform 1.2s var(--inv-ease);
-    }
-
-    .inv-story-duo.is-visible .inv-story-duo__frame img {
-        animation: inv-story-kenburns 9s var(--inv-ease) infinite alternate;
-    }
-
-    @keyframes inv-story-kenburns {
-        from { transform: scale(1.04) translate3d(0, 0, 0); }
-        to { transform: scale(1.1) translate3d(0, -1.5%, 0); }
-    }
-
-    .inv-story-duo__name {
-        font-family: var(--font-serif);
-        font-size: 0.82rem;
-        font-weight: 600;
-        color: var(--color-inv-ink);
-        text-align: center;
-        letter-spacing: 0.02em;
-    }
-
-    .inv-story-path {
-        position: relative;
-        display: grid;
-        gap: 0.75rem;
-        margin-top: 1.25rem;
-        padding-left: 0.35rem;
-    }
-
-    .inv-story-path__line {
+    .inv-story-duo__bond {
         position: absolute;
-        top: 0.5rem;
-        bottom: 0.5rem;
-        left: 0.62rem;
-        width: 2px;
-        border-radius: 9999px;
-        background: linear-gradient(180deg, transparent, rgba(201, 162, 39, 0.45) 12%, rgba(201, 162, 39, 0.45) 88%, transparent);
-        transform-origin: top center;
-        transform: scaleY(0);
-        transition: transform 0.85s var(--inv-ease) 0.15s;
-    }
-
-    .inv-story-path.is-visible .inv-story-path__line {
-        transform: scaleY(1);
-    }
-
-    .inv-story-path--carousel {
+        top: 36%;
+        left: 50%;
+        z-index: 3;
         display: flex;
-        gap: 0.65rem;
-        margin-top: 1.25rem;
-        margin-inline: -0.35rem;
-        padding: 0.25rem 0.35rem 0.65rem;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        scroll-padding-inline: 0.75rem;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-    }
-
-    .inv-story-path--carousel::-webkit-scrollbar {
-        display: none;
-    }
-
-    .inv-story-path--carousel .inv-story-milestone {
-        flex: 0 0 min(78%, 17.5rem);
-        scroll-snap-align: center;
-        grid-template-columns: 1fr;
-        opacity: 1;
-        transform: none;
-    }
-
-    .inv-story-path--carousel .inv-story-milestone__dot {
-        display: none;
-    }
-
-    .inv-story-path--carousel .inv-story-milestone__card {
-        grid-template-columns: 1fr;
-        gap: 0.55rem;
-        height: 100%;
-    }
-
-    .inv-story-path--carousel .inv-story-milestone__media {
-        width: 100%;
-        aspect-ratio: 4 / 3;
-        border-radius: 0.85rem;
-    }
-
-    .inv-story-path--carousel .inv-story-milestone.is-visible .inv-story-milestone__card {
-        animation: inv-story-card-pop 0.65s var(--inv-ease) both;
-        animation-delay: calc(var(--story-i, 0) * 0.06s);
-    }
-
-    @keyframes inv-story-card-pop {
-        from {
-            opacity: 0;
-            transform: translate3d(0, 14px, 0) scale(0.96);
-        }
-        to {
-            opacity: 1;
-            transform: translate3d(0, 0, 0) scale(1);
-        }
-    }
-
-    .inv-story-milestone {
-        position: relative;
-        display: grid;
-        grid-template-columns: 1.25rem 1fr;
-        gap: 0.65rem;
-        align-items: stretch;
-        opacity: 0;
-        transform: translate3d(-10px, 0, 0);
-        transition:
-            opacity 0.55s var(--inv-ease),
-            transform 0.6s var(--inv-ease);
-        transition-delay: calc(0.18s + (var(--story-i, 0) * 0.1s));
-    }
-
-    .inv-story-path.is-visible .inv-story-milestone {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-    }
-
-    .inv-story-milestone__dot {
-        position: relative;
-        z-index: 1;
-        width: 0.65rem;
-        height: 0.65rem;
-        margin-top: 1.35rem;
-        margin-left: 0.18rem;
-        border-radius: 9999px;
-        background: var(--color-inv-gold);
-        box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.16);
-        transform: scale(0);
-        transition: transform 0.45s var(--inv-ease);
-        transition-delay: calc(0.12s + (var(--story-i, 0) * 0.08s));
-    }
-
-    .inv-story-path.is-visible .inv-story-milestone__dot {
-        transform: scale(1);
-        animation: inv-story-dot-glow 2.4s ease-in-out calc(0.3s + (var(--story-i, 0) * 0.1s)) infinite;
-    }
-
-    @keyframes inv-story-dot-glow {
-        0%, 100% { box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.16); }
-        50% { box-shadow: 0 0 0 6px rgba(201, 162, 39, 0.28); }
-    }
-
-    .inv-story-milestone__card {
-        display: grid;
-        grid-template-columns: 4.5rem 1fr;
-        gap: 0.7rem;
         align-items: center;
-        padding: 0.65rem 0.75rem;
-        border-radius: 1rem;
-        background: rgba(255, 250, 245, 0.9);
-        border: 1px solid rgba(201, 162, 39, 0.14);
-        box-shadow: 0 8px 20px rgba(42, 36, 32, 0.05);
+        justify-content: center;
+        width: 2.35rem;
+        height: 2.35rem;
+        border-radius: 9999px;
+        font-family: var(--font-serif);
+        font-size: 1.2rem;
+        font-style: italic;
+        font-weight: 500;
+        color: var(--color-inv-gold);
+        background: rgba(255, 250, 245, 0.97);
+        border: 1px solid rgba(201, 162, 39, 0.34);
+        box-shadow: 0 10px 24px rgba(42, 36, 32, 0.1);
+        transform: translate(-50%, -50%) scale(0.4);
+        opacity: 0;
+        transition:
+            transform 0.65s var(--inv-ease) 0.38s,
+            opacity 0.55s ease 0.32s;
     }
 
-    .inv-story-milestone__media {
-        width: 4.5rem;
-        aspect-ratio: 1;
-        border-radius: 0.75rem;
+    .inv-story-duo.is-visible .inv-story-duo__bond {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    .inv-story-polaroid {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 0.45rem 0.45rem 1rem;
+        background: #fff;
+        border-radius: 0.18rem;
+        box-shadow:
+            0 1px 2px rgba(42, 36, 32, 0.05),
+            0 8px 24px rgba(42, 36, 32, 0.09);
+    }
+
+    .inv-story-polaroid--hero {
+        padding-bottom: 1.25rem;
+    }
+
+    .inv-story-polaroid__photo {
+        position: relative;
+        width: 100%;
         overflow: hidden;
-        border: 1px solid rgba(201, 162, 39, 0.16);
+        border-radius: 0.12rem;
+        background: rgba(245, 235, 224, 0.55);
     }
 
-    .inv-story-milestone__media img {
+    .inv-story-polaroid--hero .inv-story-polaroid__photo {
+        aspect-ratio: 4 / 5;
+    }
+
+    .inv-story-polaroid--memory .inv-story-polaroid__photo {
+        aspect-ratio: 1;
+    }
+
+    .inv-story-polaroid__photo img {
+        display: block;
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transform: scale(1.02);
+        transition: transform 0.75s var(--inv-ease);
     }
 
-    .inv-story-milestone__label {
-        font-size: 0.68rem;
-        font-weight: 700;
-        letter-spacing: 0.08em;
+    .inv-story-duo.is-visible .inv-story-polaroid--hero:hover .inv-story-polaroid__photo img,
+    .inv-story-album.is-visible .inv-story-polaroid--memory:hover .inv-story-polaroid__photo img {
+        transform: scale(1.05);
+    }
+
+    .inv-story-polaroid__caption {
+        margin-top: 0.5rem;
+        padding-inline: 0.1rem;
+        text-align: center;
+    }
+
+    .inv-story-polaroid__caption p {
+        margin: 0;
+        font-family: var(--font-serif);
+        font-size: 0.76rem;
+        line-height: 1.45;
+        color: var(--color-inv-ink);
+    }
+
+    .inv-story-polaroid__caption .is-placeholder {
+        font-size: 0.64rem;
+        font-weight: 600;
+        letter-spacing: 0.07em;
         text-transform: uppercase;
-        color: var(--color-inv-gold);
+        color: var(--color-inv-ink-muted);
     }
 
-    .inv-story-milestone__caption {
-        margin-top: 0.2rem;
+    .inv-story-polaroid__caption--name {
+        margin-top: 0.6rem;
         font-family: var(--font-serif);
         font-size: 0.86rem;
-        line-height: 1.4;
+        font-weight: 600;
+        letter-spacing: 0.03em;
         color: var(--color-inv-ink);
+    }
+
+    .inv-story-polaroid__index {
+        position: absolute;
+        top: 0.3rem;
+        right: 0.3rem;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.3rem;
+        height: 1.3rem;
+        border-radius: 9999px;
+        font-size: 0.6rem;
+        font-weight: 700;
+        color: #fff;
+        background: var(--color-inv-gold);
+        box-shadow: 0 2px 8px rgba(201, 162, 39, 0.4);
+    }
+
+    .inv-story-album {
+        margin-top: 2rem;
+    }
+
+    .inv-story-album__divider {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        margin-bottom: 1.15rem;
+        padding-inline: 0.2rem;
+    }
+
+    .inv-story-album__line {
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.42), transparent);
+    }
+
+    .inv-story-album__label {
+        font-size: 0.64rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--color-inv-gold);
+        white-space: nowrap;
+    }
+
+    .inv-story-memories {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8rem 0.6rem;
+        padding: 0.2rem 0.3rem;
+    }
+
+    .inv-story-polaroid--memory {
+        opacity: 0;
+        transform: translate3d(0, 16px, 0) rotate(var(--story-rot, 0deg));
+        transition:
+            opacity 0.55s var(--inv-ease),
+            transform 0.65s var(--inv-ease),
+            box-shadow 0.4s ease;
+        transition-delay: calc(0.06s + (var(--story-i, 0) * 0.065s));
+        content-visibility: auto;
+        contain-intrinsic-size: auto 11.5rem;
+    }
+
+    .inv-story-album.is-visible .inv-story-polaroid--memory {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) rotate(var(--story-rot, 0deg));
+    }
+
+    .inv-story-album.is-visible .inv-story-polaroid--memory:hover {
+        box-shadow:
+            0 2px 4px rgba(42, 36, 32, 0.06),
+            0 14px 32px rgba(42, 36, 32, 0.12);
+    }
+
+    @media (min-width: 768px) {
+        .invitation-page,
+        .invitation-page::before {
+            max-width: 540px;
+        }
+
+        .inv-story-duo {
+            gap: 1.25rem;
+            margin-top: 2rem;
+            padding-inline: 1.25rem;
+        }
+
+        .inv-story-duo__bond {
+            width: 2.75rem;
+            height: 2.75rem;
+            font-size: 1.45rem;
+        }
+
+        .inv-story-memories {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem 0.75rem;
+            padding-inline: 0.5rem;
+        }
+
+        .inv-story-polaroid--memory {
+            contain-intrinsic-size: auto 10.5rem;
+        }
+
+        .inv-story-polaroid__caption p {
+            font-size: 0.8rem;
+        }
+
+        .inv-story-polaroid__caption--name {
+            font-size: 0.95rem;
+        }
     }
 
     @media (max-width: 380px) {
         .inv-story-duo {
-            gap: 0.5rem;
-            padding-inline: 0.35rem;
+            gap: 0.4rem;
+            padding-inline: 0.3rem;
         }
 
-        .inv-story-milestone__card {
-            grid-template-columns: 4rem 1fr;
-            padding: 0.55rem 0.6rem;
-        }
-
-        .inv-story-milestone__media {
-            width: 4rem;
+        .inv-story-memories {
+            gap: 0.65rem 0.45rem;
         }
     }
 
@@ -1267,19 +1237,16 @@
         .inv-reveal,
         .inv-story-reveal,
         .inv-story-duo__card,
-        .inv-story-milestone,
-        .inv-story-duo__heart,
-        .inv-story-path__line,
-        .inv-story-milestone__dot {
+        .inv-story-duo__bond,
+        .inv-story-polaroid--memory {
             opacity: 1;
             transform: none;
             transition: none;
             animation: none;
         }
 
-        .inv-story-duo__frame img,
-        .inv-story-path--carousel .inv-story-milestone__card {
-            animation: none;
+        .inv-story-polaroid__photo img {
+            transform: none;
         }
 
         .inv-music.is-playing .inv-music__disk {

@@ -115,67 +115,69 @@
 
                     @if ($portraits->isNotEmpty())
                         <div class="inv-story-duo inv-story-reveal" data-story-stage="duo">
-                            <span class="inv-story-duo__heart" aria-hidden="true">
-                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                    <path stroke-linecap="round" d="M12 3c-1.5 2-4 4-4 7a4 4 0 108 0c0-3-2.5-5-4-7z"/>
-                                </svg>
-                            </span>
                             @foreach ($portraits as $index => $portrait)
                                 @php
                                     $portraitName = $invitation->storyPortraitName($portrait['slot']) ?: $portrait['label'];
                                 @endphp
-                                <figure class="inv-story-duo__card" style="--story-i: {{ $index }}" data-story-item>
-                                    <div class="inv-story-duo__frame">
-                                        <img
-                                            src="{{ $portrait['url'] }}"
-                                            alt="{{ $portraitName }}"
-                                            loading="lazy"
-                                            decoding="async"
-                                            width="320"
-                                            height="400"
-                                        >
+                                <figure class="inv-story-duo__card" style="--story-i: {{ $index }}" data-story-memory>
+                                    <div class="inv-story-polaroid inv-story-polaroid--hero">
+                                        <div class="inv-story-polaroid__photo">
+                                            <img
+                                                src="{{ $portrait['url'] }}"
+                                                alt="{{ $portraitName }}"
+                                                loading="lazy"
+                                                decoding="async"
+                                                width="280"
+                                                height="340"
+                                            >
+                                        </div>
+                                        <figcaption class="inv-story-polaroid__caption inv-story-polaroid__caption--name">
+                                            {{ $portraitName }}
+                                        </figcaption>
                                     </div>
-                                    <figcaption class="inv-story-duo__name">{{ $portraitName }}</figcaption>
                                 </figure>
                             @endforeach
+                            @if ($portraits->count() > 1)
+                                <span class="inv-story-duo__bond" aria-hidden="true">&</span>
+                            @endif
                         </div>
                     @endif
 
                     @if ($moments->isNotEmpty())
-                        @php
-                            $useStoryCarousel = $moments->count() > 4;
-                        @endphp
-                        <div
-                            class="inv-story-path inv-story-reveal {{ $useStoryCarousel ? 'inv-story-path--carousel' : '' }}"
-                            data-story-stage="path"
-                            data-story-count="{{ $moments->count() }}"
-                        >
-                            @unless ($useStoryCarousel)
-                                <span class="inv-story-path__line" aria-hidden="true"></span>
-                            @endunless
-                            @foreach ($moments as $index => $moment)
-                                <article class="inv-story-milestone" style="--story-i: {{ $index }}" data-story-item>
-                                    <span class="inv-story-milestone__dot" aria-hidden="true"></span>
-                                    <div class="inv-story-milestone__card">
-                                        <div class="inv-story-milestone__media">
+                        <div class="inv-story-album inv-story-reveal" data-story-stage="album">
+                            <div class="inv-story-album__divider" aria-hidden="true">
+                                <span class="inv-story-album__line"></span>
+                                <span class="inv-story-album__label">{{ __('invitation.story_memories_label') }}</span>
+                                <span class="inv-story-album__line"></span>
+                            </div>
+                            <div class="inv-story-memories">
+                                @foreach ($moments as $index => $moment)
+                                    <article
+                                        class="inv-story-polaroid inv-story-polaroid--memory"
+                                        style="--story-i: {{ $index }}; --story-rot: {{ $index % 2 === 0 ? '-1.25deg' : '1.25deg' }}"
+                                        data-story-memory
+                                    >
+                                        <span class="inv-story-polaroid__index" aria-hidden="true">{{ $index + 1 }}</span>
+                                        <div class="inv-story-polaroid__photo">
                                             <img
                                                 src="{{ $moment['url'] }}"
                                                 alt="{{ $moment['caption'] ?: $moment['label'] }}"
                                                 loading="lazy"
                                                 decoding="async"
-                                                width="112"
-                                                height="112"
+                                                width="240"
+                                                height="240"
                                             >
                                         </div>
-                                        <div class="inv-story-milestone__body">
-                                            <p class="inv-story-milestone__label">{{ $moment['label'] }}</p>
+                                        <div class="inv-story-polaroid__caption">
                                             @if (filled($moment['caption']))
-                                                <p class="inv-story-milestone__caption">{{ $moment['caption'] }}</p>
+                                                <p>{{ $moment['caption'] }}</p>
+                                            @else
+                                                <p class="is-placeholder">{{ $moment['label'] }}</p>
                                             @endif
                                         </div>
-                                    </div>
-                                </article>
-                            @endforeach
+                                    </article>
+                                @endforeach
+                            </div>
                         </div>
                     @endif
                 </section>

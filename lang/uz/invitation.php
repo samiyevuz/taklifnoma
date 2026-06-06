@@ -13,6 +13,7 @@ return [
     'countdown_minutes' => 'Daqiqa',
     'countdown_seconds' => 'Soniya',
     'story_label' => 'Xotiralar',
+    'story_memories_label' => 'Bizning lahzalar',
     'story_title_couple' => 'Sevgi Tarixi',
     'story_subtitle_couple' => 'Bizning eng go\'zal lahzalarimiz va yuraklarimiz.',
     'story_title_child' => 'Oilaviy Xotiralar',

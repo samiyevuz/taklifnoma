@@ -13,6 +13,7 @@ return [
     'countdown_minutes' => 'Minutes',
     'countdown_seconds' => 'Seconds',
     'story_label' => 'Memories',
+    'story_memories_label' => 'Our moments',
     'story_title_couple' => 'Our Love Story',
     'story_subtitle_couple' => 'Our most beautiful moments together.',
     'story_title_child' => 'Family Memories',

@@ -13,6 +13,7 @@ return [
     'countdown_minutes' => 'Минут',
     'countdown_seconds' => 'Секунд',
     'story_label' => 'Воспоминания',
+    'story_memories_label' => 'Наши моменты',
     'story_title_couple' => 'История любви',
     'story_subtitle_couple' => 'Наши самые прекрасные моменты вместе.',
     'story_title_child' => 'Семейные воспоминания',
