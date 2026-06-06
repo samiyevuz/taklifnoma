@@ -61,6 +61,7 @@ class InvitationDefaults
             'invitation_text_1' => 'Hurmatli mehmon! Hayotimizning eng muborak kunida — nikoh to\'yimizda bizni sharaf bilan quvvatlashishingizni chin qalbdan so\'raymiz.',
             'invitation_text_2' => 'Sizning iliq tilaklaringiz va qatnashuvingiz biz uchun eng katta baxt. Marosimimizda sizni kutib qolamiz.',
             'family_signature' => 'Farhod & Shirin oilalari',
+            'music_url' => asset('audio/romantic-wedding.mp3'),
             'dress_colors' => self::dressColors(),
             'rsvp_enabled' => true,
             'published_at' => now(),

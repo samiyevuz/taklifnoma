@@ -244,6 +244,12 @@ function initBuilderStudio() {
     const templateBladeInput = document.getElementById('template_blade');
     const checkoutPrice = document.getElementById('checkout-price');
     const checkoutTemplate = document.getElementById('checkout-template');
+    const slugInput = document.getElementById('slug');
+    const customDomainSubInput = document.getElementById('custom_domain_subdomain');
+    const customDomainHidden = document.getElementById('custom_domain');
+    const customDomainPrefixEl = document.getElementById('custom_domain_prefix');
+    const customDomainSuffixEl = document.getElementById('custom_domain_suffix');
+    let slugManuallyEdited = Boolean(slugInput?.value?.trim());
     const previewPage = document.getElementById('builder-preview');
     const previewPhone = document.getElementById('builder-phone');
     const previewPhoneScreen = document.getElementById('builder-phone-screen');
@@ -555,6 +561,17 @@ function initBuilderStudio() {
             rows.push(['Xarita', `${Number(lat).toFixed(5)}, ${Number(lng).toFixed(5)}`]);
         }
 
+        const siteHost = bootstrap.slug_host || bootstrap.payments?.site_host || 'taklifnoma.net';
+        const slugValue = slugInput?.value?.trim();
+        if (slugValue) {
+            rows.push(['Havola', `${siteHost}/l/${slugValue}`]);
+        }
+
+        syncCustomDomain();
+        if (customDomainHidden?.value) {
+            rows.push(['Maxsus domen', customDomainHidden.value]);
+        }
+
         reviewList.innerHTML = rows.map(([label, value]) => `
             <div class="builder-review__row">
                 <dt>${label}</dt>
@@ -569,6 +586,40 @@ function initBuilderStudio() {
         .replace(/[\u0300-\u036f]/g, '')
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-+|-+$/g, '') || 'taklifnoma';
+
+    const syncCustomDomain = () => {
+        if (!customDomainSubInput || !customDomainHidden) return;
+
+        const prefix = (customDomainPrefixEl?.textContent || '').trim();
+        const suffix = (customDomainSuffixEl?.textContent || '').trim();
+        const sub = customDomainSubInput.value
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9-]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+
+        if (customDomainSubInput.value !== sub) {
+            customDomainSubInput.value = sub;
+        }
+
+        customDomainHidden.value = sub ? `${prefix}${sub}${suffix}` : '';
+    };
+
+    const suggestSlugFromProfile = () => {
+        if (!slugInput || slugManuallyEdited) return;
+
+        const state = readFormState();
+        const title = profileEngine.buildDisplayTitle(state.profile);
+        slugInput.value = slugifyPreview(title);
+    };
+
+    const prepareFormForSubmit = () => {
+        suggestSlugFromProfile();
+        syncDressColors();
+        syncRsvp();
+        syncMusicPreset();
+        syncCustomDomain();
+    };
 
     const renderPreviewParticles = (animationTier) => {
         if (!previewParticles) return;
@@ -668,7 +719,6 @@ function initBuilderStudio() {
     };
 
     const syncPlanEntitlements = (entitlements = {}) => {
-        const slugInput = document.getElementById('slug');
         const slugWrap = document.getElementById('builder-slug-wrap');
         const customDomainWrap = document.getElementById('builder-custom-domain-wrap');
         const planNotice = document.getElementById('builder-plan-notice');
@@ -681,6 +731,11 @@ function initBuilderStudio() {
         slugWrap?.classList.toggle('is-locked', !entitlements.custom_slug);
 
         customDomainWrap?.classList.toggle('hidden', !entitlements.custom_domain);
+        customDomainWrap?.classList.toggle('is-locked', !entitlements.custom_domain);
+
+        if (customDomainSubInput) {
+            customDomainSubInput.disabled = !entitlements.custom_domain;
+        }
 
         musicPresetField?.classList.toggle('hidden', !allowsMusic);
         musicUrlWrap?.classList.toggle('hidden', !allowsMusic || musicPreset?.value === 'upload');
@@ -689,6 +744,8 @@ function initBuilderStudio() {
         if (!allowsMusic) {
             if (musicUrlInput) musicUrlInput.value = '';
             if (musicPreset) musicPreset.value = musicPreset.options[0]?.value || '';
+        } else if (musicUrlInput && !musicUrlInput.value.trim()) {
+            syncMusicPreset();
         }
 
         if (planNotice) {
@@ -815,11 +872,17 @@ function initBuilderStudio() {
         const url = document.getElementById('checkout-url');
         const alert = document.getElementById('checkout-alert');
         const title = profileEngine.buildDisplayTitle(state.profile);
-        const slugPreview = slugifyPreview(title);
+        const slugPreview = slugInput?.value?.trim() || slugifyPreview(title);
+        const siteHost = bootstrap.slug_host || bootstrap.payments?.site_host || 'taklifnoma.net';
+
+        syncCustomDomain();
+        const publicUrl = customDomainHidden?.value
+            ? customDomainHidden.value
+            : `${siteHost}/l/${slugPreview}`;
 
         if (couple) couple.textContent = title;
         if (event) event.textContent = `${formatEventDate(state.event_at)} · ${state.venue_name}`;
-        if (url) url.textContent = `${bootstrap.payments?.site_host || 'taklifnoma.net'}/l/${slugPreview}`;
+        if (url) url.textContent = publicUrl;
         applyVariant(variantIndex);
         if (alert) {
             alert.textContent = '';
@@ -840,8 +903,7 @@ function initBuilderStudio() {
 
     const submitForm = (publish) => {
         if (publishInput) publishInput.value = publish ? '1' : '0';
-        syncDressColors();
-        syncRsvp();
+        prepareFormForSubmit();
         form.requestSubmit();
     };
 
@@ -877,6 +939,8 @@ function initBuilderStudio() {
 
         if (!isCustom && !isUpload && option?.dataset.url) {
             musicUrlInput.value = option.dataset.url;
+        } else if (!isCustom && !isUpload && !musicUrlInput.value.trim() && bootstrap.default_music_url) {
+            musicUrlInput.value = bootstrap.default_music_url;
         }
     };
 
@@ -1046,8 +1110,23 @@ function initBuilderStudio() {
         });
     };
 
+    slugInput?.addEventListener('input', () => {
+        slugManuallyEdited = true;
+        schedulePreview();
+    });
+
+    customDomainSubInput?.addEventListener('input', () => {
+        syncCustomDomain();
+        schedulePreview();
+    });
+
     studio.querySelectorAll('[data-preview-input]').forEach((input) => {
-        input.addEventListener('input', schedulePreview);
+        input.addEventListener('input', () => {
+            schedulePreview();
+            if (input.hasAttribute('data-profile-field') || input.name?.startsWith('profile')) {
+                suggestSlugFromProfile();
+            }
+        });
         input.addEventListener('change', schedulePreview);
     });
 
@@ -1156,8 +1235,7 @@ function initBuilderStudio() {
             return;
         }
 
-        syncDressColors();
-        syncRsvp();
+        prepareFormForSubmit();
 
         const formData = new FormData(form);
         formData.append('payment_provider', provider);
@@ -1252,14 +1330,21 @@ function initBuilderStudio() {
         }
     });
 
-    if (musicPreset && bootstrap.music_url) {
-        const matchesPreset = [...musicPreset.options].some(
-            (option) => option.dataset.url && option.dataset.url === bootstrap.music_url
-        );
-        if (!matchesPreset) {
-            musicPreset.value = 'custom';
+    if (musicPreset) {
+        if (bootstrap.music_url) {
+            const matchesPreset = [...musicPreset.options].some(
+                (option) => option.dataset.url && option.dataset.url === bootstrap.music_url
+            );
+            if (!matchesPreset) {
+                musicPreset.value = 'custom';
+            }
+        } else if (bootstrap.default_music_url) {
+            musicUrlInput.value = bootstrap.default_music_url;
         }
     }
+
+    syncCustomDomain();
+    suggestSlugFromProfile();
 
     initVariantCarousel();
     renderDressPalette();

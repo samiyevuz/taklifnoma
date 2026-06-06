@@ -72,7 +72,7 @@ return [
     'variant_features' => 'Shablon imkoniyatlari',
     'slug_plan_hint' => 'Premium tarifdan boshlab maxsus havola tanlash mumkin.',
     'custom_domain' => 'Maxsus domen (Royal VIP)',
-    'custom_domain_hint' => 'Masalan: nikoh.farhod.uz — DNS da CNAME ni platformaga yo\'naltiring.',
+    'custom_domain_hint' => 'Faqat o\'z qismingizni yozing. To\'liq domen: :example — DNS da CNAME ni platformaga yo\'naltiring.',
     'plan_notice_classic' => 'Classic tarif: :limit mehmon, fon musiqasi va maxsus havola yo\'q.',
     'plan_notice_premium' => 'Premium tarif: :limit mehmongacha, musiqa va maxsus havola mavjud.',
     'plan_notice_luxury' => 'Luxury tarif: :limit mehmongacha, kinematik animatsiyalar.',

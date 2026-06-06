@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\PaymentInvoice;
 use App\Support\BuilderEventProfile;
 use App\Support\ComplimentaryAccess;
+use App\Support\CustomDomainFormatter;
 use App\Support\TemplateCatalog;
 use App\Support\PlanEntitlements;
 use App\Support\TemplateVariantCatalog;
@@ -39,6 +40,18 @@ class GenerateInvoiceRequest extends FormRequest
             'bride_name' => $normalized['bride_name'],
             'profile_meta' => $normalized['profile_meta'],
         ]);
+
+        $slug = (string) $this->input('template_slug', 'nikoh');
+
+        if ($this->has('custom_domain_subdomain')) {
+            $subdomain = trim((string) $this->input('custom_domain_subdomain'));
+
+            $this->merge([
+                'custom_domain' => $subdomain !== ''
+                    ? CustomDomainFormatter::assemble($slug, $subdomain)
+                    : null,
+            ]);
+        }
     }
 
     public function rules(): array
@@ -59,6 +72,7 @@ class GenerateInvoiceRequest extends FormRequest
             'template_slug' => ['required', 'string', Rule::in(TemplateCatalog::slugs())],
             'template_variant' => ['nullable', 'string', 'max:80'],
             'custom_domain' => ['nullable', 'string', 'max:120', 'regex:/^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}$/i'],
+            'custom_domain_subdomain' => ['nullable', 'string', 'max:63', 'regex:/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i'],
             'invitation_id' => ['nullable', 'integer', 'exists:invitations,id'],
             'profile' => ['nullable', 'array'],
             'profile_meta' => ['nullable', 'array'],

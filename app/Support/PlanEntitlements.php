@@ -164,6 +164,8 @@ class PlanEntitlements
         if (! $plan['music_enabled']) {
             $data['music_url'] = null;
             unset($data['music_file']);
+        } elseif (blank($data['music_url'] ?? null) && empty($data['music_file'])) {
+            $data['music_url'] = asset('audio/romantic-wedding.mp3');
         }
 
         if (! $plan['rsvp_enabled']) {

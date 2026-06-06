@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Support\BuilderEventProfile;
+use App\Support\CustomDomainFormatter;
 use App\Support\TemplateCatalog;
 use App\Support\PlanEntitlements;
 use App\Support\TemplateVariantCatalog;
@@ -34,6 +35,23 @@ class StoreInvitationRequest extends FormRequest
             'groom_name' => $normalized['groom_name'],
             'bride_name' => $normalized['bride_name'],
             'profile_meta' => $normalized['profile_meta'],
+        ]);
+
+        $this->mergeCustomDomain($slug);
+    }
+
+    private function mergeCustomDomain(string $templateSlug): void
+    {
+        if (! $this->has('custom_domain_subdomain')) {
+            return;
+        }
+
+        $subdomain = trim((string) $this->input('custom_domain_subdomain'));
+
+        $this->merge([
+            'custom_domain' => $subdomain !== ''
+                ? CustomDomainFormatter::assemble($templateSlug, $subdomain)
+                : null,
         ]);
     }
 
@@ -74,6 +92,7 @@ class StoreInvitationRequest extends FormRequest
             'template_slug' => ['nullable', 'string', Rule::in(TemplateCatalog::slugs())],
             'template_variant' => ['nullable', 'string', 'max:80'],
             'custom_domain' => ['nullable', 'string', 'max:120', 'regex:/^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}$/i'],
+            'custom_domain_subdomain' => ['nullable', 'string', 'max:63', 'regex:/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i'],
             'template' => [
                 'nullable',
                 'string',
