@@ -6,7 +6,7 @@
         $tierRibbon = $invitation->presentationTierRibbon();
     @endphp
     <div
-        class="invitation-page builder-preview-page {{ $invitation->presentationThemeClass() }} {{ $invitation->presentationAnimationClass() }}"
+        class="invitation-page inv-presentation {{ $invitation->presentationThemeClass() }} {{ $invitation->presentationAnimationClass() }}"
         id="invitation-app"
         data-invitation-slug="{{ $invitation->slug }}"
         data-animation-tier="{{ $invitation->entitlements()['animation'] ?? 'enhanced' }}"

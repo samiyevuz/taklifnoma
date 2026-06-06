@@ -974,7 +974,7 @@
         pointer-events: none;
     }
 
-    .builder-preview-page.invitation-page {
+    .builder-preview-viewport .builder-preview-page.invitation-page {
         width: 100%;
         max-width: 100%;
         min-height: 100%;
@@ -982,7 +982,7 @@
         overflow-x: hidden;
     }
 
-    .builder-preview-page.invitation-page::before {
+    .builder-preview-viewport .builder-preview-page.invitation-page::before {
         position: absolute;
         inset: 0;
         max-width: none;
@@ -991,36 +991,36 @@
         right: 0;
     }
 
-    .builder-preview-page.inv-theme--classic {
+    .inv-presentation.inv-theme--classic {
         --color-inv-champagne: #f5ebe0;
         --color-inv-rose: #e8d4cc;
         --color-inv-gold: #c9a227;
         --color-inv-gold-light: #e8d48b;
     }
 
-    .builder-preview-page.inv-theme--premium {
+    .inv-presentation.inv-theme--premium {
         --color-inv-champagne: #faf6f0;
         --color-inv-rose: #f0e4dc;
         --color-inv-gold: #b8860b;
         --color-inv-gold-light: #dfc06a;
     }
 
-    .builder-preview-page.inv-theme--luxury {
+    .inv-presentation.inv-theme--luxury {
         --color-inv-champagne: #f3e8e4;
         --color-inv-rose: #e2c4bc;
         --color-inv-gold: #9a6b3f;
         --color-inv-gold-light: #c9a070;
     }
 
-    .builder-preview-page.inv-theme--royal {
+    .inv-presentation.inv-theme--royal {
         --color-inv-champagne: #faf3e8;
         --color-inv-rose: #eddcc8;
         --color-inv-gold: #b8860b;
         --color-inv-gold-light: #e8c66a;
     }
 
-    .builder-preview-page.inv-theme--luxury .inv-welcome__pre,
-    .builder-preview-page.inv-theme--royal .inv-welcome__pre {
+    .inv-presentation.inv-theme--luxury .inv-welcome__pre,
+    .inv-presentation.inv-theme--royal .inv-welcome__pre {
         letter-spacing: 0.18em;
     }
 
@@ -1045,25 +1045,25 @@
         will-change: transform, filter, opacity;
     }
 
-    .builder-preview-page.inv-anim--basic .builder-preview-cover {
+    .inv-presentation.inv-anim--basic .builder-preview-cover {
         filter: brightness(1.12) saturate(0.72) contrast(0.95);
         opacity: 0.28;
         transform: scale(1.02);
     }
 
-    .builder-preview-page.inv-anim--enhanced .builder-preview-cover {
+    .inv-presentation.inv-anim--enhanced .builder-preview-cover {
         filter: brightness(0.96) saturate(1.02) contrast(1.06);
         opacity: 0.44;
         transform: scale(1.05);
     }
 
-    .builder-preview-page.inv-anim--cinematic .builder-preview-cover {
+    .inv-presentation.inv-anim--cinematic .builder-preview-cover {
         filter: brightness(0.9) saturate(1.14) contrast(1.12);
         opacity: 0.56;
         transform: scale(1.1);
     }
 
-    .builder-preview-page.inv-anim--vip .builder-preview-cover {
+    .inv-presentation.inv-anim--vip .builder-preview-cover {
         filter: brightness(0.84) saturate(1.22) contrast(1.18);
         opacity: 0.66;
         transform: scale(1.14);
@@ -1078,8 +1078,8 @@
         transition: opacity 0.5s ease;
     }
 
-    .builder-preview-page.inv-anim--cinematic .builder-preview-overlay,
-    .builder-preview-page.inv-anim--vip .builder-preview-overlay {
+    .inv-presentation.inv-anim--cinematic .builder-preview-overlay,
+    .inv-presentation.inv-anim--vip .builder-preview-overlay {
         background:
             linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, transparent 24%, transparent 58%, rgba(20, 16, 12, 0.28) 100%),
             radial-gradient(ellipse 80% 50% at 50% 0%, rgba(201, 162, 39, 0.18), transparent 62%);
@@ -1101,8 +1101,8 @@
         transition: opacity 0.4s ease;
     }
 
-    .builder-preview-page.inv-anim--cinematic .builder-preview-shimmer,
-    .builder-preview-page.inv-anim--vip .builder-preview-shimmer {
+    .inv-presentation.inv-anim--cinematic .builder-preview-shimmer,
+    .inv-presentation.inv-anim--vip .builder-preview-shimmer {
         opacity: 1;
         animation: builder-preview-shimmer 4.5s ease-in-out infinite;
     }
@@ -1132,7 +1132,7 @@
         opacity: 0.55;
     }
 
-    .builder-preview-page.inv-anim--vip .builder-preview-particle {
+    .inv-presentation.inv-anim--vip .builder-preview-particle {
         width: 0.28rem;
         height: 0.28rem;
         opacity: 0.8;

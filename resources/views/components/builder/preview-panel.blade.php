@@ -24,7 +24,7 @@
                     <div class="builder-phone__screen" id="builder-phone-screen">
                         <div class="builder-preview-viewport">
                             <div class="builder-preview-scaler">
-                                <div class="invitation-page builder-preview-page inv-theme--premium inv-anim--enhanced" id="builder-preview">
+                                <div class="invitation-page builder-preview-page inv-presentation inv-theme--premium inv-anim--enhanced" id="builder-preview">
                                     <div class="builder-preview-fx" id="builder-preview-fx" aria-hidden="true">
                                         <div class="builder-preview-cover" id="builder-preview-cover"></div>
                                         <div class="builder-preview-overlay"></div>

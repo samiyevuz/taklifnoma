@@ -14,18 +14,27 @@
 }
 
 @layer components {
+    .invitation-body {
+        display: flex;
+        justify-content: center;
+        background: #e5ddd4;
+    }
+
     .invitation-page {
         --inv-ease: cubic-bezier(0.16, 1, 0.3, 1);
-        background: var(--color-inv-champagne);
-        color: var(--color-inv-ink);
+        container-type: inline-size;
+        width: 100%;
         max-width: 430px;
         margin-inline: auto;
+        background: var(--color-inv-champagne);
+        color: var(--color-inv-ink);
         min-height: 100dvh;
         position: relative;
         overflow-x: hidden;
+        box-shadow: 0 0 0 1px rgba(42, 36, 32, 0.04);
     }
 
-    /* Theme, FX, ribbon: builder-preview-page styles in builder.css (shared with konstruktor) */
+    /* Theme + FX: .inv-presentation rules in builder.css (shared with konstruktor preview) */
 
     .invitation-page::before {
         content: '';
@@ -285,7 +294,7 @@
     }
 
     .inv-welcome__pre {
-        font-size: clamp(0.6875rem, 2.5vw, 0.8125rem);
+        font-size: clamp(0.6875rem, 2.5cqw, 0.8125rem);
         letter-spacing: 0.35em;
         text-transform: uppercase;
         color: var(--color-inv-ink-muted);
@@ -295,7 +304,7 @@
 
     .inv-welcome__names {
         font-family: var(--font-serif);
-        font-size: clamp(2.5rem, 12vw, 3.75rem);
+        font-size: clamp(2rem, 11cqw, 3.25rem);
         font-weight: 600;
         line-height: 1.05;
         letter-spacing: -0.02em;
@@ -314,7 +323,7 @@
 
     .inv-welcome__date {
         margin-top: 1rem;
-        font-size: clamp(0.875rem, 3.5vw, 1rem);
+        font-size: clamp(0.875rem, 3.5cqw, 1rem);
         color: var(--color-inv-ink-soft);
         animation: inv-welcome-fade 1s var(--inv-ease) 0.8s both;
     }
@@ -412,7 +421,7 @@
 
     .inv-section-title {
         font-family: var(--font-serif);
-        font-size: clamp(1.5rem, 6vw, 2rem);
+        font-size: clamp(1.375rem, 5.5cqw, 1.875rem);
         font-weight: 600;
         text-align: center;
         color: var(--color-inv-ink);
