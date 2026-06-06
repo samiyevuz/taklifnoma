@@ -45,21 +45,37 @@ function initStoryReveal() {
 
     if (prefersReducedMotion()) {
         stages.forEach((el) => el.classList.add('is-visible'));
+        document.querySelectorAll('.inv-story-milestone').forEach((el) => el.classList.add('is-visible'));
         return;
     }
 
-    const observer = new IntersectionObserver(
+    const stageObserver = new IntersectionObserver(
         (entries) => {
             entries.forEach((entry) => {
                 if (!entry.isIntersecting) return;
                 entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
+                stageObserver.unobserve(entry.target);
             });
         },
-        { threshold: 0.2, rootMargin: '0px 0px -40px 0px' }
+        { threshold: 0.18, rootMargin: '0px 0px -36px 0px' }
     );
 
-    stages.forEach((el) => observer.observe(el));
+    stages.forEach((el) => stageObserver.observe(el));
+
+    const milestones = document.querySelectorAll('.inv-story-path--carousel .inv-story-milestone');
+    if (!milestones.length) return;
+
+    const milestoneObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-visible');
+            });
+        },
+        { threshold: 0.55, rootMargin: '0px -8% 0px -8%' }
+    );
+
+    milestones.forEach((el) => milestoneObserver.observe(el));
 }
 
 function initScrollPerformance() {

@@ -1006,6 +1006,12 @@
     .inv-story-duo.is-visible .inv-story-duo__heart {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1);
+        animation: inv-story-heart-pulse 2.8s var(--inv-ease) 0.5s infinite;
+    }
+
+    @keyframes inv-story-heart-pulse {
+        0%, 100% { box-shadow: 0 6px 18px rgba(42, 36, 32, 0.08); }
+        50% { box-shadow: 0 8px 22px rgba(201, 162, 39, 0.28); }
     }
 
     .inv-story-duo__card {
@@ -1043,7 +1049,17 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transform: scale(1.02);
+        transform: scale(1.06);
+        transition: transform 1.2s var(--inv-ease);
+    }
+
+    .inv-story-duo.is-visible .inv-story-duo__frame img {
+        animation: inv-story-kenburns 9s var(--inv-ease) infinite alternate;
+    }
+
+    @keyframes inv-story-kenburns {
+        from { transform: scale(1.04) translate3d(0, 0, 0); }
+        to { transform: scale(1.1) translate3d(0, -1.5%, 0); }
     }
 
     .inv-story-duo__name {
@@ -1080,6 +1096,63 @@
         transform: scaleY(1);
     }
 
+    .inv-story-path--carousel {
+        display: flex;
+        gap: 0.65rem;
+        margin-top: 1.25rem;
+        margin-inline: -0.35rem;
+        padding: 0.25rem 0.35rem 0.65rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-padding-inline: 0.75rem;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .inv-story-path--carousel::-webkit-scrollbar {
+        display: none;
+    }
+
+    .inv-story-path--carousel .inv-story-milestone {
+        flex: 0 0 min(78%, 17.5rem);
+        scroll-snap-align: center;
+        grid-template-columns: 1fr;
+        opacity: 1;
+        transform: none;
+    }
+
+    .inv-story-path--carousel .inv-story-milestone__dot {
+        display: none;
+    }
+
+    .inv-story-path--carousel .inv-story-milestone__card {
+        grid-template-columns: 1fr;
+        gap: 0.55rem;
+        height: 100%;
+    }
+
+    .inv-story-path--carousel .inv-story-milestone__media {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        border-radius: 0.85rem;
+    }
+
+    .inv-story-path--carousel .inv-story-milestone.is-visible .inv-story-milestone__card {
+        animation: inv-story-card-pop 0.65s var(--inv-ease) both;
+        animation-delay: calc(var(--story-i, 0) * 0.06s);
+    }
+
+    @keyframes inv-story-card-pop {
+        from {
+            opacity: 0;
+            transform: translate3d(0, 14px, 0) scale(0.96);
+        }
+        to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale(1);
+        }
+    }
+
     .inv-story-milestone {
         position: relative;
         display: grid;
@@ -1109,6 +1182,19 @@
         border-radius: 9999px;
         background: var(--color-inv-gold);
         box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.16);
+        transform: scale(0);
+        transition: transform 0.45s var(--inv-ease);
+        transition-delay: calc(0.12s + (var(--story-i, 0) * 0.08s));
+    }
+
+    .inv-story-path.is-visible .inv-story-milestone__dot {
+        transform: scale(1);
+        animation: inv-story-dot-glow 2.4s ease-in-out calc(0.3s + (var(--story-i, 0) * 0.1s)) infinite;
+    }
+
+    @keyframes inv-story-dot-glow {
+        0%, 100% { box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.16); }
+        50% { box-shadow: 0 0 0 6px rgba(201, 162, 39, 0.28); }
     }
 
     .inv-story-milestone__card {
@@ -1183,10 +1269,17 @@
         .inv-story-duo__card,
         .inv-story-milestone,
         .inv-story-duo__heart,
-        .inv-story-path__line {
+        .inv-story-path__line,
+        .inv-story-milestone__dot {
             opacity: 1;
             transform: none;
             transition: none;
+            animation: none;
+        }
+
+        .inv-story-duo__frame img,
+        .inv-story-path--carousel .inv-story-milestone__card {
+            animation: none;
         }
 
         .inv-music.is-playing .inv-music__disk {

@@ -6,6 +6,7 @@ use App\Models\Invitation;
 use App\Support\InvitationEventData;
 use App\Support\TemplateCatalog;
 use App\Support\PlanEntitlements;
+use App\Support\StoryGallerySlots;
 use App\Support\TemplateVariantCatalog;
 use Illuminate\Support\Str;
 
@@ -14,18 +15,7 @@ class InvitationService
     public function create(array $data, bool $publish = false): Invitation
     {
         unset($data['publish'], $data['dress_colors_json'], $data['story_images_json']);
-        unset(
-            $data['story_image_primary'],
-            $data['story_image_secondary'],
-            $data['story_image_moment_0'],
-            $data['story_image_moment_1'],
-            $data['story_image_moment_2'],
-            $data['story_caption_primary'],
-            $data['story_caption_secondary'],
-            $data['story_caption_moment_0'],
-            $data['story_caption_moment_1'],
-            $data['story_caption_moment_2'],
-        );
+        self::stripStoryUploadFields($data);
 
         $data = InvitationEventData::mergeIntoAttributes($data);
 
@@ -56,18 +46,7 @@ class InvitationService
     public function update(Invitation $invitation, array $data, ?bool $publish = null): Invitation
     {
         unset($data['publish'], $data['dress_colors_json'], $data['story_images_json']);
-        unset(
-            $data['story_image_primary'],
-            $data['story_image_secondary'],
-            $data['story_image_moment_0'],
-            $data['story_image_moment_1'],
-            $data['story_image_moment_2'],
-            $data['story_caption_primary'],
-            $data['story_caption_secondary'],
-            $data['story_caption_moment_0'],
-            $data['story_caption_moment_1'],
-            $data['story_caption_moment_2'],
-        );
+        self::stripStoryUploadFields($data);
 
         $data = $this->resolveTemplateVariant($data);
 
@@ -144,6 +123,13 @@ class InvitationService
         }
 
         return PlanEntitlements::applyPlanToPayload($data);
+    }
+
+    private static function stripStoryUploadFields(array &$data): void
+    {
+        foreach (StoryGallerySlots::slotKeys() as $slotKey) {
+            unset($data["story_image_{$slotKey}"], $data["story_caption_{$slotKey}"]);
+        }
     }
 
     private function slugExists(string $slug, ?int $exceptId = null): bool

@@ -4,7 +4,43 @@ namespace App\Support;
 
 class StoryGallerySlots
 {
-    public const MOMENT_COUNT = 3;
+    public const MOMENT_COUNT = 12;
+
+    public const MAX_TOTAL_IMAGES = 14;
+
+    /**
+     * @return array<int, string>
+     */
+    public static function slotKeys(): array
+    {
+        $keys = ['primary', 'secondary'];
+
+        for ($index = 0; $index < self::MOMENT_COUNT; $index++) {
+            $keys[] = "moment_{$index}";
+        }
+
+        return $keys;
+    }
+
+    /**
+     * @return array<string, array<int, mixed>>
+     */
+    public static function uploadFieldRules(): array
+    {
+        $rules = [];
+        $imageRule = ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'];
+        $captionRule = ['nullable', 'string', 'max:120'];
+
+        foreach (self::slotKeys() as $key) {
+            $rules["story_image_{$key}"] = $imageRule;
+
+            if (str_starts_with($key, 'moment_')) {
+                $rules["story_caption_{$key}"] = $captionRule;
+            }
+        }
+
+        return $rules;
+    }
 
     public static function slotsForSlug(string $slug): array
     {
@@ -43,11 +79,6 @@ class StoryGallerySlots
         }
 
         return $slots;
-    }
-
-    public static function slotKeys(): array
-    {
-        return ['primary', 'secondary', 'moment_0', 'moment_1', 'moment_2'];
     }
 
     public static function sectionTitle(string $slug): string

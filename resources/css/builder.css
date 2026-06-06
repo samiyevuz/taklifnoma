@@ -631,6 +631,17 @@
         margin-top: 0.75rem;
         padding-top: 0.75rem;
         border-top: 1px solid rgba(201, 162, 39, 0.12);
+        max-height: 14rem;
+        overflow-y: auto;
+        padding-right: 0.25rem;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(201, 162, 39, 0.35) transparent;
+    }
+
+    .builder-story-moments__hint {
+        font-size: 0.68rem;
+        line-height: 1.4;
+        color: var(--color-ink-muted);
     }
 
     .builder-story-moments__label {

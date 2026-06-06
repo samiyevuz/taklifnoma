@@ -142,8 +142,17 @@
                     @endif
 
                     @if ($moments->isNotEmpty())
-                        <div class="inv-story-path inv-story-reveal" data-story-stage="path">
-                            <span class="inv-story-path__line" aria-hidden="true"></span>
+                        @php
+                            $useStoryCarousel = $moments->count() > 4;
+                        @endphp
+                        <div
+                            class="inv-story-path inv-story-reveal {{ $useStoryCarousel ? 'inv-story-path--carousel' : '' }}"
+                            data-story-stage="path"
+                            data-story-count="{{ $moments->count() }}"
+                        >
+                            @unless ($useStoryCarousel)
+                                <span class="inv-story-path__line" aria-hidden="true"></span>
+                            @endunless
                             @foreach ($moments as $index => $moment)
                                 <article class="inv-story-milestone" style="--story-i: {{ $index }}" data-story-item>
                                     <span class="inv-story-milestone__dot" aria-hidden="true"></span>

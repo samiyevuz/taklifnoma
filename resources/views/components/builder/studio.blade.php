@@ -208,6 +208,7 @@
                             @if ($storyMoments->isNotEmpty())
                                 <div class="builder-story-moments" id="builder-story-moments">
                                     <p class="builder-story-moments__label">{{ __('builder.story_moments_title') }}</p>
+                                    <p class="builder-story-moments__hint">{{ __('builder.story_moments_limit', ['max' => \App\Support\StoryGallerySlots::MOMENT_COUNT]) }}</p>
                                     @foreach ($storyMoments as $slot)
                                         @php $existing = $storyImagesBySlot->get($slot['key'], []); @endphp
                                         <div class="builder-story-card builder-story-card--moment" data-story-slot="{{ $slot['key'] }}" data-story-type="{{ $slot['type'] }}">
