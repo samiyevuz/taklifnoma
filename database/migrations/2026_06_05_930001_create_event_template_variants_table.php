@@ -25,7 +25,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->timestamps();
 
-            $table->index(['event_template_id', 'is_active', 'sort_order']);
+            $table->index(['event_template_id', 'is_active', 'sort_order'], 'etv_template_active_sort_idx');
         });
     }
 
