@@ -1013,10 +1013,10 @@
     }
 
     .builder-preview-page.inv-theme--royal {
-        --color-inv-champagne: #e8efe9;
-        --color-inv-rose: #c8d9cc;
-        --color-inv-gold: #2f5d46;
-        --color-inv-gold-light: #5a8f6e;
+        --color-inv-champagne: #faf3e8;
+        --color-inv-rose: #eddcc8;
+        --color-inv-gold: #b8860b;
+        --color-inv-gold-light: #e8c66a;
     }
 
     .builder-preview-page.inv-theme--luxury .inv-welcome__pre,

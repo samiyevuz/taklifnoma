@@ -6,25 +6,25 @@
         $tierRibbon = $invitation->presentationTierRibbon();
     @endphp
     <div
-        class="invitation-page {{ $invitation->presentationThemeClass() }} {{ $invitation->presentationAnimationClass() }}"
+        class="invitation-page builder-preview-page {{ $invitation->presentationThemeClass() }} {{ $invitation->presentationAnimationClass() }}"
         id="invitation-app"
         data-invitation-slug="{{ $invitation->slug }}"
         data-animation-tier="{{ $invitation->entitlements()['animation'] ?? 'enhanced' }}"
     >
-        <div class="invitation-fx" aria-hidden="true">
+        <div class="builder-preview-fx" aria-hidden="true">
             @if ($coverUrl)
                 <div
-                    class="invitation-fx__cover"
+                    class="builder-preview-cover"
                     style="background-image: url('{{ $coverUrl }}'); background-position: {{ $invitation->presentationCoverFocus() }};"
                 ></div>
             @endif
-            <div class="invitation-fx__overlay"></div>
-            <div class="invitation-fx__shimmer"></div>
-            <div class="invitation-fx__particles" id="inv-particles"></div>
+            <div class="builder-preview-overlay"></div>
+            <div class="builder-preview-shimmer"></div>
+            <div class="builder-preview-particles" id="inv-particles"></div>
         </div>
 
         @if ($tierRibbon)
-            <span class="invitation-tier-ribbon">{{ $tierRibbon }}</span>
+            <span class="builder-preview-tier-ribbon">{{ $tierRibbon }}</span>
         @endif
 
         <x-invitation.chrome :invitation="$invitation" />

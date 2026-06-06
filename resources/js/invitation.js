@@ -445,7 +445,7 @@ function initPresentationFx() {
     if (!count) return;
 
     particles.innerHTML = Array.from({ length: count }, (_, index) => (
-        `<span class="invitation-fx__particle" style="--p-i:${index};--p-x:${8 + (index * 6.5) % 84}%;--p-y:${6 + (index * 11) % 88}%;--p-d:${0.4 + (index % 5) * 0.35}s"></span>`
+        `<span class="builder-preview-particle" style="--p-i:${index};--p-x:${8 + (index * 6.5) % 84}%;--p-y:${6 + (index * 11) % 88}%;--p-d:${0.4 + (index % 5) * 0.35}s"></span>`
     )).join('');
 }
 
