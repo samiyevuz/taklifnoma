@@ -334,6 +334,15 @@ class Invitation extends Model
         return StoryGallerySlots::sectionSubtitle($this->template_slug ?? 'nikoh');
     }
 
+    public function storyPortraitName(string $slot): string
+    {
+        return match ($slot) {
+            'primary' => trim((string) $this->groom_name),
+            'secondary' => trim((string) $this->bride_name),
+            default => '',
+        };
+    }
+
     public function resolvedMusicUrl(): string
     {
         if (! $this->allowsMusic()) {

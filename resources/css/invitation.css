@@ -59,6 +59,11 @@
         z-index: 1;
     }
 
+    .invitation-page.is-scrolling .builder-preview-shimmer,
+    .invitation-page.is-scrolling .builder-preview-particle {
+        animation-play-state: paused !important;
+    }
+
     .invitation-chrome {
         position: absolute;
         top: max(0.75rem, env(safe-area-inset-top));
@@ -407,6 +412,8 @@
     /* ─── Shared section styles ─── */
     .inv-section {
         padding: 3rem 1.25rem;
+        content-visibility: auto;
+        contain-intrinsic-size: auto 28rem;
     }
 
     .inv-section-label {
@@ -451,7 +458,8 @@
 
     .inv-reveal.is-visible {
         opacity: 1;
-        transform: translateY(0);
+        transform: translate3d(0, 0, 0);
+        will-change: auto;
     }
 
     /* ─── Section 2: Invitation & countdown ─── */
@@ -930,88 +938,252 @@
         color: var(--color-inv-ink-muted);
     }
 
-    .inv-story-portraits {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.875rem;
-        margin-top: 1.25rem;
-        padding: 1rem;
+    /* ─── Love story gallery (performance-first: no backdrop blur) ─── */
+    .inv-story {
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+        contain: layout style;
     }
 
-    .inv-story-portrait {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.625rem;
-        margin: 0;
-    }
-
-    .inv-story-portrait__frame {
-        width: 100%;
-        aspect-ratio: 3 / 4;
-        border-radius: 1.25rem;
-        overflow: hidden;
-        border: 1px solid rgba(201, 162, 39, 0.22);
-        box-shadow: 0 12px 28px rgba(42, 36, 32, 0.08);
-    }
-
-    .inv-story-portrait__frame img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .inv-story-portrait__label {
-        font-family: var(--font-serif);
-        font-size: 0.9rem;
-        color: var(--color-inv-ink);
+    .inv-story__subtitle {
+        margin-top: 0.75rem;
+        padding-inline: 0.5rem;
         text-align: center;
-    }
-
-    .inv-story-timeline {
-        display: grid;
-        gap: 0.875rem;
-        margin-top: 1rem;
-    }
-
-    .inv-story-moment {
-        display: grid;
-        grid-template-columns: 96px 1fr;
-        gap: 0.875rem;
-        align-items: center;
-        padding: 0.875rem;
-    }
-
-    .inv-story-moment__media {
-        width: 96px;
-        aspect-ratio: 1;
-        border-radius: 1rem;
-        overflow: hidden;
-        border: 1px solid rgba(201, 162, 39, 0.18);
-    }
-
-    .inv-story-moment__media img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .inv-story-moment__title {
-        font-family: var(--font-serif);
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: var(--color-inv-ink);
-    }
-
-    .inv-story-moment__caption {
-        margin-top: 0.25rem;
-        font-size: 0.8rem;
-        line-height: 1.45;
+        font-size: 0.875rem;
+        line-height: 1.55;
         color: var(--color-inv-ink-soft);
     }
 
+    .inv-story-reveal {
+        opacity: 0;
+        transform: translate3d(0, 20px, 0);
+        transition:
+            opacity 0.65s var(--inv-ease),
+            transform 0.65s var(--inv-ease);
+    }
+
+    .inv-story-reveal.is-visible {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+
+    .inv-story-duo {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+        padding: 1rem 0.75rem 0.5rem;
+    }
+
+    .inv-story-duo__heart {
+        position: absolute;
+        top: 42%;
+        left: 50%;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 9999px;
+        color: var(--color-inv-gold);
+        background: rgba(255, 250, 245, 0.95);
+        border: 1px solid rgba(201, 162, 39, 0.28);
+        box-shadow: 0 6px 18px rgba(42, 36, 32, 0.08);
+        transform: translate(-50%, -50%) scale(0.6);
+        opacity: 0;
+        transition:
+            transform 0.7s var(--inv-ease) 0.25s,
+            opacity 0.55s ease 0.2s;
+    }
+
+    .inv-story-duo__heart svg {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .inv-story-duo.is-visible .inv-story-duo__heart {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    .inv-story-duo__card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.55rem;
+        margin: 0;
+        opacity: 0;
+        transform: translate3d(0, 18px, 0) rotate(calc((var(--story-i, 0) - 0.5) * 3deg));
+        transition:
+            opacity 0.6s var(--inv-ease),
+            transform 0.7s var(--inv-ease);
+        transition-delay: calc(0.08s + (var(--story-i, 0) * 0.12s));
+    }
+
+    .inv-story-duo.is-visible .inv-story-duo__card {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) rotate(calc((var(--story-i, 0) - 0.5) * 2deg));
+    }
+
+    .inv-story-duo__frame {
+        width: 100%;
+        aspect-ratio: 4 / 5;
+        border-radius: 1rem;
+        overflow: hidden;
+        background: rgba(255, 250, 245, 0.9);
+        border: 1px solid rgba(201, 162, 39, 0.2);
+        box-shadow:
+            0 10px 24px rgba(42, 36, 32, 0.07),
+            inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    }
+
+    .inv-story-duo__frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.02);
+    }
+
+    .inv-story-duo__name {
+        font-family: var(--font-serif);
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--color-inv-ink);
+        text-align: center;
+        letter-spacing: 0.02em;
+    }
+
+    .inv-story-path {
+        position: relative;
+        display: grid;
+        gap: 0.75rem;
+        margin-top: 1.25rem;
+        padding-left: 0.35rem;
+    }
+
+    .inv-story-path__line {
+        position: absolute;
+        top: 0.5rem;
+        bottom: 0.5rem;
+        left: 0.62rem;
+        width: 2px;
+        border-radius: 9999px;
+        background: linear-gradient(180deg, transparent, rgba(201, 162, 39, 0.45) 12%, rgba(201, 162, 39, 0.45) 88%, transparent);
+        transform-origin: top center;
+        transform: scaleY(0);
+        transition: transform 0.85s var(--inv-ease) 0.15s;
+    }
+
+    .inv-story-path.is-visible .inv-story-path__line {
+        transform: scaleY(1);
+    }
+
+    .inv-story-milestone {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1.25rem 1fr;
+        gap: 0.65rem;
+        align-items: stretch;
+        opacity: 0;
+        transform: translate3d(-10px, 0, 0);
+        transition:
+            opacity 0.55s var(--inv-ease),
+            transform 0.6s var(--inv-ease);
+        transition-delay: calc(0.18s + (var(--story-i, 0) * 0.1s));
+    }
+
+    .inv-story-path.is-visible .inv-story-milestone {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+
+    .inv-story-milestone__dot {
+        position: relative;
+        z-index: 1;
+        width: 0.65rem;
+        height: 0.65rem;
+        margin-top: 1.35rem;
+        margin-left: 0.18rem;
+        border-radius: 9999px;
+        background: var(--color-inv-gold);
+        box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.16);
+    }
+
+    .inv-story-milestone__card {
+        display: grid;
+        grid-template-columns: 4.5rem 1fr;
+        gap: 0.7rem;
+        align-items: center;
+        padding: 0.65rem 0.75rem;
+        border-radius: 1rem;
+        background: rgba(255, 250, 245, 0.9);
+        border: 1px solid rgba(201, 162, 39, 0.14);
+        box-shadow: 0 8px 20px rgba(42, 36, 32, 0.05);
+    }
+
+    .inv-story-milestone__media {
+        width: 4.5rem;
+        aspect-ratio: 1;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        border: 1px solid rgba(201, 162, 39, 0.16);
+    }
+
+    .inv-story-milestone__media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .inv-story-milestone__label {
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--color-inv-gold);
+    }
+
+    .inv-story-milestone__caption {
+        margin-top: 0.2rem;
+        font-family: var(--font-serif);
+        font-size: 0.86rem;
+        line-height: 1.4;
+        color: var(--color-inv-ink);
+    }
+
+    @media (max-width: 380px) {
+        .inv-story-duo {
+            gap: 0.5rem;
+            padding-inline: 0.35rem;
+        }
+
+        .inv-story-milestone__card {
+            grid-template-columns: 4rem 1fr;
+            padding: 0.55rem 0.6rem;
+        }
+
+        .inv-story-milestone__media {
+            width: 4rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .invitation-page .inv-glass {
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            background: rgba(255, 250, 245, 0.94);
+        }
+    }
+
     @media (prefers-reduced-motion: reduce) {
-        .inv-reveal {
+        .inv-reveal,
+        .inv-story-reveal,
+        .inv-story-duo__card,
+        .inv-story-milestone,
+        .inv-story-duo__heart,
+        .inv-story-path__line {
             opacity: 1;
             transform: none;
             transition: none;

@@ -106,43 +106,69 @@
                     $portraits = $storyItems->where('type', 'portrait')->values();
                     $moments = $storyItems->where('type', 'moment')->values();
                 @endphp
-                <section class="inv-section" id="inv-story" aria-labelledby="inv-story-title">
-                    <div class="inv-reveal">
+                <section class="inv-section inv-story" id="inv-story" aria-labelledby="inv-story-title">
+                    <header class="inv-story__head inv-story-reveal">
                         <p class="inv-section-label">{{ __('invitation.story_label') }}</p>
                         <h2 id="inv-story-title" class="inv-section-title">{{ $invitation->storyGalleryTitle() }}</h2>
-                        <p class="mt-3 text-center text-sm text-inv-ink-soft px-2">{{ $invitation->storyGallerySubtitle() }}</p>
+                        <p class="inv-story__subtitle">{{ $invitation->storyGallerySubtitle() }}</p>
+                    </header>
 
-                        @if ($portraits->isNotEmpty())
-                            <div class="inv-story-portraits inv-glass">
-                                @foreach ($portraits as $portrait)
-                                    <figure class="inv-story-portrait">
-                                        <div class="inv-story-portrait__frame">
-                                            <img src="{{ $portrait['url'] }}" alt="{{ $portrait['label'] }}" loading="lazy" decoding="async">
-                                        </div>
-                                        <figcaption class="inv-story-portrait__label">{{ $portrait['label'] }}</figcaption>
-                                    </figure>
-                                @endforeach
-                            </div>
-                        @endif
+                    @if ($portraits->isNotEmpty())
+                        <div class="inv-story-duo inv-story-reveal" data-story-stage="duo">
+                            <span class="inv-story-duo__heart" aria-hidden="true">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" d="M12 3c-1.5 2-4 4-4 7a4 4 0 108 0c0-3-2.5-5-4-7z"/>
+                                </svg>
+                            </span>
+                            @foreach ($portraits as $index => $portrait)
+                                @php
+                                    $portraitName = $invitation->storyPortraitName($portrait['slot']) ?: $portrait['label'];
+                                @endphp
+                                <figure class="inv-story-duo__card" style="--story-i: {{ $index }}" data-story-item>
+                                    <div class="inv-story-duo__frame">
+                                        <img
+                                            src="{{ $portrait['url'] }}"
+                                            alt="{{ $portraitName }}"
+                                            loading="lazy"
+                                            decoding="async"
+                                            width="320"
+                                            height="400"
+                                        >
+                                    </div>
+                                    <figcaption class="inv-story-duo__name">{{ $portraitName }}</figcaption>
+                                </figure>
+                            @endforeach
+                        </div>
+                    @endif
 
-                        @if ($moments->isNotEmpty())
-                            <div class="inv-story-timeline">
-                                @foreach ($moments as $moment)
-                                    <article class="inv-story-moment inv-glass">
-                                        <div class="inv-story-moment__media">
-                                            <img src="{{ $moment['url'] }}" alt="{{ $moment['label'] }}" loading="lazy" decoding="async">
+                    @if ($moments->isNotEmpty())
+                        <div class="inv-story-path inv-story-reveal" data-story-stage="path">
+                            <span class="inv-story-path__line" aria-hidden="true"></span>
+                            @foreach ($moments as $index => $moment)
+                                <article class="inv-story-milestone" style="--story-i: {{ $index }}" data-story-item>
+                                    <span class="inv-story-milestone__dot" aria-hidden="true"></span>
+                                    <div class="inv-story-milestone__card">
+                                        <div class="inv-story-milestone__media">
+                                            <img
+                                                src="{{ $moment['url'] }}"
+                                                alt="{{ $moment['caption'] ?: $moment['label'] }}"
+                                                loading="lazy"
+                                                decoding="async"
+                                                width="112"
+                                                height="112"
+                                            >
                                         </div>
-                                        <div class="inv-story-moment__body">
-                                            <p class="inv-story-moment__title">{{ $moment['label'] }}</p>
+                                        <div class="inv-story-milestone__body">
+                                            <p class="inv-story-milestone__label">{{ $moment['label'] }}</p>
                                             @if (filled($moment['caption']))
-                                                <p class="inv-story-moment__caption">{{ $moment['caption'] }}</p>
+                                                <p class="inv-story-milestone__caption">{{ $moment['caption'] }}</p>
                                             @endif
                                         </div>
-                                    </article>
-                                @endforeach
-                            </div>
-                        @endif
-                    </div>
+                                    </div>
+                                </article>
+                            @endforeach
+                        </div>
+                    @endif
                 </section>
             @endif
 
