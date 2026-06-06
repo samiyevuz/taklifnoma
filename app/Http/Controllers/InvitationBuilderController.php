@@ -124,6 +124,9 @@ class InvitationBuilderController extends Controller
             'dress_colors' => $source->dress_colors ?? InvitationDefaults::dressColors(),
             'rsvp_enabled' => $source->rsvp_enabled ?? true,
             'slug' => $invitation?->slug,
+            'is_published' => $invitation?->isPublished() ?? false,
+            'public_url' => ($invitation && $invitation->isPublished()) ? $invitation->publicUrl() : null,
+            'checkout_url_pending' => __('builder.checkout_url_pending'),
             'is_edit' => $invitation !== null,
             'action' => $invitation
                 ? route('builder.update', $invitation)

@@ -99,6 +99,7 @@ return [
     'complimentary_activate' => 'Havolani bepul faollashtirish',
     'complimentary_success' => 'Taklifnoma bepul faollashtirildi.',
     'checkout_url' => 'Maxsus havola',
+    'checkout_url_pending' => 'Faollashtirilgandan keyin yaratiladi',
     'checkout_secure_note' => 'To\'lovlar Click va Payme orqali xavfsiz amalga oshiriladi.',
     'checkout_note' => 'To\'lov integratsiyasi tez orada ulanadi. Hozircha qoralama sifatida saqlashingiz mumkin.',
     'close_checkout' => 'Modalni yopish',

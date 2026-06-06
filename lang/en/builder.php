@@ -115,6 +115,7 @@ return [
     'complimentary_activate' => 'Activate link for free',
     'complimentary_success' => 'Invitation activated for free.',
     'checkout_url' => 'Custom URL',
+    'checkout_url_pending' => 'Link will be created after activation',
     'checkout_secure_note' => 'Payments are processed securely via Click and Payme.',
     'checkout_note' => 'Payment integration is coming soon. You can save as draft for now.',
     'close_checkout' => 'Close',

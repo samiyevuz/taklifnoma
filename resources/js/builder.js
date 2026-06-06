@@ -895,17 +895,15 @@ function initBuilderStudio() {
         const url = document.getElementById('checkout-url');
         const alert = document.getElementById('checkout-alert');
         const title = profileEngine.buildDisplayTitle(state.profile);
-        const slugPreview = slugInput?.value?.trim() || slugifyPreview(title);
-        const siteHost = bootstrap.slug_host || bootstrap.payments?.site_host || 'taklifnoma.net';
-
-        syncCustomDomain();
-        const publicUrl = customDomainHidden?.value
-            ? customDomainHidden.value
-            : `${siteHost}/l/${slugPreview}`;
-
         if (couple) couple.textContent = title;
         if (event) event.textContent = `${formatEventDate(state.event_at)} · ${state.venue_name}`;
-        if (url) url.textContent = publicUrl;
+        if (url) {
+            const isPublished = Boolean(bootstrap.is_published && bootstrap.public_url);
+            url.classList.toggle('is-pending', !isPublished);
+            url.textContent = isPublished
+                ? bootstrap.public_url
+                : (bootstrap.checkout_url_pending || 'Faollashtirilgandan keyin beriladi');
+        }
         applyVariant(variantIndex);
         if (alert) {
             alert.textContent = '';
@@ -1262,6 +1260,8 @@ function initBuilderStudio() {
         prepareFormForSubmit();
 
         const formData = new FormData(form);
+        // Edit mode adds _method=PUT for builder.update — must not leak to payments/invoice.
+        formData.delete('_method');
         formData.append('payment_provider', provider);
 
         if (payBtn) payBtn.disabled = true;

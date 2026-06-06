@@ -115,6 +115,7 @@ return [
     'complimentary_activate' => 'Активировать ссылку бесплатно',
     'complimentary_success' => 'Приглашение активировано бесплатно.',
     'checkout_url' => 'Пользовательская ссылка',
+    'checkout_url_pending' => 'Ссылка появится после активации',
     'checkout_secure_note' => 'Платежи проходят безопасно через Click и Payme.',
     'checkout_note' => 'Интеграция оплаты скоро будет подключена. Пока можно сохранить черновик.',
     'close_checkout' => 'Закрыть',
