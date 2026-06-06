@@ -1277,11 +1277,17 @@ function initBuilderStudio() {
                 body: formData,
             });
 
-            const payload = await response.json();
+            const payload = await response.json().catch(() => ({}));
 
             if (!response.ok || !payload?.success) {
                 const message = payload?.message
                     || Object.values(payload?.errors || {}).flat().join(' ')
+                    || (response.status === 419
+                        ? 'Sahifa muddati tugadi. Sahifani yangilab, qayta urinib ko\'ring.'
+                        : null)
+                    || (response.status >= 500
+                        ? 'Server xatosi. Birozdan keyin qayta urinib ko\'ring.'
+                        : null)
                     || 'To\'lovni boshlashda xatolik yuz berdi.';
                 throw new Error(message);
             }
