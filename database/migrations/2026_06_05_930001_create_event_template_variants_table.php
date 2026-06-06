@@ -8,6 +8,22 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (! Schema::hasTable('event_template_variants')) {
+            $this->createVariantsTable();
+
+            return;
+        }
+
+        $this->ensureVariantsIndex();
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('event_template_variants');
+    }
+
+    private function createVariantsTable(): void
+    {
         Schema::create('event_template_variants', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_template_id')->constrained('event_templates')->cascadeOnDelete();
@@ -29,8 +45,19 @@ return new class extends Migration
         });
     }
 
-    public function down(): void
+    private function ensureVariantsIndex(): void
     {
-        Schema::dropIfExists('event_template_variants');
+        $indexes = collect(Schema::getConnection()->select(
+            'SHOW INDEX FROM event_template_variants WHERE Key_name = ?',
+            ['etv_template_active_sort_idx']
+        ));
+
+        if ($indexes->isNotEmpty()) {
+            return;
+        }
+
+        Schema::table('event_template_variants', function (Blueprint $table) {
+            $table->index(['event_template_id', 'is_active', 'sort_order'], 'etv_template_active_sort_idx');
+        });
     }
 };
