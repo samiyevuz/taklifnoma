@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\PaymentInvoice;
 use App\Support\BuilderEventProfile;
+use App\Support\ComplimentaryAccess;
 use App\Support\TemplateCatalog;
 use App\Support\PlanEntitlements;
 use App\Support\TemplateVariantCatalog;
@@ -45,10 +46,16 @@ class GenerateInvoiceRequest extends FormRequest
         $slug = (string) $this->input('template_slug', 'nikoh');
 
         return [
-            'payment_provider' => ['required', 'string', Rule::in([
-                PaymentInvoice::PROVIDER_CLICK,
-                PaymentInvoice::PROVIDER_PAYME,
-            ])],
+            'payment_provider' => [
+                Rule::requiredIf(fn () => ! ComplimentaryAccess::hasAccess($this->user())),
+                'nullable',
+                'string',
+                Rule::in([
+                    PaymentInvoice::PROVIDER_CLICK,
+                    PaymentInvoice::PROVIDER_PAYME,
+                    PaymentInvoice::PROVIDER_COMPLIMENTARY,
+                ]),
+            ],
             'template_slug' => ['required', 'string', Rule::in(TemplateCatalog::slugs())],
             'template_variant' => ['nullable', 'string', 'max:80'],
             'custom_domain' => ['nullable', 'string', 'max:120', 'regex:/^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}$/i'],

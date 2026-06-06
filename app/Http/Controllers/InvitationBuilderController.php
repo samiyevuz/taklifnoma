@@ -8,6 +8,7 @@ use App\Services\InvitationMediaService;
 use App\Services\InvitationService;
 use App\Services\Rsvp\RsvpDashboardService;
 use App\Support\BuilderEventProfile;
+use App\Support\ComplimentaryAccess;
 use App\Support\InvitationDefaults;
 use App\Support\TemplateCatalog;
 use App\Support\PlanEntitlements;
@@ -139,6 +140,7 @@ class InvitationBuilderController extends Controller
                 'generate_url' => route('payments.invoice.generate'),
                 'return_url' => route('payments.return'),
                 'site_host' => parse_url(config('app.url'), PHP_URL_HOST) ?: 'taklifnoma.net',
+                'complimentary' => auth()->check() && ComplimentaryAccess::hasAccess(auth()->user()),
             ],
         ];
     }

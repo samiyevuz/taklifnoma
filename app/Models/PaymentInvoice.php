@@ -22,6 +22,8 @@ class PaymentInvoice extends Model
 
     public const PROVIDER_PAYME = 'payme';
 
+    public const PROVIDER_COMPLIMENTARY = 'complimentary';
+
     protected $fillable = [
         'uuid',
         'user_id',

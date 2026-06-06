@@ -7,12 +7,13 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Support\ComplimentaryAccess;
 use App\Models\PaymentInvoice;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'phone', 'password', 'role', 'telegram_chat_id', 'telegram_notifications_enabled', 'telegram_linked_at'])]
+#[Fillable(['name', 'email', 'phone', 'password', 'role', 'is_complimentary', 'telegram_chat_id', 'telegram_notifications_enabled', 'telegram_linked_at'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -30,12 +31,18 @@ class User extends Authenticatable
             'password' => 'hashed',
             'telegram_notifications_enabled' => 'boolean',
             'telegram_linked_at' => 'datetime',
+            'is_complimentary' => 'boolean',
         ];
     }
 
     public function isAdmin(): bool
     {
         return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function hasComplimentaryAccess(): bool
+    {
+        return ComplimentaryAccess::hasAccess($this);
     }
 
     public function paymentInvoices(): HasMany

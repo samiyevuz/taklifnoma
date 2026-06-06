@@ -6,6 +6,7 @@ use App\Models\Invitation;
 use App\Models\PaymentInvoice;
 use App\Models\User;
 use App\Services\InvitationService;
+use App\Support\ComplimentaryAccess;
 use App\Support\PlanEntitlements;
 use App\Support\TemplateVariantCatalog;
 use Illuminate\Support\Facades\DB;
@@ -15,10 +16,15 @@ class PaymentCheckoutService
     public function __construct(
         private readonly InvitationService $invitationService,
         private readonly ClickMerchantService $clickMerchantService,
+        private readonly PaymentActivationService $paymentActivationService,
     ) {}
 
     public function generateInvoice(User $user, array $payload): array
     {
+        if (ComplimentaryAccess::hasAccess($user)) {
+            return $this->generateComplimentaryInvoice($user, $payload);
+        }
+
         return DB::transaction(function () use ($user, $payload) {
             $provider = $payload['payment_provider'];
             $templateSlug = $payload['template_slug'] ?? 'nikoh';
@@ -46,6 +52,51 @@ class PaymentCheckoutService
             return [
                 'invoice' => $invoice->fresh(['invitation']),
                 'checkout' => $this->buildCheckoutPayload($invoice),
+            ];
+        });
+    }
+
+    private function generateComplimentaryInvoice(User $user, array $payload): array
+    {
+        return DB::transaction(function () use ($user, $payload) {
+            $templateSlug = $payload['template_slug'] ?? 'nikoh';
+            $variantId = $payload['template_variant'] ?? null;
+            $variant = TemplateVariantCatalog::find($templateSlug, $variantId);
+            $plan = PlanEntitlements::forTheme($variant['theme'] ?? PlanEntitlements::TIER_PREMIUM);
+            $amount = TemplateVariantCatalog::resolvePrice($templateSlug, $variantId);
+
+            $invitation = $this->resolveInvitation($user, $payload);
+
+            $invoice = PaymentInvoice::query()->create([
+                'user_id' => $user->id,
+                'invitation_id' => $invitation->id,
+                'provider' => PaymentInvoice::PROVIDER_COMPLIMENTARY,
+                'amount' => $amount,
+                'amount_tiyin' => 0,
+                'currency' => config('payments.currency', 'UZS'),
+                'template_slug' => $templateSlug,
+                'template_variant' => $variant['id'] ?? $variantId,
+                'plan_tier' => $plan['tier'],
+                'status' => PaymentInvoice::STATUS_PAID,
+                'paid_at' => now(),
+            ]);
+
+            $invitation = $this->paymentActivationService->activateFromInvoice($invoice);
+
+            return [
+                'invoice' => $invoice->fresh(['invitation']),
+                'checkout' => [
+                    'provider' => PaymentInvoice::PROVIDER_COMPLIMENTARY,
+                    'redirect_url' => route('builder.edit', $invitation).'?complimentary=1',
+                    'invoice_id' => $invoice->uuid,
+                    'merchant_trans_id' => $invoice->merchant_trans_id,
+                    'amount' => $invoice->amount,
+                    'amount_label' => number_format($invoice->amount, 0, '.', ' ').' '.config('payments.currency', 'UZS'),
+                    'public_url' => $invitation->publicUrl(),
+                    'custom_slug' => $invitation->custom_slug,
+                    'template_slug' => $invoice->template_slug,
+                    'complimentary' => true,
+                ],
             ];
         });
     }

@@ -323,10 +323,21 @@
                 </div>
                 <div class="builder-checkout-summary__total">
                     <span>{{ __('builder.checkout_total') }}</span>
-                    <strong id="checkout-price">{{ number_format($b['price_amount'], 0, '.', ' ') }} {{ $b['currency'] }}</strong>
+                    <div class="text-right">
+                        <strong id="checkout-price">{{ number_format($b['price_amount'], 0, '.', ' ') }} {{ $b['currency'] }}</strong>
+                        @if ($b['payments']['complimentary'] ?? false)
+                            <p class="mt-1 text-xs font-semibold text-luxury-emerald">{{ __('builder.complimentary_price_note') }}</p>
+                        @endif
+                    </div>
                 </div>
             </div>
 
+            @if ($b['payments']['complimentary'] ?? false)
+                <div class="builder-checkout-complimentary glass-luxury mt-5">
+                    <p class="text-sm font-semibold text-luxury-emerald">{{ __('builder.complimentary_title') }}</p>
+                    <p class="mt-1 text-sm text-ink-soft">{{ __('builder.complimentary_desc') }}</p>
+                </div>
+            @else
             <div class="builder-checkout-methods mt-5">
                 <p class="builder-checkout-methods__label">{{ __('builder.payment_method') }}</p>
                 <div class="builder-checkout-methods__grid" role="radiogroup" aria-label="{{ __('builder.payment_method') }}">
@@ -358,16 +369,21 @@
                     </x-builder.payment-method-card>
                 </div>
             </div>
+            @endif
 
             <div class="builder-checkout-actions mt-6">
-                <button type="button" class="btn-gold-shimmer btn-shine w-full" id="checkout-pay-btn" data-ripple>
-                    {{ __('builder.checkout_pay_activate') }}
+                <button type="button" class="btn-gold-shimmer btn-shine w-full" id="checkout-pay-btn" data-ripple
+                    data-label-pay="{{ __('builder.checkout_pay_activate') }}"
+                    data-label-free="{{ __('builder.complimentary_activate') }}">
+                    {{ ($b['payments']['complimentary'] ?? false) ? __('builder.complimentary_activate') : __('builder.checkout_pay_activate') }}
                 </button>
                 <button type="button" class="btn-outline-luxury w-full" data-checkout-action="draft">{{ __('builder.save_draft') }}</button>
             </div>
 
             <p class="builder-checkout-alert hidden" id="checkout-alert" role="alert"></p>
-            <p class="mt-3 text-center text-xs text-ink-muted">{{ __('builder.checkout_secure_note') }}</p>
+            @if (!($b['payments']['complimentary'] ?? false))
+                <p class="mt-3 text-center text-xs text-ink-muted">{{ __('builder.checkout_secure_note') }}</p>
+            @endif
         </div>
     </div>
 </div>

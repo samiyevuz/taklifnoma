@@ -1135,9 +1135,12 @@ function initBuilderStudio() {
 
         const payBtn = document.getElementById('checkout-pay-btn');
         const alert = document.getElementById('checkout-alert');
-        const provider = checkoutModal?.querySelector('input[name="payment_provider"]:checked')?.value;
+        const isComplimentary = Boolean(bootstrap.payments?.complimentary);
+        const provider = isComplimentary
+            ? 'complimentary'
+            : checkoutModal?.querySelector('input[name="payment_provider"]:checked')?.value;
 
-        if (!provider) {
+        if (!isComplimentary && !provider) {
             if (alert) {
                 alert.textContent = 'To\'lov usulini tanlang.';
                 alert.classList.remove('hidden', 'is-success');
@@ -1185,6 +1188,11 @@ function initBuilderStudio() {
 
             if (!redirectUrl) {
                 throw new Error('To\'lov havolasi yaratilmadi.');
+            }
+
+            if (payload?.data?.provider === 'complimentary') {
+                window.location.href = redirectUrl;
+                return;
             }
 
             if (payload?.data?.invitation_id) {

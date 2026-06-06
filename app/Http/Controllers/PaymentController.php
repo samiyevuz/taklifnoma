@@ -49,6 +49,7 @@ class PaymentController extends Controller
                 'invitation_id' => $invoice->invitation_id,
                 'form_action' => route('builder.update', $invoice->invitation_id),
                 'status' => $invoice->status,
+                'complimentary' => $checkout['complimentary'] ?? false,
             ],
         ]);
     }
