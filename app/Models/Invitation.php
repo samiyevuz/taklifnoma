@@ -162,6 +162,20 @@ class Invitation extends Model
         return url('/l/'.$slug);
     }
 
+    public function customDomainUrl(): ?string
+    {
+        if (! filled($this->custom_domain) || ! $this->allowsCustomDomain()) {
+            return null;
+        }
+
+        return 'https://'.strtolower($this->custom_domain);
+    }
+
+    public function primaryShareUrl(): string
+    {
+        return $this->customDomainUrl() ?? $this->publicUrl();
+    }
+
     public function defaultMusicUrl(): string
     {
         return asset('audio/romantic-wedding.mp3');

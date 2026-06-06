@@ -4,6 +4,7 @@
  */
 
 import { initRsvpLivePanels } from './rsvp-live-panel';
+import { initCopyLinks } from './copy-link';
 
 const ELITE_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
 const THEME_COLORS = { light: '#FAF6F0', dark: '#0B0B0F' };
@@ -499,4 +500,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initRsvpPreview();
     initRsvpLivePanels();
     initFavorites();
+    initCopyLinks();
 });

@@ -9,20 +9,19 @@
 
     <div class="account-card glass-luxury">
         @forelse ($orders as $order)
-            <div class="account-order-row">
-                <div class="min-w-0">
+            <div class="account-order-row account-order-row--stacked">
+                <div class="min-w-0 flex-1">
                     <p class="font-semibold text-ink">{{ $order->coupleTitle() }}</p>
                     <p class="text-sm text-ink-muted mt-0.5">{{ $order->event_type }} · {{ $order->formattedEventDate() }} · {{ $order->rsvp_responses_count }} RSVP</p>
                     @if ($order->isPublished())
-                        <a href="{{ route('invitation.show', $order->slug) }}" target="_blank" class="text-xs text-luxury-gold-dark mt-1 inline-block hover:underline">/i/{{ $order->slug }}</a>
+                        <div class="mt-3">
+                            <x-invitation.share-bar :invitation="$order" :compact="true" />
+                        </div>
                     @endif
                 </div>
-                <div class="flex flex-wrap items-center gap-3">
+                <div class="flex flex-wrap items-center gap-3 shrink-0">
                     <span class="account-badge {{ $order->isPublished() ? 'account-badge--published' : 'account-badge--draft' }}">{{ $order->statusLabel() }}</span>
                     <a href="{{ route('builder.edit', $order) }}" class="text-sm font-semibold text-ink hover:text-luxury-gold-dark">{{ __('account.edit') }}</a>
-                    @if ($order->isPublished())
-                        <a href="{{ route('invitation.show', $order->slug) }}" target="_blank" class="text-sm font-semibold text-luxury-gold-dark hover:underline">{{ __('account.view') }}</a>
-                    @endif
                 </div>
             </div>
         @empty

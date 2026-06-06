@@ -4,6 +4,7 @@
  */
 
 import { initRsvpLivePanels } from './rsvp-live-panel';
+import { initCopyLinks } from './copy-link';
 
 const ELITE_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
 const UZ_MONTHS = [
@@ -1384,6 +1385,7 @@ function initBuilderStudio() {
     window.addEventListener('beforeunload', () => clearInterval(countdownTimer));
 
     initRsvpLivePanels();
+    initCopyLinks();
 }
 
 document.addEventListener('DOMContentLoaded', initBuilderStudio);

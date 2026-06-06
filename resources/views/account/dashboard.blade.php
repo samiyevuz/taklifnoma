@@ -7,6 +7,12 @@
         <p class="mt-2 text-ink-soft">{{ __('account.dashboard_subtitle') }}</p>
     </div>
 
+    @if ($liveInvitation && $liveInvitation->isPublished())
+        <div class="mb-8">
+            <x-invitation.share-bar :invitation="$liveInvitation" />
+        </div>
+    @endif
+
     @if ($liveInvitation && $rsvpSnapshot)
         <div class="mb-8">
             <x-rsvp.live-panel
@@ -31,12 +37,17 @@
             <a href="{{ route('account.orders') }}" class="text-sm font-semibold text-luxury-gold-dark hover:underline">{{ __('account.view_all') }} →</a>
         </div>
         @forelse ($recentOrders as $order)
-            <div class="account-order-row">
+            <div class="account-order-row account-order-row--stacked">
                 <div>
                     <p class="font-semibold text-ink">{{ $order->coupleTitle() }}</p>
                     <p class="text-sm text-ink-muted mt-0.5">{{ $order->event_type }} · {{ $order->formattedEventDate() }}</p>
+                    @if ($order->isPublished() && $order->id !== ($liveInvitation->id ?? null))
+                        <div class="mt-3">
+                            <x-invitation.share-bar :invitation="$order" :compact="true" :show-platform-link="false" />
+                        </div>
+                    @endif
                 </div>
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 shrink-0">
                     <span class="account-badge {{ $order->isPublished() ? 'account-badge--published' : 'account-badge--draft' }}">{{ $order->statusLabel() }}</span>
                     <a href="{{ route('builder.edit', $order) }}" class="text-sm font-semibold text-ink hover:text-luxury-gold-dark">{{ __('account.edit') }}</a>
                 </div>

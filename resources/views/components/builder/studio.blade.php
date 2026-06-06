@@ -31,6 +31,10 @@
         </div>
     </header>
 
+    @if ($invitation?->isPublished())
+        <x-invitation.share-bar :invitation="$invitation" class="builder-share-bar" />
+    @endif
+
     @if ($invitation && ($rsvpSnapshot ?? null))
         <x-rsvp.live-panel
             :invitation="$invitation"
