@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\EventTemplate;
 use App\Models\SiteSetting;
 use App\Support\TemplateCatalog;
+use App\Support\TemplateVariantCatalog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -17,7 +18,7 @@ class TemplateController extends Controller
     {
         return view('admin.templates.index', [
             'title' => __('admin.templates_title'),
-            'templates' => EventTemplate::query()->ordered()->get(),
+            'templates' => EventTemplate::query()->withCount('variants')->ordered()->get(),
         ]);
     }
 
@@ -25,7 +26,7 @@ class TemplateController extends Controller
     {
         return view('admin.templates.edit', [
             'title' => $eventTemplate->localizedTitle('uz').' — '.__('admin.templates_title'),
-            'template' => $eventTemplate,
+            'template' => $eventTemplate->load('variants'),
             'locales' => config('locales.supported', []),
         ]);
     }
@@ -71,6 +72,7 @@ class TemplateController extends Controller
         $eventTemplate->update($payload);
 
         TemplateCatalog::clearCache();
+        TemplateVariantCatalog::clearCache();
         SiteSetting::clearCache();
 
         return redirect()

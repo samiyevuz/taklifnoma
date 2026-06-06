@@ -2,9 +2,14 @@
 
 namespace App\Support;
 
+use App\Models\EventTemplate;
+use App\Models\EventTemplateVariant;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
+
 class TemplateVariantCatalog
 {
-    public static function definitions(): array
+    public static function staticDefinitions(): array
     {
         return [
             'nikoh' => self::tiers('nikoh', 'Nikoh', 'nikoh-premium', 'images/templates/nikoh.jpg', [
@@ -66,9 +71,29 @@ class TemplateVariantCatalog
         ];
     }
 
+    /** @deprecated Use staticDefinitions() */
+    public static function definitions(): array
+    {
+        return self::staticDefinitions();
+    }
+
     public static function forFamily(string $familySlug): array
     {
-        $variants = self::definitions()[$familySlug] ?? null;
+        if (self::usesDatabase()) {
+            return Cache::remember("landing.variants.{$familySlug}", 3600, function () use ($familySlug) {
+                $template = EventTemplate::query()->where('slug', $familySlug)->first();
+
+                if (! $template) {
+                    return [];
+                }
+
+                return $template->activeVariants
+                    ->map(fn (EventTemplateVariant $variant) => self::enrich($variant->toCatalogArray($familySlug), $familySlug))
+                    ->all();
+            });
+        }
+
+        $variants = self::staticDefinitions()[$familySlug] ?? null;
 
         if (is_array($variants) && $variants !== []) {
             return array_map(fn (array $variant) => self::enrich($variant, $familySlug), $variants);
@@ -117,6 +142,12 @@ class TemplateVariantCatalog
         }
 
         foreach ($variants as $variant) {
+            if (! empty($variant['is_default'])) {
+                return $variant;
+            }
+        }
+
+        foreach ($variants as $variant) {
             if (($variant['badge'] ?? null) === 'Eng mashhur') {
                 return $variant;
             }
@@ -135,6 +166,23 @@ class TemplateVariantCatalog
         $template = TemplateCatalog::find($familySlug);
 
         return (int) ($template['price_amount'] ?? 89000);
+    }
+
+    public static function clearCache(): void
+    {
+        if (! Schema::hasTable('event_templates')) {
+            return;
+        }
+
+        foreach (EventTemplate::query()->pluck('slug') as $slug) {
+            Cache::forget("landing.variants.{$slug}");
+        }
+    }
+
+    private static function usesDatabase(): bool
+    {
+        return Schema::hasTable('event_template_variants')
+            && EventTemplateVariant::query()->where('is_active', true)->exists();
     }
 
     private static function tiers(
@@ -210,14 +258,17 @@ class TemplateVariantCatalog
             ? asset($variant['cover_image'])
             : null;
         $plan = PlanEntitlements::forTheme($theme);
+        $guestLimit = array_key_exists('guest_limit', $variant) && $variant['guest_limit'] !== null
+            ? (int) $variant['guest_limit']
+            : $plan['guest_limit'];
 
         $variant['animation'] = $plan['animation'];
         $variant['tier_level'] = self::tierLevelForTheme($theme);
         $variant['cover_focus'] = self::coverFocusForTheme($theme);
-        $variant['entitlements'] = $plan;
+        $variant['entitlements'] = array_merge($plan, ['guest_limit' => $guestLimit]);
         $variant['features'] = PlanEntitlements::featureLabels($theme);
-        $variant['guest_limit'] = $plan['guest_limit'];
-        $variant['guest_limit_label'] = PlanEntitlements::guestLimitLabel($plan['guest_limit']);
+        $variant['guest_limit'] = $guestLimit;
+        $variant['guest_limit_label'] = PlanEntitlements::guestLimitLabel($guestLimit);
 
         return $variant;
     }
@@ -243,5 +294,4 @@ class TemplateVariantCatalog
             default => 'center 40%',
         };
     }
-
 }

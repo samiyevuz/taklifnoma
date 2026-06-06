@@ -16,6 +16,7 @@
                     <th>{{ __('admin.table.cover') }}</th>
                     <th>{{ __('admin.table.name') }}</th>
                     <th>{{ __('admin.table.amount') }}</th>
+                    <th>{{ __('admin.table.variants') }}</th>
                     <th>{{ __('admin.table.badge') }}</th>
                     <th>{{ __('admin.status') }}</th>
                     <th></th>
@@ -36,6 +37,9 @@
                             <p class="text-xs text-ink-muted"><code>{{ $template->slug }}</code></p>
                         </td>
                         <td>{{ $template->formattedPrice() }}</td>
+                        <td>
+                            <span class="admin-badge admin-badge--active">{{ $template->variants_count }}</span>
+                        </td>
                         <td>{{ $template->localizedBadge('uz') ?? '—' }}</td>
                         <td>
                             <span class="admin-badge admin-badge--{{ $template->is_active ? 'active' : 'expired' }}">
@@ -50,7 +54,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="py-8 text-center text-ink-muted">{{ __('admin.no_results') }}</td>
+                        <td colspan="7" class="py-8 text-center text-ink-muted">{{ __('admin.no_results') }}</td>
                     </tr>
                 @endforelse
             </tbody>

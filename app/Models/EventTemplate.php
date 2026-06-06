@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class EventTemplate extends Model
 {
@@ -27,6 +28,16 @@ class EventTemplate extends Model
             'sort_order' => 'integer',
             'is_active' => 'boolean',
         ];
+    }
+
+    public function variants(): HasMany
+    {
+        return $this->hasMany(EventTemplateVariant::class)->ordered();
+    }
+
+    public function activeVariants(): HasMany
+    {
+        return $this->hasMany(EventTemplateVariant::class)->active()->ordered();
     }
 
     public function scopeActive($query)

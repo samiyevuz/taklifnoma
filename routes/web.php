@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\InvitationController as AdminInvitationController
 use App\Http\Controllers\Admin\PaymentController as AdminPaymentController;
 use App\Http\Controllers\Admin\RsvpController as AdminRsvpController;
 use App\Http\Controllers\Admin\TemplateController as AdminTemplateController;
+use App\Http\Controllers\Admin\TemplateVariantController as AdminTemplateVariantController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Account\DashboardController;
 use App\Http\Controllers\Account\FavoriteController;
@@ -94,6 +95,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/templates', [AdminTemplateController::class, 'index'])->name('templates.index');
         Route::get('/templates/{eventTemplate}/edit', [AdminTemplateController::class, 'edit'])->name('templates.edit');
         Route::put('/templates/{eventTemplate}', [AdminTemplateController::class, 'update'])->name('templates.update');
+        Route::get('/templates/{eventTemplate}/variants/create', [AdminTemplateVariantController::class, 'create'])->name('templates.variants.create');
+        Route::post('/templates/{eventTemplate}/variants', [AdminTemplateVariantController::class, 'store'])->name('templates.variants.store');
+        Route::get('/templates/{eventTemplate}/variants/{variant}/edit', [AdminTemplateVariantController::class, 'edit'])->name('templates.variants.edit');
+        Route::put('/templates/{eventTemplate}/variants/{variant}', [AdminTemplateVariantController::class, 'update'])->name('templates.variants.update');
+        Route::delete('/templates/{eventTemplate}/variants/{variant}', [AdminTemplateVariantController::class, 'destroy'])->name('templates.variants.destroy');
         Route::get('/faqs', [AdminFaqController::class, 'index'])->name('faqs.index');
         Route::get('/faqs/create', [AdminFaqController::class, 'create'])->name('faqs.create');
         Route::post('/faqs', [AdminFaqController::class, 'store'])->name('faqs.store');

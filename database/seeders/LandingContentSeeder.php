@@ -3,9 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\EventTemplate;
+use App\Models\EventTemplateVariant;
 use App\Models\LandingFaq;
 use App\Models\SiteSetting;
 use App\Support\TemplateCatalog;
+use App\Support\TemplateVariantCatalog;
 use Illuminate\Database\Seeder;
 
 class LandingContentSeeder extends Seeder
@@ -13,6 +15,7 @@ class LandingContentSeeder extends Seeder
     public function run(): void
     {
         $this->seedTemplates();
+        $this->seedVariants();
         $this->seedFaqs();
         $this->seedContact();
         $this->seedFaqMeta();
@@ -51,6 +54,58 @@ class LandingContentSeeder extends Seeder
                 ]
             );
         }
+        TemplateCatalog::clearCache();
+    }
+
+    private function seedVariants(): void
+    {
+        foreach (TemplateVariantCatalog::staticDefinitions() as $slug => $variants) {
+            $template = EventTemplate::query()->where('slug', $slug)->first();
+
+            if (! $template) {
+                continue;
+            }
+
+            $defaultKey = null;
+
+            foreach ($variants as $variant) {
+                if (($variant['badge'] ?? null) === 'Eng mashhur') {
+                    $defaultKey = $variant['id'];
+                    break;
+                }
+            }
+
+            if ($defaultKey === null) {
+                foreach ($variants as $variant) {
+                    if (($variant['theme'] ?? '') === 'premium') {
+                        $defaultKey = $variant['id'];
+                        break;
+                    }
+                }
+            }
+
+            foreach ($variants as $index => $variant) {
+                EventTemplateVariant::query()->updateOrCreate(
+                    ['variant_key' => $variant['id']],
+                    [
+                        'event_template_id' => $template->id,
+                        'title' => $variant['title'],
+                        'subtitle' => $variant['subtitle'] ?? null,
+                        'price_amount' => $variant['price_amount'],
+                        'theme' => $variant['theme'] ?? 'premium',
+                        'blade' => $variant['blade'] ?? null,
+                        'cover_path' => null,
+                        'badge' => $variant['badge'] ?? null,
+                        'guest_limit' => null,
+                        'sort_order' => $index + 1,
+                        'is_default' => $variant['id'] === $defaultKey,
+                        'is_active' => true,
+                    ]
+                );
+            }
+        }
+
+        TemplateVariantCatalog::clearCache();
     }
 
     private function seedFaqs(): void

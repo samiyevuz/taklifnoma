@@ -78,4 +78,78 @@
             <a href="{{ route('admin.templates.index') }}" class="btn-outline-luxury">{{ __('admin.cancel') }}</a>
         </div>
     </form>
+
+    <div class="admin-card glass-luxury mt-8">
+        <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+            <div>
+                <h2 class="admin-card__title mb-1">{{ __('admin.sections.variants') }}</h2>
+                <p class="text-sm text-ink-soft">{{ __('admin.variants_subtitle') }}</p>
+            </div>
+            <a href="{{ route('admin.templates.variants.create', $template) }}" class="btn-primary-luxury text-sm">
+                + {{ __('admin.add_variant') }}
+            </a>
+        </div>
+
+        @if ($template->variants->isEmpty())
+            <p class="py-6 text-center text-sm text-ink-muted">{{ __('admin.no_results') }}</p>
+        @else
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>{{ __('admin.table.cover') }}</th>
+                        <th>{{ __('admin.table.name') }}</th>
+                        <th>{{ __('admin.table.amount') }}</th>
+                        <th>{{ __('admin.table.plan_tier') }}</th>
+                        <th>{{ __('admin.table.badge') }}</th>
+                        <th>{{ __('admin.status') }}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($template->variants as $variant)
+                        <tr>
+                            <td>
+                                @if ($variant->coverUrl())
+                                    <img src="{{ $variant->coverUrl() }}" alt="" class="admin-thumb">
+                                @else
+                                    <span class="admin-thumb admin-thumb--empty">—</span>
+                                @endif
+                            </td>
+                            <td>
+                                <p class="font-medium text-ink">{{ $variant->title }}</p>
+                                <p class="text-xs text-ink-muted"><code>{{ $variant->variant_key }}</code></p>
+                                @if ($variant->is_default)
+                                    <span class="mt-1 inline-block rounded-full bg-luxury-gold/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-luxury-gold-dark">
+                                        {{ __('admin.variant_default') }}
+                                    </span>
+                                @endif
+                            </td>
+                            <td>{{ $variant->formattedPrice() }}</td>
+                            <td>{{ $variant->themeLabel() }}</td>
+                            <td>{{ $variant->badge ?? '—' }}</td>
+                            <td>
+                                <span class="admin-badge admin-badge--{{ $variant->is_active ? 'active' : 'expired' }}">
+                                    {{ $variant->is_active ? __('admin.filter_active') : __('admin.inactive') }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <a href="{{ route('admin.templates.variants.edit', [$template, $variant]) }}" class="text-sm font-semibold text-luxury-gold-dark hover:underline">
+                                        {{ __('admin.edit') }}
+                                    </a>
+                                    <form method="POST" action="{{ route('admin.templates.variants.destroy', [$template, $variant]) }}" onsubmit="return confirm(@json(__('admin.confirm_delete')))">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-sm font-semibold text-red-600 hover:underline">
+                                            {{ __('admin.delete') }}
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
+    </div>
 @endsection
