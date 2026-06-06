@@ -8,6 +8,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendRsvpTelegramNotification implements ShouldQueue
 {
+    public bool $afterCommit = true;
+
     public string $queue = 'notifications';
 
     public function __construct(

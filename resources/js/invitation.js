@@ -3,6 +3,8 @@
  * Countdown · RSVP · Music · Scroll reveal · Map sheet
  */
 
+import { initLocaleDropdown } from './locale-dropdown';
+
 const INV_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
 
 function prefersReducedMotion() {
@@ -133,6 +135,7 @@ function initCounters() {
 function initRsvpForm() {
     const form = document.getElementById('inv-rsvp-form');
     const success = document.getElementById('inv-rsvp-success');
+    const successTitle = document.getElementById('inv-rsvp-success-title');
     const successMsg = document.getElementById('inv-rsvp-success-msg');
     const statusInput = document.getElementById('rsvp-status');
     const guestsField = document.getElementById('rsvp-guests-field');
@@ -183,6 +186,13 @@ function initRsvpForm() {
 
         const formData = new FormData(form);
 
+        const showRsvpFeedback = (isError, title, message) => {
+            if (successTitle) successTitle.textContent = title;
+            if (successMsg) successMsg.textContent = message;
+            success?.classList.toggle('is-error', isError);
+            success?.classList.add('is-shown');
+        };
+
         try {
             const response = await fetch(rsvpUrl, {
                 method: 'POST',
@@ -199,9 +209,15 @@ function initRsvpForm() {
             if (!response.ok) {
                 const firstError = payload.errors
                     ? Object.values(payload.errors).flat()[0]
-                    : payload.message || i18n.error || 'Error';
-                if (successMsg) successMsg.textContent = firstError;
-                success?.classList.add('is-shown', 'is-error');
+                    : payload.message
+                      || (response.status === 419 ? i18n.sessionExpired : null)
+                      || i18n.error
+                      || 'Error';
+                showRsvpFeedback(
+                    true,
+                    i18n.errorTitle || 'Error',
+                    firstError,
+                );
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.textContent = i18n.submit || 'Confirm';
@@ -209,18 +225,19 @@ function initRsvpForm() {
                 return;
             }
 
-            if (successMsg) {
-                successMsg.textContent = payload.message || i18n.success || 'Received.';
-            }
+            showRsvpFeedback(
+                false,
+                i18n.thanks || 'Thank you!',
+                payload.message || i18n.success || 'Received.',
+            );
 
             form.style.display = 'none';
-            success?.classList.remove('is-error');
-            success?.classList.add('is-shown');
         } catch {
-            if (successMsg) {
-                successMsg.textContent = i18n.networkError || 'Network error.';
-            }
-            success?.classList.add('is-shown', 'is-error');
+            showRsvpFeedback(
+                true,
+                i18n.errorTitle || 'Error',
+                i18n.networkError || 'Network error.',
+            );
             if (submitBtn) {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Tasdiqlash';
@@ -418,6 +435,7 @@ function initMapModal() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    initLocaleDropdown();
     initScrollReveal();
     initWelcomeScroll();
     initCountdown();

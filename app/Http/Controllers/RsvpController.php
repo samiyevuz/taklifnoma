@@ -80,7 +80,7 @@ class RsvpController extends Controller
             'ip_hash' => hash('sha256', $request->ip().$request->userAgent()),
         ]);
 
-        RsvpResponseSubmitted::dispatch($response)->afterCommit();
+        RsvpResponseSubmitted::dispatch($response);
 
         $message = $validated['status'] === RsvpResponse::STATUS_ATTENDING
             ? "Rahmat, {$response->guest_name}! Javobingiz qabul qilindi."

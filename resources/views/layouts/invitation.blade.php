@@ -20,8 +20,11 @@
         $invitationI18n = [
             'submit' => __('invitation.rsvp_submit'),
             'submitting' => __('invitation.rsvp_submitting'),
+            'thanks' => __('invitation.rsvp_thanks'),
+            'errorTitle' => __('invitation.rsvp_error_title'),
             'success' => __('invitation.rsvp_success'),
             'error' => __('invitation.rsvp_error'),
+            'sessionExpired' => __('invitation.rsvp_session_expired'),
             'networkError' => __('invitation.rsvp_network_error'),
             'musicPlay' => __('invitation.music_play'),
             'musicPause' => __('invitation.music_pause'),

@@ -5,6 +5,7 @@
 
 import { initRsvpLivePanels } from './rsvp-live-panel';
 import { initCopyLinks } from './copy-link';
+import { initLocaleDropdown } from './locale-dropdown';
 
 const ELITE_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
 const THEME_COLORS = { light: '#FAF6F0', dark: '#0B0B0F' };
@@ -95,43 +96,6 @@ function initStickyNav() {
     const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 8);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-}
-
-function initLocaleDropdown() {
-    const dropdowns = document.querySelectorAll('[data-locale-dropdown]');
-    if (!dropdowns.length) return;
-
-    const closeAll = (except = null) => {
-        dropdowns.forEach((dropdown) => {
-            if (dropdown === except) return;
-
-            dropdown.classList.remove('is-open');
-            const trigger = dropdown.querySelector('.locale-dropdown__trigger');
-            const menu = dropdown.querySelector('.locale-dropdown__menu');
-            trigger?.setAttribute('aria-expanded', 'false');
-            menu?.setAttribute('hidden', '');
-        });
-    };
-
-    dropdowns.forEach((dropdown) => {
-        const trigger = dropdown.querySelector('.locale-dropdown__trigger');
-        const menu = dropdown.querySelector('.locale-dropdown__menu');
-        if (!trigger || !menu) return;
-
-        trigger.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const willOpen = !dropdown.classList.contains('is-open');
-            closeAll(willOpen ? dropdown : null);
-            dropdown.classList.toggle('is-open', willOpen);
-            trigger.setAttribute('aria-expanded', String(willOpen));
-            menu.toggleAttribute('hidden', !willOpen);
-        });
-    });
-
-    document.addEventListener('click', () => closeAll());
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeAll();
-    });
 }
 
 function closeLocaleDropdowns() {
