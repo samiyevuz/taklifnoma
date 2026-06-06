@@ -733,9 +733,9 @@ function initBuilderStudio() {
             case 'classic':
                 return `Classic tarif: ${limit} mehmon. Fon musiqasi va maxsus havola yo'q.`;
             case 'luxury':
-                return `Luxury tarif: ${limit} mehmongacha. Kinematik animatsiyalar va musiqa mavjud.`;
+                return `Luxury tarif: ${limit} mehmongacha. Kinematik animatsiya, musiqa va rasm galereyasi mavjud.`;
             case 'royal':
-                return 'Royal VIP: cheksiz mehmon, maxsus domen va VIP effektlar.';
+                return 'Royal VIP: cheksiz mehmon, maxsus domen, sevgi tarixi galereyasi va VIP effektlar.';
             default:
                 return `Premium tarif: ${limit} mehmongacha. Musiqa va maxsus havola mavjud.`;
         }
@@ -763,6 +763,9 @@ function initBuilderStudio() {
         musicPresetField?.classList.toggle('hidden', !allowsMusic);
         musicUrlWrap?.classList.toggle('hidden', !allowsMusic || musicPreset?.value === 'upload');
         musicFileWrap?.classList.toggle('hidden', !allowsMusic || musicPreset?.value !== 'upload');
+
+        const storyGalleryWrap = document.getElementById('builder-story-gallery-wrap');
+        storyGalleryWrap?.classList.toggle('hidden', !entitlements.story_gallery);
 
         if (!allowsMusic) {
             if (musicUrlInput) musicUrlInput.value = '';
@@ -1131,6 +1134,34 @@ function initBuilderStudio() {
         });
     };
 
+    const initStoryGalleryUploads = () => {
+        document.querySelectorAll('[data-story-slot]').forEach((slotEl) => {
+            const slotKey = slotEl.dataset.storySlot;
+            const input = document.getElementById(`story_image_${slotKey}`);
+            const preview = document.getElementById(`story-preview-${slotKey}`);
+            const filename = document.getElementById(`story-filename-${slotKey}`);
+
+            input?.addEventListener('change', () => {
+                const file = input.files?.[0];
+                if (!file) return;
+
+                if (filename) {
+                    filename.textContent = file.name;
+                    filename.classList.remove('hidden');
+                }
+
+                const reader = new FileReader();
+                reader.onload = () => {
+                    if (preview) {
+                        preview.src = reader.result;
+                        preview.classList.remove('hidden');
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+    };
+
     slugInput?.addEventListener('input', () => {
         slugManuallyEdited = true;
         syncSlugPreview();
@@ -1383,6 +1414,7 @@ function initBuilderStudio() {
     syncRsvp();
     syncMusicPreset();
     initMediaUploads();
+    initStoryGalleryUploads();
     initPickerMap();
     setStep(1);
     schedulePreview();

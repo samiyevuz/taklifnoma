@@ -13,6 +13,7 @@ use App\Support\CustomDomainFormatter;
 use App\Support\InvitationDefaults;
 use App\Support\TemplateCatalog;
 use App\Support\PlanEntitlements;
+use App\Support\StoryGallerySlots;
 use App\Support\TemplateVariantCatalog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -121,6 +122,13 @@ class InvitationBuilderController extends Controller
             'music_url' => filled($source->music_url ?? null) ? $source->music_url : $defaultMusicUrl,
             'cover_image' => $source->cover_image ?? '',
             'cover_image_url' => filled($source->cover_image ?? null) ? asset($source->cover_image) : '',
+            'story_gallery_slots' => StoryGallerySlots::slotsForSlug($slug),
+            'story_gallery_title' => StoryGallerySlots::sectionTitle($slug),
+            'story_gallery_subtitle' => StoryGallerySlots::sectionSubtitle($slug),
+            'story_images' => StoryGallerySlots::hydrate(
+                is_array($source->story_images ?? null) ? $source->story_images : null,
+                $slug
+            ),
             'dress_colors' => $source->dress_colors ?? InvitationDefaults::dressColors(),
             'rsvp_enabled' => $source->rsvp_enabled ?? true,
             'slug' => $invitation?->slug,

@@ -100,6 +100,52 @@
                 </div>
             </section>
 
+            @if ($invitation->hasStoryImages())
+                @php
+                    $storyItems = collect($invitation->resolvedStoryGallery())->filter(fn (array $item) => filled($item['url'] ?? null));
+                    $portraits = $storyItems->where('type', 'portrait')->values();
+                    $moments = $storyItems->where('type', 'moment')->values();
+                @endphp
+                <section class="inv-section" id="inv-story" aria-labelledby="inv-story-title">
+                    <div class="inv-reveal">
+                        <p class="inv-section-label">{{ __('invitation.story_label') }}</p>
+                        <h2 id="inv-story-title" class="inv-section-title">{{ $invitation->storyGalleryTitle() }}</h2>
+                        <p class="mt-3 text-center text-sm text-inv-ink-soft px-2">{{ $invitation->storyGallerySubtitle() }}</p>
+
+                        @if ($portraits->isNotEmpty())
+                            <div class="inv-story-portraits inv-glass">
+                                @foreach ($portraits as $portrait)
+                                    <figure class="inv-story-portrait">
+                                        <div class="inv-story-portrait__frame">
+                                            <img src="{{ $portrait['url'] }}" alt="{{ $portrait['label'] }}" loading="lazy" decoding="async">
+                                        </div>
+                                        <figcaption class="inv-story-portrait__label">{{ $portrait['label'] }}</figcaption>
+                                    </figure>
+                                @endforeach
+                            </div>
+                        @endif
+
+                        @if ($moments->isNotEmpty())
+                            <div class="inv-story-timeline">
+                                @foreach ($moments as $moment)
+                                    <article class="inv-story-moment inv-glass">
+                                        <div class="inv-story-moment__media">
+                                            <img src="{{ $moment['url'] }}" alt="{{ $moment['label'] }}" loading="lazy" decoding="async">
+                                        </div>
+                                        <div class="inv-story-moment__body">
+                                            <p class="inv-story-moment__title">{{ $moment['label'] }}</p>
+                                            @if (filled($moment['caption']))
+                                                <p class="inv-story-moment__caption">{{ $moment['caption'] }}</p>
+                                            @endif
+                                        </div>
+                                    </article>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+                </section>
+            @endif
+
             <section class="inv-section" id="inv-dresscode" aria-labelledby="inv-dress-title">
                 <div class="inv-reveal">
                     <p class="inv-section-label">{{ __('invitation.dress_code') }}</p>

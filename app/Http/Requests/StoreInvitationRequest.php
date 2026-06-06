@@ -6,6 +6,7 @@ use App\Support\BuilderEventProfile;
 use App\Support\CustomDomainFormatter;
 use App\Support\TemplateCatalog;
 use App\Support\PlanEntitlements;
+use App\Support\StoryGallerySlots;
 use App\Support\TemplateVariantCatalog;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -76,6 +77,16 @@ class StoreInvitationRequest extends FormRequest
             'music_url' => ['nullable', 'string', 'max:500'],
             'cover_image' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
             'music_file' => ['nullable', 'file', 'mimes:mp3,m4a,aac,ogg,wav', 'max:15360'],
+            'story_caption_primary' => ['nullable', 'string', 'max:120'],
+            'story_caption_secondary' => ['nullable', 'string', 'max:120'],
+            'story_caption_moment_0' => ['nullable', 'string', 'max:120'],
+            'story_caption_moment_1' => ['nullable', 'string', 'max:120'],
+            'story_caption_moment_2' => ['nullable', 'string', 'max:120'],
+            'story_image_primary' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
+            'story_image_secondary' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
+            'story_image_moment_0' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
+            'story_image_moment_1' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
+            'story_image_moment_2' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
             'dress_colors' => ['nullable', 'array', 'max:8'],
             'dress_colors.*.name' => ['required_with:dress_colors', 'string', 'max:40'],
             'dress_colors.*.hex' => ['required_with:dress_colors', 'string', 'max:7'],
@@ -142,6 +153,19 @@ class StoreInvitationRequest extends FormRequest
 
             foreach (PlanEntitlements::validatePayload($this->all(), $this->route('invitation')) as $field => $message) {
                 $validator->errors()->add($field, $message);
+            }
+
+            $plan = PlanEntitlements::forVariant($slug, $this->input('template_variant'));
+            if (! $plan['story_gallery']) {
+                foreach (StoryGallerySlots::slotKeys() as $slotKey) {
+                    if ($this->hasFile("story_image_{$slotKey}")) {
+                        $validator->errors()->add(
+                            "story_image_{$slotKey}",
+                            'Rasm galereyasi faqat Luxury va Royal VIP tariflarida mavjud.'
+                        );
+                        break;
+                    }
+                }
             }
 
             if ($this->filled('custom_domain')) {

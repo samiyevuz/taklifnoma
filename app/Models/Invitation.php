@@ -9,6 +9,7 @@ use App\Support\MusicUrlNormalizer;
 use App\Support\PlanEntitlements;
 use App\Support\TemplateCatalog;
 use App\Support\InvitationPresentation;
+use App\Support\StoryGallerySlots;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -57,6 +58,7 @@ class Invitation extends Model
         'dress_colors',
         'music_url',
         'cover_image',
+        'story_images',
         'rsvp_enabled',
         'published_at',
         'expires_at',
@@ -67,6 +69,7 @@ class Invitation extends Model
         return [
             'event_at' => 'datetime',
             'dress_colors' => 'array',
+            'story_images' => 'array',
             'profile_meta' => 'array',
             'event_data' => 'array',
             'map_lat' => 'float',
@@ -107,7 +110,7 @@ class Invitation extends Model
             if ($invitation->isDirty([
                 'profile_meta', 'event_at', 'event_city', 'venue_name', 'venue_address',
                 'map_lat', 'map_lng', 'invitation_text_1', 'invitation_text_2',
-                'family_signature', 'music_url', 'cover_image', 'dress_colors', 'rsvp_enabled', 'template', 'template_variant',
+                'family_signature', 'music_url', 'cover_image', 'story_images', 'dress_colors', 'rsvp_enabled', 'template', 'template_variant',
                 'plan_tier', 'guest_limit', 'custom_domain',
             ])) {
                 $invitation->event_data = InvitationEventData::fromInvitation($invitation);
@@ -310,6 +313,39 @@ class Invitation extends Model
     public function allowsCustomDomain(): bool
     {
         return (bool) $this->entitlements()['custom_domain'];
+    }
+
+    public function allowsStoryGallery(): bool
+    {
+        return (bool) $this->entitlements()['story_gallery'];
+    }
+
+    public function hasStoryImages(): bool
+    {
+        return $this->allowsStoryGallery()
+            && collect($this->story_images ?? [])->contains(fn (array $item) => filled($item['path'] ?? null));
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function resolvedStoryGallery(): array
+    {
+        if (! $this->allowsStoryGallery()) {
+            return [];
+        }
+
+        return StoryGallerySlots::hydrate($this->story_images, $this->template_slug ?? 'nikoh');
+    }
+
+    public function storyGalleryTitle(): string
+    {
+        return StoryGallerySlots::sectionTitle($this->template_slug ?? 'nikoh');
+    }
+
+    public function storyGallerySubtitle(): string
+    {
+        return StoryGallerySlots::sectionSubtitle($this->template_slug ?? 'nikoh');
     }
 
     public function resolvedMusicUrl(): string

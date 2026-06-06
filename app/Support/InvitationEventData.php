@@ -31,6 +31,7 @@ class InvitationEventData
             'media' => [
                 'music_url' => $payload['music_url'] ?? null,
                 'cover_image' => $payload['cover_image'] ?? null,
+                'story_images' => $payload['story_images'] ?? null,
                 'template_blade' => $payload['template'] ?? null,
                 'template_variant' => $payload['template_variant'] ?? null,
                 'plan_tier' => $payload['plan_tier'] ?? null,
@@ -59,6 +60,7 @@ class InvitationEventData
             'family_signature' => Arr::get($eventData, 'copy.family_signature'),
             'music_url' => Arr::get($eventData, 'media.music_url'),
             'cover_image' => Arr::get($eventData, 'media.cover_image'),
+            'story_images' => Arr::get($eventData, 'media.story_images'),
             'template' => Arr::get($eventData, 'media.template_blade'),
             'template_variant' => Arr::get($eventData, 'media.template_variant'),
             'plan_tier' => Arr::get($eventData, 'media.plan_tier'),
@@ -88,6 +90,7 @@ class InvitationEventData
             'family_signature' => $invitation->family_signature,
             'music_url' => $invitation->music_url,
             'cover_image' => $invitation->cover_image,
+            'story_images' => $invitation->story_images,
             'template' => $invitation->template,
             'template_variant' => $invitation->template_variant,
             'plan_tier' => $invitation->plan_tier,

@@ -930,6 +930,86 @@
         color: var(--color-inv-ink-muted);
     }
 
+    .inv-story-portraits {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.875rem;
+        margin-top: 1.25rem;
+        padding: 1rem;
+    }
+
+    .inv-story-portrait {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.625rem;
+        margin: 0;
+    }
+
+    .inv-story-portrait__frame {
+        width: 100%;
+        aspect-ratio: 3 / 4;
+        border-radius: 1.25rem;
+        overflow: hidden;
+        border: 1px solid rgba(201, 162, 39, 0.22);
+        box-shadow: 0 12px 28px rgba(42, 36, 32, 0.08);
+    }
+
+    .inv-story-portrait__frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .inv-story-portrait__label {
+        font-family: var(--font-serif);
+        font-size: 0.9rem;
+        color: var(--color-inv-ink);
+        text-align: center;
+    }
+
+    .inv-story-timeline {
+        display: grid;
+        gap: 0.875rem;
+        margin-top: 1rem;
+    }
+
+    .inv-story-moment {
+        display: grid;
+        grid-template-columns: 96px 1fr;
+        gap: 0.875rem;
+        align-items: center;
+        padding: 0.875rem;
+    }
+
+    .inv-story-moment__media {
+        width: 96px;
+        aspect-ratio: 1;
+        border-radius: 1rem;
+        overflow: hidden;
+        border: 1px solid rgba(201, 162, 39, 0.18);
+    }
+
+    .inv-story-moment__media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .inv-story-moment__title {
+        font-family: var(--font-serif);
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--color-inv-ink);
+    }
+
+    .inv-story-moment__caption {
+        margin-top: 0.25rem;
+        font-size: 0.8rem;
+        line-height: 1.45;
+        color: var(--color-inv-ink-soft);
+    }
+
     @media (prefers-reduced-motion: reduce) {
         .inv-reveal {
             opacity: 1;

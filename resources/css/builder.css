@@ -600,6 +600,22 @@
         max-width: 16rem;
     }
 
+    .builder-upload-zone--compact {
+        padding: 1.25rem 0.875rem;
+    }
+
+    .builder-story-slots {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .builder-story-slot {
+        padding: 1rem;
+        border-radius: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        background: rgba(255, 255, 255, 0.22);
+    }
+
     /* Toggle switch */
     .builder-toggle-row {
         display: flex;

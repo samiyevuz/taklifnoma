@@ -157,6 +157,57 @@
                             <img src="{{ $b['cover_image_url'] }}" alt="" class="builder-upload-preview mt-2" id="cover-current-preview">
                         @endif
 
+                        <div class="builder-story-gallery hidden mt-6" id="builder-story-gallery-wrap">
+                            <h3 class="builder-panel-title text-base">{{ $b['story_gallery_title'] ?? __('builder.story_gallery_title') }}</h3>
+                            <p class="builder-panel-desc">{{ $b['story_gallery_subtitle'] ?? __('builder.story_gallery_desc') }}</p>
+
+                            <div class="builder-story-slots mt-4" id="builder-story-slots">
+                                @foreach ($b['story_gallery_slots'] ?? [] as $slot)
+                                    @php
+                                        $existing = collect($b['story_images'] ?? [])->firstWhere('slot', $slot['key']);
+                                    @endphp
+                                    <div class="builder-story-slot" data-story-slot="{{ $slot['key'] }}" data-story-type="{{ $slot['type'] }}">
+                                        <p class="builder-field-label">{{ $slot['label'] }}</p>
+                                        <label class="builder-upload-zone builder-upload-zone--compact" for="story_image_{{ $slot['key'] }}">
+                                            <input
+                                                type="file"
+                                                id="story_image_{{ $slot['key'] }}"
+                                                name="story_image_{{ $slot['key'] }}"
+                                                accept="image/jpeg,image/png,image/webp"
+                                                class="sr-only"
+                                            >
+                                            <div class="builder-upload-zone__icon" aria-hidden="true">
+                                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                            </div>
+                                            <p class="builder-upload-zone__title">{{ __('builder.story_upload') }}</p>
+                                            <p class="builder-upload-zone__hint">{{ $slot['hint'] ?? __('builder.story_portrait_hint') }}</p>
+                                            <p class="builder-upload-zone__filename hidden" id="story-filename-{{ $slot['key'] }}"></p>
+                                            <img
+                                                src="{{ $existing['url'] ?? '' }}"
+                                                alt=""
+                                                class="builder-upload-preview {{ empty($existing['url']) ? 'hidden' : '' }}"
+                                                id="story-preview-{{ $slot['key'] }}"
+                                            >
+                                        </label>
+
+                                        @if (!empty($slot['caption']))
+                                            <div class="builder-field builder-field--float mt-3">
+                                                <input
+                                                    type="text"
+                                                    id="story_caption_{{ $slot['key'] }}"
+                                                    name="story_caption_{{ $slot['key'] }}"
+                                                    value="{{ $existing['caption'] ?? '' }}"
+                                                    placeholder=" "
+                                                    maxlength="120"
+                                                >
+                                                <label for="story_caption_{{ $slot['key'] }}">{{ __('builder.story_caption') }}</label>
+                                            </div>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
                         <div class="builder-field mt-5">
                             <label for="music_preset">{{ __('builder.music_preset') }}</label>
                             <select id="music_preset" class="builder-select">

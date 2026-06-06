@@ -24,6 +24,7 @@ class PlanEntitlements
                 'music_enabled' => false,
                 'music_upload' => false,
                 'cover_upload' => true,
+                'story_gallery' => false,
                 'custom_slug' => false,
                 'custom_domain' => false,
                 'rsvp_enabled' => true,
@@ -39,6 +40,7 @@ class PlanEntitlements
                 'music_enabled' => true,
                 'music_upload' => true,
                 'cover_upload' => true,
+                'story_gallery' => false,
                 'custom_slug' => true,
                 'custom_domain' => false,
                 'rsvp_enabled' => true,
@@ -54,6 +56,7 @@ class PlanEntitlements
                 'music_enabled' => true,
                 'music_upload' => true,
                 'cover_upload' => true,
+                'story_gallery' => true,
                 'custom_slug' => true,
                 'custom_domain' => false,
                 'rsvp_enabled' => true,
@@ -69,6 +72,7 @@ class PlanEntitlements
                 'music_enabled' => true,
                 'music_upload' => true,
                 'cover_upload' => true,
+                'story_gallery' => true,
                 'custom_slug' => true,
                 'custom_domain' => true,
                 'rsvp_enabled' => true,
@@ -138,6 +142,10 @@ class PlanEntitlements
             $labels[] = 'VIP animatsiya';
         }
 
+        if ($plan['story_gallery']) {
+            $labels[] = 'Sevgi tarixi galereyasi';
+        }
+
         return $labels;
     }
 
@@ -170,6 +178,10 @@ class PlanEntitlements
 
         if (! $plan['rsvp_enabled']) {
             $data['rsvp_enabled'] = false;
+        }
+
+        if (! $plan['story_gallery']) {
+            $data['story_images'] = null;
         }
 
         return $data;

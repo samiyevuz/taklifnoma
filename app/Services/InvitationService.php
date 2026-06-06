@@ -13,7 +13,19 @@ class InvitationService
 {
     public function create(array $data, bool $publish = false): Invitation
     {
-        unset($data['publish'], $data['dress_colors_json']);
+        unset($data['publish'], $data['dress_colors_json'], $data['story_images_json']);
+        unset(
+            $data['story_image_primary'],
+            $data['story_image_secondary'],
+            $data['story_image_moment_0'],
+            $data['story_image_moment_1'],
+            $data['story_image_moment_2'],
+            $data['story_caption_primary'],
+            $data['story_caption_secondary'],
+            $data['story_caption_moment_0'],
+            $data['story_caption_moment_1'],
+            $data['story_caption_moment_2'],
+        );
 
         $data = InvitationEventData::mergeIntoAttributes($data);
 
@@ -43,7 +55,19 @@ class InvitationService
 
     public function update(Invitation $invitation, array $data, ?bool $publish = null): Invitation
     {
-        unset($data['publish'], $data['dress_colors_json']);
+        unset($data['publish'], $data['dress_colors_json'], $data['story_images_json']);
+        unset(
+            $data['story_image_primary'],
+            $data['story_image_secondary'],
+            $data['story_image_moment_0'],
+            $data['story_image_moment_1'],
+            $data['story_image_moment_2'],
+            $data['story_caption_primary'],
+            $data['story_caption_secondary'],
+            $data['story_caption_moment_0'],
+            $data['story_caption_moment_1'],
+            $data['story_caption_moment_2'],
+        );
 
         $data = $this->resolveTemplateVariant($data);
 
