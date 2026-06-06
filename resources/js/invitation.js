@@ -80,12 +80,17 @@ function initScrollPerformance() {
     app.addEventListener('scroll', onScroll, { passive: true });
 }
 
+function dispatchUserGesture() {
+    document.dispatchEvent(new CustomEvent('inv:user-gesture'));
+}
+
 function initWelcomeScroll() {
     const btn = document.getElementById('inv-scroll-btn');
     const target = document.getElementById('inv-details');
     if (!btn || !target) return;
 
     btn.addEventListener('click', () => {
+        dispatchUserGesture();
         target.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
     });
 }
@@ -367,14 +372,19 @@ function initMusicPlayer() {
     const audio = document.getElementById('inv-audio');
     const iconPlay = document.getElementById('inv-music-icon-play');
     const iconPause = document.getElementById('inv-music-icon-pause');
+    const app = document.getElementById('invitation-app');
 
     if (!btn || !audio) return;
 
+    const musicOffKey = `inv-music-off:${app?.dataset.invitationSlug || 'default'}`;
     let isPlaying = false;
     let fadeToken = 0;
+    let unlockBound = false;
 
     audio.volume = 0;
     audio.loop = true;
+
+    const userMuted = () => sessionStorage.getItem(musicOffKey) === '1';
 
     const setPlaying = (playing) => {
         isPlaying = playing;
@@ -394,7 +404,42 @@ function initMusicPlayer() {
         btn.setAttribute('aria-label', i18n.musicError || 'Music failed to load.');
     };
 
-    const stopMusic = async () => {
+    const startMusic = async ({ restart = false } = {}) => {
+        if (userMuted()) return false;
+
+        btn.classList.remove('is-error');
+        btn.classList.add('is-loading');
+
+        try {
+            await waitForAudioReady(audio);
+            if (restart || audio.paused) {
+                if (restart) {
+                    audio.currentTime = 0;
+                }
+                await audio.play();
+            }
+
+            const token = ++fadeToken;
+            await fadeAudioVolume(audio, MUSIC_TARGET_VOLUME);
+            if (token !== fadeToken) return false;
+
+            btn.classList.remove('is-loading');
+            setPlaying(true);
+            return true;
+        } catch {
+            audio.pause();
+            audio.volume = 0;
+            setPlaying(false);
+            btn.classList.remove('is-loading');
+            return false;
+        }
+    };
+
+    const stopMusic = async (userInitiated = false) => {
+        if (userInitiated) {
+            sessionStorage.setItem(musicOffKey, '1');
+        }
+
         const token = ++fadeToken;
         await fadeAudioVolume(audio, 0, 700);
         if (token !== fadeToken) return;
@@ -402,33 +447,41 @@ function initMusicPlayer() {
         setPlaying(false);
     };
 
+    const bindUnlockOnGesture = () => {
+        if (unlockBound || userMuted()) return;
+        unlockBound = true;
+
+        const unlock = async () => {
+            if (!userMuted() && !isPlaying) {
+                const ok = await startMusic();
+                if (!ok) showMusicError();
+            }
+        };
+
+        document.addEventListener('inv:user-gesture', unlock, { once: true });
+        document.addEventListener('pointerdown', unlock, { once: true, capture: true });
+        document.addEventListener('keydown', unlock, { once: true, capture: true });
+    };
+
     btn.addEventListener('click', async () => {
         if (isPlaying) {
-            await stopMusic();
+            await stopMusic(true);
             return;
         }
 
-        btn.classList.remove('is-error');
-        btn.classList.add('is-loading');
-
-        try {
-            await waitForAudioReady(audio);
-            audio.currentTime = 0;
-            await audio.play();
-
-            const token = ++fadeToken;
-            await fadeAudioVolume(audio, MUSIC_TARGET_VOLUME);
-            if (token !== fadeToken) return;
-
-            btn.classList.remove('is-loading');
-            setPlaying(true);
-        } catch {
-            audio.pause();
-            audio.volume = 0;
-            setPlaying(false);
-            showMusicError();
-        }
+        sessionStorage.removeItem(musicOffKey);
+        const ok = await startMusic({ restart: true });
+        if (!ok) showMusicError();
     });
+
+    if (!userMuted()) {
+        window.setTimeout(async () => {
+            const ok = await startMusic();
+            if (!ok) {
+                bindUnlockOnGesture();
+            }
+        }, 350);
+    }
 }
 
 function initLocationMap() {

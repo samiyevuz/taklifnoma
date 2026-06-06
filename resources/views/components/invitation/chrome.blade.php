@@ -26,7 +26,7 @@
             id="inv-audio"
             src="{{ $invitation->resolvedMusicUrl() }}"
             loop
-            preload="metadata"
+            preload="auto"
         ></audio>
     @endif
 </div>
