@@ -1,11 +1,32 @@
 @extends('layouts.invitation')
 
 @section('body')
+    @php
+        $coverUrl = $invitation->resolvedCoverUrl();
+        $tierRibbon = $invitation->presentationTierRibbon();
+    @endphp
     <div
-        class="invitation-page"
+        class="invitation-page {{ $invitation->presentationThemeClass() }} {{ $invitation->presentationAnimationClass() }}"
         id="invitation-app"
         data-invitation-slug="{{ $invitation->slug }}"
+        data-animation-tier="{{ $invitation->entitlements()['animation'] ?? 'enhanced' }}"
     >
+        <div class="invitation-fx" aria-hidden="true">
+            @if ($coverUrl)
+                <div
+                    class="invitation-fx__cover"
+                    style="background-image: url('{{ $coverUrl }}'); background-position: {{ $invitation->presentationCoverFocus() }};"
+                ></div>
+            @endif
+            <div class="invitation-fx__overlay"></div>
+            <div class="invitation-fx__shimmer"></div>
+            <div class="invitation-fx__particles" id="inv-particles"></div>
+        </div>
+
+        @if ($tierRibbon)
+            <span class="invitation-tier-ribbon">{{ $tierRibbon }}</span>
+        @endif
+
         <x-invitation.chrome :invitation="$invitation" />
 
         <main class="invitation-content" id="main-content">

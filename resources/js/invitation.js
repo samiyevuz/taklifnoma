@@ -434,7 +434,23 @@ function initMapModal() {
     });
 }
 
+function initPresentationFx() {
+    const app = document.getElementById('invitation-app');
+    const particles = document.getElementById('inv-particles');
+    if (!app || !particles || prefersReducedMotion()) return;
+
+    const animationTier = app.dataset.animationTier || 'enhanced';
+    const count = animationTier === 'vip' ? 14 : animationTier === 'cinematic' ? 9 : 0;
+
+    if (!count) return;
+
+    particles.innerHTML = Array.from({ length: count }, (_, index) => (
+        `<span class="invitation-fx__particle" style="--p-i:${index};--p-x:${8 + (index * 6.5) % 84}%;--p-y:${6 + (index * 11) % 88}%;--p-d:${0.4 + (index % 5) * 0.35}s"></span>`
+    )).join('');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    initPresentationFx();
     initLocaleDropdown();
     initScrollReveal();
     initWelcomeScroll();

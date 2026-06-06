@@ -8,6 +8,7 @@ use App\Support\InvitationEventData;
 use App\Support\MusicUrlNormalizer;
 use App\Support\PlanEntitlements;
 use App\Support\TemplateCatalog;
+use App\Support\TemplateVariantCatalog;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -318,5 +319,48 @@ class Invitation extends Model
         }
 
         return MusicUrlNormalizer::normalize($this->music_url) ?? $this->defaultMusicUrl();
+    }
+
+    public function resolvedCoverUrl(): ?string
+    {
+        if (filled($this->cover_image)) {
+            return asset($this->cover_image);
+        }
+
+        $variant = TemplateVariantCatalog::find(
+            $this->template_slug ?? 'nikoh',
+            $this->template_variant
+        );
+
+        return $variant['cover_url'] ?? null;
+    }
+
+    public function presentationThemeClass(): string
+    {
+        return 'inv-theme--'.($this->entitlements()['tier'] ?? PlanEntitlements::TIER_PREMIUM);
+    }
+
+    public function presentationAnimationClass(): string
+    {
+        return 'inv-anim--'.($this->entitlements()['animation'] ?? 'enhanced');
+    }
+
+    public function presentationTierRibbon(): ?string
+    {
+        return match ($this->entitlements()['animation'] ?? 'enhanced') {
+            'vip' => 'VIP',
+            'cinematic' => 'LUXURY',
+            default => null,
+        };
+    }
+
+    public function presentationCoverFocus(): string
+    {
+        $variant = TemplateVariantCatalog::find(
+            $this->template_slug ?? 'nikoh',
+            $this->template_variant
+        );
+
+        return $variant['cover_focus'] ?? 'center 40%';
     }
 }

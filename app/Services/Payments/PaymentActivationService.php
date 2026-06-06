@@ -4,6 +4,7 @@ namespace App\Services\Payments;
 
 use App\Models\Invitation;
 use App\Models\PaymentInvoice;
+use App\Support\PlanEntitlements;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -23,9 +24,13 @@ class PaymentActivationService
                 $invoice->markPaid($invoice->provider_trans_id);
             }
 
+            $plan = PlanEntitlements::forTheme($invoice->plan_tier);
+
             $invitation->update([
                 'status' => Invitation::STATUS_ACTIVE,
                 'published_at' => $invitation->published_at ?? now(),
+                'plan_tier' => $invoice->plan_tier ?? $invitation->plan_tier,
+                'guest_limit' => $plan['guest_limit'],
             ]);
 
             $this->clearPublicCache($invitation);
