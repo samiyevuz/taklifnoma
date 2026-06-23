@@ -615,6 +615,11 @@
         transform: scale(0.98);
     }
 
+    .inv-submit.is-loading {
+        opacity: 0.8;
+        pointer-events: none;
+    }
+
     .inv-submit__ripple {
         position: absolute;
         border-radius: 50%;

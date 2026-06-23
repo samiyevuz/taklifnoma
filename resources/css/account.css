@@ -12,6 +12,12 @@
         }
     }
 
+    @media (max-width: 1023px) {
+        .account-sidebar {
+            position: static;
+        }
+    }
+
     .account-sidebar {
         position: sticky;
         top: 6.5rem;

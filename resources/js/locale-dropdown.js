@@ -30,6 +30,10 @@ export function initLocaleDropdown() {
             trigger.setAttribute('aria-expanded', String(willOpen));
             menu.toggleAttribute('hidden', !willOpen);
         });
+
+        menu.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
     });
 
     if (!document.documentElement.dataset.localeDropdownBound) {

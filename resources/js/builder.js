@@ -5,6 +5,13 @@
 
 import { initRsvpLivePanels } from './rsvp-live-panel';
 import { initCopyLinks } from './copy-link';
+import {
+    prefersReducedMotion,
+    rafThrottle,
+    lockBodyScroll,
+    unlockBodyScroll,
+    setButtonLoading,
+} from './perf-utils';
 
 const ELITE_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
 const UZ_MONTHS = [
@@ -257,6 +264,8 @@ function initBuilderStudio() {
     const variantFeatures = document.getElementById('builder-variant-features');
     let previewRevealObserver = null;
     let previewParallaxBound = false;
+    let parallaxRaf = null;
+    let scrollLockDepth = 0;
 
     const previewMap = {};
     studio.querySelectorAll('[data-preview]').forEach((el) => {
@@ -668,6 +677,11 @@ function initBuilderStudio() {
     const syncPreviewParallax = () => {
         if (!previewPhoneScreen || !previewCover || !previewPage) return;
 
+        if (prefersReducedMotion()) {
+            previewCover.style.transform = '';
+            return;
+        }
+
         const animationTier = VARIANT_ANIM_CLASSES.find((cls) => previewPage.classList.contains(cls))
             ?.replace('inv-anim--', '') || 'enhanced';
 
@@ -681,11 +695,24 @@ function initBuilderStudio() {
         previewCover.style.transform = `translate3d(0, ${scrollTop * 0.28}px, 0) scale(${scale})`;
     };
 
+    const schedulePreviewParallax = rafThrottle(syncPreviewParallax);
+
     const bindPreviewParallax = () => {
         if (!previewPhoneScreen || previewParallaxBound) return;
 
-        previewPhoneScreen.addEventListener('scroll', syncPreviewParallax, { passive: true });
+        previewPhoneScreen.addEventListener('scroll', schedulePreviewParallax, { passive: true });
         previewParallaxBound = true;
+    };
+
+    const lockOverlayScroll = () => {
+        scrollLockDepth += 1;
+        if (scrollLockDepth === 1) lockBodyScroll();
+    };
+
+    const unlockOverlayScroll = () => {
+        if (scrollLockDepth <= 0) return;
+        scrollLockDepth -= 1;
+        if (scrollLockDepth === 0) unlockBodyScroll();
     };
 
     const buildPlanNotice = (entitlements) => {
@@ -872,13 +899,13 @@ function initBuilderStudio() {
 
         checkoutModal?.classList.add('is-open');
         checkoutModal?.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
+        lockOverlayScroll();
     };
 
     const closeCheckout = () => {
         checkoutModal?.classList.remove('is-open');
         checkoutModal?.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
+        unlockOverlayScroll();
     };
 
     const pruneFormDataFiles = (formData) => {
@@ -903,18 +930,28 @@ function initBuilderStudio() {
         });
     };
 
-    const submitForm = (publish) => {
+    const submitForm = (publish, triggerBtn = null) => {
         if (publishInput) publishInput.value = publish ? '1' : '0';
         prepareFormForSubmit();
+        if (triggerBtn) {
+            setButtonLoading(triggerBtn, true, triggerBtn.dataset.loadingLabel || 'Saqlanmoqda…');
+        }
+        nextBtn?.classList.add('is-loading');
         form.requestSubmit();
     };
 
     const openPreviewSheet = () => {
         if (!previewSheet || !previewPanel || !previewSheetMount) return;
+        setButtonLoading(previewFab, true);
         previewSheetMount.appendChild(previewPanel);
         previewSheet.classList.add('is-open');
         previewSheet.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
+        lockOverlayScroll();
+        window.requestAnimationFrame(() => {
+            previewPhoneScreen?.scrollTo(0, 0);
+            syncPreviewParallax();
+            setButtonLoading(previewFab, false);
+        });
     };
 
     const closePreviewSheet = () => {
@@ -923,7 +960,7 @@ function initBuilderStudio() {
         previewSheet.classList.remove('is-open');
         previewSheet.setAttribute('aria-hidden', 'true');
         if (!checkoutModal?.classList.contains('is-open')) {
-            document.body.style.overflow = '';
+            unlockOverlayScroll();
         }
     };
 
@@ -1277,7 +1314,7 @@ function initBuilderStudio() {
         pruneFormDataFiles(formData);
         formData.append('payment_provider', provider);
 
-        if (payBtn) payBtn.disabled = true;
+        setButtonLoading(payBtn, true, payBtn?.dataset.loadingLabel || 'To\'lov…');
 
         try {
             const response = await fetch(bootstrap.payments.generate_url, {
@@ -1346,7 +1383,7 @@ function initBuilderStudio() {
                 alert.textContent = error.message || 'To\'lovni boshlashda xatolik yuz berdi.';
                 alert.classList.remove('hidden', 'is-success');
             }
-            if (payBtn) payBtn.disabled = false;
+            setButtonLoading(payBtn, false);
         }
     };
 
@@ -1360,7 +1397,7 @@ function initBuilderStudio() {
                 return;
             }
 
-            submitForm(false);
+            submitForm(false, btn);
         });
     });
 
@@ -1400,8 +1437,36 @@ function initBuilderStudio() {
     setStep(1);
     schedulePreview();
 
-    countdownTimer = window.setInterval(updateCountdown, 1000);
-    window.addEventListener('beforeunload', () => clearInterval(countdownTimer));
+    const tickCountdown = () => {
+        if (!document.hidden) updateCountdown();
+    };
+
+    countdownTimer = window.setInterval(tickCountdown, 1000);
+
+    const cleanup = () => {
+        if (previewRaf) {
+            cancelAnimationFrame(previewRaf);
+            previewRaf = null;
+        }
+        if (countdownTimer) {
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+        }
+        previewRevealObserver?.disconnect();
+        previewRevealObserver = null;
+        if (previewParallaxBound && previewPhoneScreen) {
+            previewPhoneScreen.removeEventListener('scroll', schedulePreviewParallax);
+            previewParallaxBound = false;
+        }
+        if (parallaxRaf) {
+            cancelAnimationFrame(parallaxRaf);
+            parallaxRaf = null;
+        }
+        scrollLockDepth = 0;
+        unlockBodyScroll();
+    };
+
+    window.addEventListener('pagehide', cleanup, { once: true });
 
     initRsvpLivePanels();
     initCopyLinks();

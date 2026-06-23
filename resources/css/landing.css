@@ -64,8 +64,11 @@
         border-radius: 50%;
         filter: blur(80px);
         opacity: 0.55;
-        will-change: transform;
         transform: translateZ(0);
+    }
+
+    .ambient-layer.is-paused .ambient-blob {
+        animation-play-state: paused;
     }
 
     .ambient-blob--gold {
@@ -137,6 +140,42 @@
         }
         100% {
             transform: translate(-20px, 40px) scale(1.1);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .ambient-blob {
+            filter: blur(48px);
+            opacity: 0.35;
+            animation-duration: 32s !important;
+        }
+
+        .ambient-blob--champagne,
+        .ambient-blob--slate {
+            display: none;
+        }
+
+        .glass-luxury,
+        .nav-glass__inner,
+        .template-card,
+        .testimonial-card {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .nav-glass.is-scrolled .nav-glass__inner {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .mockup-stage__glow {
+            opacity: 0.45;
+        }
+    }
+
+    @media (max-width: 768px), (prefers-reduced-motion: reduce) {
+        .ambient-blob {
+            animation-play-state: paused;
         }
     }
 
@@ -1396,6 +1435,7 @@
     .reveal.is-visible {
         opacity: 1;
         transform: translateY(0);
+        will-change: auto;
     }
 
     .reveal-delay-1 {
@@ -1586,6 +1626,7 @@
         left: 0;
         right: 0;
         min-width: 100%;
+        z-index: 210;
     }
 
     @media (prefers-reduced-motion: reduce) {

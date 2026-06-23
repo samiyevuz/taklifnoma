@@ -4,12 +4,14 @@
  */
 
 import { initLocaleDropdown } from './locale-dropdown';
+import {
+    prefersReducedMotion,
+    lockBodyScroll,
+    unlockBodyScroll,
+    setButtonLoading,
+} from './perf-utils';
 
 const INV_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
-
-function prefersReducedMotion() {
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-}
 
 function pad(n) {
     return String(n).padStart(2, '0');
@@ -130,6 +132,7 @@ function initCountdown() {
 
     tick();
     const timer = setInterval(tick, 1000);
+    window.addEventListener('pagehide', () => clearInterval(timer), { once: true });
 }
 
 function initDressCode() {
@@ -226,8 +229,7 @@ function initRsvpForm() {
         if (!rsvpUrl) return;
 
         if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.textContent = i18n.submitting || 'Sending...';
+            setButtonLoading(submitBtn, true, i18n.submitting || 'Sending...');
         }
 
         const formData = new FormData(form);
@@ -265,8 +267,7 @@ function initRsvpForm() {
                     firstError,
                 );
                 if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = i18n.submit || 'Confirm';
+                    setButtonLoading(submitBtn, false);
                 }
                 return;
             }
@@ -285,8 +286,7 @@ function initRsvpForm() {
                 i18n.networkError || 'Network error.',
             );
             if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Tasdiqlash';
+                setButtonLoading(submitBtn, false);
             }
         }
     });
@@ -515,10 +515,17 @@ function initMapModal() {
 
     if (!openBtn || !modal) return;
 
+    let isOpen = false;
+
     const setOpen = (open) => {
+        if (isOpen === open) return;
+        isOpen = open;
+
         modal.classList.toggle('is-open', open);
         modal.setAttribute('aria-hidden', String(!open));
-        document.body.style.overflow = open ? 'hidden' : '';
+
+        if (open) lockBodyScroll();
+        else unlockBodyScroll();
     };
 
     openBtn.addEventListener('click', () => setOpen(true));
@@ -526,6 +533,14 @@ function initMapModal() {
     modal.addEventListener('click', (e) => {
         if (e.target === modal) setOpen(false);
     });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isOpen) setOpen(false);
+    });
+
+    window.addEventListener('pagehide', () => {
+        if (isOpen) unlockBodyScroll();
+    }, { once: true });
 }
 
 function initPresentationFx() {

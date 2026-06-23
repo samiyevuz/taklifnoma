@@ -335,4 +335,51 @@
         object-fit: cover;
         aspect-ratio: 16 / 10;
     }
+
+    .admin-card.is-loading {
+        position: relative;
+        pointer-events: none;
+    }
+
+    .admin-card.is-loading::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: rgba(255, 255, 255, 0.55);
+        backdrop-filter: blur(2px);
+    }
+
+    .admin-card.is-loading::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 2;
+        width: 1.75rem;
+        height: 1.75rem;
+        margin: -0.875rem 0 0 -0.875rem;
+        border: 2px solid var(--color-luxury-gold);
+        border-right-color: transparent;
+        border-radius: 50%;
+        animation: admin-table-spin 0.7s linear infinite;
+    }
+
+    @keyframes admin-table-spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @media (max-width: 1023px) {
+        .admin-sidebar {
+            position: static;
+        }
+
+        .admin-table {
+            display: block;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+    }
 }

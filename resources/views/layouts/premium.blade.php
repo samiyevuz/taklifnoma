@@ -29,6 +29,11 @@
     @stack('head')
 </head>
 <body class="min-h-dvh antialiased">
+    <div id="page-loader" class="page-loader" role="status" aria-live="polite" aria-label="{{ __('nav.loading') ?? 'Loading' }}">
+        <div class="page-loader__bar" aria-hidden="true"></div>
+        <span class="page-loader__label">Taklifnoma</span>
+    </div>
+
     <a
         href="#main-content"
         class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-luxury-gold focus:text-royal-950"

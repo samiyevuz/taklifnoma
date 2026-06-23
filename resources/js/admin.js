@@ -5,6 +5,13 @@ function formatNumber(value) {
     return new Intl.NumberFormat('uz-UZ').format(num);
 }
 
+function setTableLoading(loading) {
+    document.querySelectorAll('.admin-card:has(.admin-filters)').forEach((wrap) => {
+        wrap.classList.toggle('is-loading', loading);
+        wrap.setAttribute('aria-busy', loading ? 'true' : 'false');
+    });
+}
+
 async function pollAdminStats() {
     const grid = document.getElementById('admin-stats-grid');
     if (!grid || document.hidden) return;
@@ -55,12 +62,25 @@ async function pollAdminStats() {
     }
 }
 
+function initAdminTableLoading() {
+    document.querySelectorAll('.admin-filters').forEach((form) => {
+        form.addEventListener('submit', () => setTableLoading(true));
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initRsvpLivePanels();
+    initAdminTableLoading();
 
     const grid = document.getElementById('admin-stats-grid');
     if (!grid) return;
 
     pollAdminStats();
-    window.setInterval(pollAdminStats, 30000);
+    const pollTimer = window.setInterval(pollAdminStats, 30000);
+
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) pollAdminStats();
+    });
+
+    window.addEventListener('pagehide', () => clearInterval(pollTimer), { once: true });
 });
