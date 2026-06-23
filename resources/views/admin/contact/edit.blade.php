@@ -16,12 +16,12 @@
 
             <div class="admin-form-row">
                 <label class="admin-label" for="email">Email</label>
-                <input type="email" id="email" name="email" value="{{ old('email', $contact['email']) }}" class="admin-input w-full" placeholder="info@taklifnoma.net">
+                <input type="email" id="email" name="email" value="{{ old('email', $contact['email']) }}" class="admin-input w-full" placeholder="info@theuzsoft.uz">
             </div>
 
             <div class="admin-form-row">
                 <label class="admin-label" for="phone">{{ __('admin.table.phone') }}</label>
-                <input type="text" id="phone" name="phone" value="{{ old('phone', $contact['phone']) }}" class="admin-input w-full" placeholder="+998 90 123 45 67">
+                <input type="text" id="phone" name="phone" value="{{ old('phone', $contact['phone']) }}" class="admin-input w-full" placeholder="+998 88 222 22 87">
             </div>
         </div>
 
