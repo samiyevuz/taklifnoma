@@ -4,6 +4,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @import './global.css';
+@import './locale-dropdown.css';
 @import './landing.css';
 @import './dark-mode.css';
 @import './invitation.css';
