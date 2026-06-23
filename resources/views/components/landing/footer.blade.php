@@ -109,6 +109,8 @@
                     <a href="#">{{ __('landing.footer_terms') }}</a>
                 </div>
             </div>
+
+            <x-ui.powered-by class="landing-footer__powered mt-4 text-center text-xs text-royal-400" />
         </div>
     </div>
 </footer>
