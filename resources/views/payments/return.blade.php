@@ -1,5 +1,9 @@
 @extends('layouts.premium')
 
+@php
+    use App\Support\LocaleManager;
+@endphp
+
 @section('body')
     <section class="landing-container py-24 text-center">
         <div class="mx-auto max-w-lg glass-luxury rounded-3xl p-10">
@@ -15,7 +19,7 @@
                 <h1 class="font-serif text-display font-semibold text-ink">{{ __('builder.payment_pending_title') }}</h1>
                 <p class="mt-4 text-ink-soft">{{ __('builder.payment_pending_desc') }}</p>
             @endif
-            <a href="{{ auth()->check() ? route('account.dashboard') : '/' }}" class="btn-outline-luxury mt-4 inline-flex">{{ __('builder.back_dashboard') }}</a>
+            <a href="{{ auth()->check() ? route('account.dashboard') : LocaleManager::home() }}" class="btn-outline-luxury mt-4 inline-flex">{{ __('builder.back_dashboard') }}</a>
         </div>
     </section>
 @endsection

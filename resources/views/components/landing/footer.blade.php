@@ -1,4 +1,5 @@
 @php
+    use App\Support\LocaleManager;
     use App\Support\SiteContent;
 
     $social = collect([
@@ -35,7 +36,7 @@
         <div class="landing-footer__card glass-luxury">
             <div class="landing-footer__grid">
                 <div class="landing-footer__brand">
-                    <a href="/" class="landing-footer__logo" aria-label="Taklifnoma — bosh sahifa">
+                    <a href="{{ LocaleManager::home() }}" class="landing-footer__logo" aria-label="Taklifnoma — bosh sahifa">
                         <x-ui.brand-logo data-logo-id="footer" size="lg" />
                     </a>
                     <p class="landing-footer__tagline">{{ __('landing.footer_tagline') }}</p>

@@ -1,6 +1,8 @@
 @props(['bootstrap', 'invitation' => null, 'stats' => null])
 
 @php
+    use App\Support\LocaleManager;
+
     $b = $bootstrap;
 @endphp
 
@@ -11,7 +13,7 @@
 >
     <header class="builder-studio__header">
         <div class="builder-studio__header-main">
-            <a href="{{ auth()->check() ? route('account.dashboard') : '/' }}" class="builder-studio__back" aria-label="{{ __('builder.back_dashboard') }}">
+            <a href="{{ auth()->check() ? route('account.dashboard') : LocaleManager::home() }}" class="builder-studio__back" aria-label="{{ __('builder.back_dashboard') }}">
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M15 19l-7-7 7-7"/></svg>
             </a>
             <div>

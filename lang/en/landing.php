@@ -53,7 +53,9 @@ return [
         ['q' => 'How do guests RSVP?', 'a' => 'Each invitation has "Attending" / "Can\'t attend" buttons. Responses update live on your dashboard.'],
         ['q' => 'Does it look good on mobile?', 'a' => 'Yes. All templates are optimized from 320px screens to tablets.'],
         ['q' => 'Can I change the background music?', 'a' => 'Premium and VIP plans include 20+ licensed tracks or your own MP3 upload.'],
-        ['q' => 'How does payment work?', 'a' => 'Secure payment via Payme, Click, and bank cards. Free plan includes 30 guests and 1 template.'],
+        ['q' => 'How does payment work?', 'a' => 'Secure payment via Payme, Click, and bank cards. Classic plan includes 30 guests, Premium — 200, Luxury — 500, Royal VIP — unlimited guests.'],
+        ['q' => 'How is the "30 guests" limit counted?', 'a' => 'Guests who RSVP as "Attending" count toward the limit (adults and children). When the limit is reached, new RSVPs are blocked but the link remains viewable.'],
+        ['q' => 'How does a custom domain work?', 'a' => 'On the Royal VIP plan you can connect your own domain (e.g. wedding.name.uz). Point a CNAME record to the platform and the invitation opens on your domain.'],
         ['q' => 'Can I edit or cancel an invitation?', 'a' => 'Absolutely. Edit anytime, update guest lists, or disable the link.'],
     ],
 

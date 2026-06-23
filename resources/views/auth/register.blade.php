@@ -16,7 +16,7 @@
                         <ul class="list-disc pl-5 space-y-1">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
                     </div>
                 @endif
-                <form method="POST" action="{{ url('/register') }}" class="space-y-5">
+                <form method="POST" action="{{ route('register') }}" class="space-y-5">
                     @csrf
                     <div class="auth-field">
                         <label for="name">{{ __('auth.name') }}</label>

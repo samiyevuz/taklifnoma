@@ -14,7 +14,7 @@
                 @if ($errors->any())
                     <div class="mb-6 rounded-xl border border-red-200 bg-red-50/80 p-4 text-sm text-red-800">{{ $errors->first() }}</div>
                 @endif
-                <form method="POST" action="{{ url('/login') }}" class="space-y-5">
+                <form method="POST" action="{{ route('login') }}" class="space-y-5">
                     @csrf
                     <div class="auth-field">
                         <label for="email">{{ __('auth.email') }}</label>

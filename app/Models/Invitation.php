@@ -159,11 +159,15 @@ class Invitation extends Model
         return BuilderEventProfile::displayTitle($this);
     }
 
-    public function publicUrl(): string
+    public function publicUrl(?string $locale = null): string
     {
         $slug = $this->custom_slug ?: $this->slug;
+        $locale = $locale ?? config('locales.default', 'uz');
 
-        return url('/l/'.$slug);
+        return route('invitation.show', [
+            'locale' => $locale,
+            'slug' => $slug,
+        ]);
     }
 
     public function primaryShareUrl(): string

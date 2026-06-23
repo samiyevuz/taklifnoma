@@ -24,7 +24,7 @@
     <div class="locale-dropdown__menu" role="listbox" aria-label="{{ __('nav.language') }}" hidden>
         @foreach ($locales as $code => $meta)
             <a
-                href="{{ route('locale.switch', $code) }}"
+                href="{{ LocaleManager::switchUrl($code) }}"
                 class="locale-dropdown__item {{ $current === $code ? 'is-active' : '' }}"
                 hreflang="{{ $code }}"
                 lang="{{ $code }}"

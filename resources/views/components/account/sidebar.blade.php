@@ -1,4 +1,8 @@
-@php $current = request()->route()->getName(); @endphp
+@php
+    use App\Support\LocaleManager;
+
+    $current = request()->route()->getName();
+@endphp
 
 <aside class="account-sidebar glass-luxury rounded-2xl p-4">
     <div class="mb-4"><x-ui.locale-switcher /></div>
@@ -31,7 +35,7 @@
     </nav>
 
     <div class="mt-6 pt-4 border-t border-white/40 space-y-3">
-        <a href="{{ url('/') }}" class="account-nav__link account-nav__link--site">
+        <a href="{{ LocaleManager::home() }}" class="account-nav__link account-nav__link--site">
             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path stroke-linecap="round" d="M3 12l9-9 9 9M5 10v10h14V10"/>
             </svg>
