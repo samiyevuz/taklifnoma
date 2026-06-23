@@ -6,6 +6,19 @@
 @layer base {
     :root {
         --site-nav-height: 5.5rem;
+        --scrollbar-size: 8px;
+        --scrollbar-track: var(--color-cream-200);
+        --scrollbar-thumb-start: var(--color-luxury-gold);
+        --scrollbar-thumb-end: var(--color-luxury-gold-dark);
+        --scrollbar-thumb-hover: var(--color-luxury-gold-light);
+    }
+
+    .dark,
+    [data-theme='dark'] {
+        --scrollbar-track: var(--color-royal-800);
+        --scrollbar-thumb-start: var(--color-luxury-purple-light);
+        --scrollbar-thumb-end: var(--color-luxury-purple);
+        --scrollbar-thumb-hover: var(--color-luxury-purple-light);
     }
 
     *,
@@ -92,46 +105,32 @@
 @layer base {
     * {
         scrollbar-width: thin;
-        scrollbar-color: var(--color-luxury-gold-dark) var(--color-cream-200);
-    }
-
-    .dark * {
-        scrollbar-color: var(--color-luxury-purple-light) var(--color-royal-800);
+        scrollbar-color: var(--scrollbar-thumb-end) var(--scrollbar-track);
     }
 
     *::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
+        width: var(--scrollbar-size);
+        height: var(--scrollbar-size);
     }
 
     *::-webkit-scrollbar-track {
-        background: var(--color-cream-200);
+        background: var(--scrollbar-track);
         border-radius: 9999px;
-    }
-
-    .dark *::-webkit-scrollbar-track {
-        background: var(--color-royal-800);
     }
 
     *::-webkit-scrollbar-thumb {
-        background: linear-gradient(
-            180deg,
-            var(--color-luxury-gold),
-            var(--color-luxury-gold-dark)
-        );
+        background: linear-gradient(180deg, var(--scrollbar-thumb-start), var(--scrollbar-thumb-end));
+        border: 2px solid var(--scrollbar-track);
         border-radius: 9999px;
-    }
-
-    .dark *::-webkit-scrollbar-thumb {
-        background: linear-gradient(
-            180deg,
-            var(--color-luxury-purple-light),
-            var(--color-luxury-purple)
-        );
+        min-height: 2.5rem;
     }
 
     *::-webkit-scrollbar-thumb:hover {
-        background: var(--color-luxury-gold-light);
+        background: var(--scrollbar-thumb-hover);
+    }
+
+    *::-webkit-scrollbar-corner {
+        background: var(--scrollbar-track);
     }
 }
 
