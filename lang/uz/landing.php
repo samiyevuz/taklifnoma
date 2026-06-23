@@ -125,4 +125,29 @@ return [
     'footer_rights' => 'Barcha huquqlar himoyalangan.',
     'footer_privacy' => 'Maxfiylik',
     'footer_terms' => 'Foydalanish shartlari',
+
+    'template_aria_suffix' => 'shabloni',
+    'meta_default' => 'Raqamli taklifnoma platformasi — O\'zbekiston',
+
+    'testimonials_label' => 'Ishonch',
+    'testimonials_title' => 'Mijozlarimiz Fikri',
+    'testimonials_desc' => 'Minglab oilalar va tadbir tashkilotchilari Taklifnoma orqali unutilmas taassurot yaratmoqda.',
+    'testimonials_nav_prev' => 'Oldingi fikr',
+    'testimonials_nav_next' => 'Keyingi fikr',
+    'testimonials_nav_dots' => 'Fikrlar navigatsiyasi',
+    'testimonials_dot_aria' => ':name fikri',
+    'testimonials_stars_aria' => ':count yulduz',
+    'testimonials' => [
+        ['name' => 'Dilnoza Karimova', 'role' => 'Nikoh to\'yi · Toshkent', 'initials' => 'DK', 'gradient' => 'from-luxury-purple to-luxury-purple-light', 'quote' => 'Mehmonlarimiz taklifnomani ochganda hayratda qoldi. RSVP paneli tufayli 200 mehmonni boshqarish juda oson bo\'ldi. Dizayn darajasi haqiqatan premium.', 'rating' => 5],
+        ['name' => 'Jasur Toshmatov', 'role' => 'Sunnat to\'yi · Samarqand', 'initials' => 'JT', 'gradient' => 'from-luxury-emerald to-luxury-emerald-light', 'quote' => 'Fon musiqasi va dress-code funksiyalari ajoyib. Raqamli taklifnoma chop etishdan ko\'ra ancha zamonaviy va tejamkor yechim bo\'ldi.', 'rating' => 5],
+        ['name' => 'Malika Rahimova', 'role' => 'Qiz uzatish · Buxoro', 'initials' => 'MR', 'gradient' => 'from-rose-400 to-luxury-gold-light', 'quote' => '3 daqiqada tayyor taklifnoma yaratdim — shablonlar juda chiroyli. Mobil telefonda ham mukammal ko\'rinadi, hech qanday muammo bo\'lmadi.', 'rating' => 5],
+        ['name' => 'Bobur Nazarov', 'role' => 'Korporativ tadbir · Andijon', 'initials' => 'BN', 'gradient' => 'from-royal-700 to-luxury-gold', 'quote' => 'VIP paket bilan premium effektlar va sevgi tarixi galereyasi biznesimiz uchun professional ko\'rinish berdi. Qo\'llab-quvvatlash jamoasi tez javob beradi.', 'rating' => 5],
+    ],
+
+    'demo_rsvp_guests' => [
+        ['name' => 'Dilnoza Karimova', 'status' => 'attending'],
+        ['name' => 'Jasur Toshmatov', 'status' => 'attending'],
+        ['name' => 'Malika Rahimova', 'status' => 'pending'],
+        ['name' => 'Bobur Nazarov', 'status' => 'declined'],
+    ],
 ];

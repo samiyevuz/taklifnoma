@@ -15,7 +15,7 @@
             }
         })();
     </script>
-    <meta name="description" content="{{ $metaDescription ?? 'Raqamli taklifnoma platformasi — O\'zbekiston' }}">
+    <meta name="description" content="{{ $metaDescription ?? __('landing.meta_default') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ $title ?? config('app.name', 'Taklifnoma') }}</title>
@@ -29,9 +29,9 @@
     @stack('head')
 </head>
 <body class="min-h-dvh antialiased">
-    <div id="page-loader" class="page-loader" role="status" aria-live="polite" aria-label="{{ __('nav.loading') ?? 'Loading' }}">
+    <div id="page-loader" class="page-loader" role="status" aria-live="polite" aria-label="{{ __('nav.loading') }}">
         <div class="page-loader__bar" aria-hidden="true"></div>
-        <span class="page-loader__label">Taklifnoma</span>
+        <span class="page-loader__label">{{ __('nav.brand_eyebrow') }}</span>
     </div>
 
     <a

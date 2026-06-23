@@ -9,15 +9,15 @@
 
     <div class="admin-grid-2 mb-8">
         <div class="admin-card glass-luxury">
-            <h2 class="admin-card__title">Ma'lumotlar</h2>
+            <h2 class="admin-card__title">{{ __('admin.details') }}</h2>
             <dl class="space-y-3 text-sm">
                 <div class="flex justify-between gap-4"><dt class="text-ink-muted">{{ __('admin.owner') }}</dt><dd class="font-medium text-ink">{{ $invitation->user?->name ?? '—' }}</dd></div>
                 <div class="flex justify-between gap-4"><dt class="text-ink-muted">{{ __('admin.table.slug') }}</dt><dd><code>/l/{{ $invitation->slug }}</code></dd></div>
-                <div class="flex justify-between gap-4"><dt class="text-ink-muted">Shablon</dt><dd>{{ $invitation->template_slug }} @if($invitation->template_variant)<span class="text-ink-muted">/ {{ $invitation->template_variant }}</span>@endif</dd></div>
-                <div class="flex justify-between gap-4"><dt class="text-ink-muted">Tarif</dt><dd>{{ ucfirst($invitation->plan_tier ?? '—') }}</dd></div>
-                <div class="flex justify-between gap-4"><dt class="text-ink-muted">Mehmon limiti</dt><dd>{{ $invitation->resolvedGuestLimit() ?? 'Cheksiz' }}</dd></div>
-                <div class="flex justify-between gap-4"><dt class="text-ink-muted">Joy</dt><dd>{{ $invitation->venue_name }}</dd></div>
-                <div class="flex justify-between gap-4"><dt class="text-ink-muted">RSVP</dt><dd>{{ $invitation->rsvp_enabled ? 'Yoqilgan' : 'O\'chirilgan' }}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-ink-muted">{{ __('admin.table.template') }}</dt><dd>{{ $invitation->template_slug }} @if($invitation->template_variant)<span class="text-ink-muted">/ {{ $invitation->template_variant }}</span>@endif</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-ink-muted">{{ __('admin.table.plan_tier') }}</dt><dd>{{ ucfirst($invitation->plan_tier ?? '—') }}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-ink-muted">{{ __('admin.table.guest_limit') }}</dt><dd>{{ $invitation->resolvedGuestLimit() ?? __('admin.unlimited') }}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-ink-muted">{{ __('admin.venue') }}</dt><dd>{{ $invitation->venue_name }}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-ink-muted">{{ __('admin.table.rsvp') }}</dt><dd>{{ $invitation->rsvp_enabled ? __('admin.enabled') : __('admin.disabled') }}</dd></div>
             </dl>
             <div class="mt-5 flex flex-wrap gap-3">
                 @if ($invitation->isPublished())

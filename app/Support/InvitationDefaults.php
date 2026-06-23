@@ -10,10 +10,10 @@ class InvitationDefaults
     public static function dressColors(): array
     {
         return [
-            ['name' => 'Bej', 'hex' => '#E8DFD0', 'note' => 'Bej va krem tonlari — klassik va nafis tanlov.'],
-            ['name' => 'Pushti', 'hex' => '#E8B4B8', 'note' => 'Pastel pushti — romantik va yumshoq ranglar.'],
-            ['name' => 'Oltin', 'hex' => '#C9A227', 'note' => 'Oltin aksentlar — hashamatli ko\'rinish uchun.'],
-            ['name' => 'Zumrad', 'hex' => '#0D6B5C', 'note' => 'Zumrad yashil — tabiat ilhomidagi nafis ton.'],
+            ['name' => __('builder.defaults.dress_beige'), 'hex' => '#E8DFD0', 'note' => __('builder.defaults.dress_beige_note')],
+            ['name' => __('builder.defaults.dress_pink'), 'hex' => '#E8B4B8', 'note' => __('builder.defaults.dress_pink_note')],
+            ['name' => __('builder.defaults.dress_gold'), 'hex' => '#C9A227', 'note' => __('builder.defaults.dress_gold_note')],
+            ['name' => __('builder.defaults.dress_emerald'), 'hex' => '#0D6B5C', 'note' => __('builder.defaults.dress_emerald_note')],
         ];
     }
 
@@ -22,22 +22,22 @@ class InvitationDefaults
         return [
             [
                 'id' => 'romantic',
-                'label' => 'Romantik pianino',
+                'label' => __('builder.defaults.music_romantic'),
                 'url' => asset('audio/romantic-wedding.mp3'),
             ],
             [
                 'id' => 'classic',
-                'label' => 'Klassik to\'y marosimi',
+                'label' => __('builder.defaults.music_classic'),
                 'url' => asset('audio/romantic-wedding.mp3'),
             ],
             [
                 'id' => 'custom',
-                'label' => 'O\'z musiqam (MP3 havola)',
+                'label' => __('builder.defaults.music_custom'),
                 'url' => '',
             ],
             [
                 'id' => 'upload',
-                'label' => 'Kompyuterdan yuklash (MP3)',
+                'label' => __('builder.defaults.music_upload'),
                 'url' => '',
             ],
         ];

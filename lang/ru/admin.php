@@ -91,6 +91,12 @@ return [
     'invitation_status_updated' => 'Статус приглашения обновлён.',
     'invitation_deleted' => 'Приглашение удалено.',
     'confirm_delete' => 'Вы уверены, что хотите удалить?',
+    'details' => 'Данные',
+    'unlimited' => 'Безлимит',
+    'enabled' => 'Включено',
+    'disabled' => 'Выключено',
+    'venue' => 'Место',
+    'telegram' => 'Telegram',
 
     'stats' => [
         'users_total' => 'Пользователи',
@@ -151,5 +157,7 @@ return [
         'plan_tier' => 'Тариф',
         'guest_limit' => 'Лимит гостей',
         'blade' => 'Blade-шаблон',
+        'template' => 'Шаблон',
+        'count' => 'Кол-во',
     ],
 ];

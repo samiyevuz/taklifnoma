@@ -22,4 +22,7 @@ return [
     'close_menu' => 'Menyuni yopish',
     'menu' => 'Menyu',
     'toggle_theme' => 'Mavzu rejimini almashtirish',
+    'loading' => 'Yuklanmoqda',
+    'home_aria' => 'Taklifnoma — bosh sahifa',
+    'brand_eyebrow' => 'Taklifnoma',
 ];

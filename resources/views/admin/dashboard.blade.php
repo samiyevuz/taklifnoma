@@ -67,7 +67,7 @@
         <div class="admin-card glass-luxury">
             <h2 class="admin-card__title">{{ __('admin.sections.top_templates') }}</h2>
             <table class="admin-table">
-                <thead><tr><th>Shablon</th><th>Soni</th></tr></thead>
+                <thead><tr><th>{{ __('admin.table.template') }}</th><th>{{ __('admin.table.count') }}</th></tr></thead>
                 <tbody>
                     @forelse ($stats['top_templates'] as $template)
                         <tr>

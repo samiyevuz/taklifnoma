@@ -29,8 +29,8 @@ class StoreRsvpRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'guest_name.required' => 'Ismingizni kiriting.',
-            'status.required' => 'Javob turini tanlang.',
+            'guest_name.required' => __('invitation.guest_name_required'),
+            'status.required' => __('invitation.status_required'),
         ];
     }
 }

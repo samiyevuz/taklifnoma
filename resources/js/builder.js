@@ -14,10 +14,23 @@ import {
 } from './perf-utils';
 
 const ELITE_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
-const UZ_MONTHS = [
+const i18n = window.builderI18n || {};
+const reviewI18n = i18n.review || {};
+const placeholderI18n = i18n.placeholders || {};
+const MONTHS = Array.isArray(i18n.months) ? i18n.months : [
     '', 'Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun',
     'Iyul', 'Avgust', 'Sentabr', 'Oktabr', 'Noyabr', 'Dekabr',
 ];
+
+function t(key, fallback = '') {
+    return i18n[key] ?? fallback;
+}
+
+function formatVariantPrice(amount, currency = i18n.currency || "so'm") {
+    const value = Number(amount);
+    if (!Number.isFinite(value)) return '';
+    return `${value.toLocaleString('uz-UZ').replace(/,/g, ' ')} ${currency}`;
+}
 
 const LAYOUT_MODES = {
     couple: 'couple',
@@ -32,12 +45,6 @@ function pad2(value) {
     return String(value).padStart(2, '0');
 }
 
-function formatVariantPrice(amount, currency = "so'm") {
-    const value = Number(amount);
-    if (!Number.isFinite(value)) return '';
-    return `${value.toLocaleString('uz-UZ').replace(/,/g, ' ')} ${currency}`;
-}
-
 const VARIANT_THEME_CLASSES = ['inv-theme--classic', 'inv-theme--premium', 'inv-theme--luxury', 'inv-theme--royal'];
 const VARIANT_ANIM_CLASSES = ['inv-anim--basic', 'inv-anim--enhanced', 'inv-anim--cinematic', 'inv-anim--vip'];
 const PHONE_TIER_CLASSES = ['builder-phone--tier-1', 'builder-phone--tier-2', 'builder-phone--tier-3', 'builder-phone--tier-4'];
@@ -46,14 +53,14 @@ function formatEventDate(value) {
     if (!value) return '';
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return '';
-    return `${date.getDate()} ${UZ_MONTHS[date.getMonth() + 1]} ${date.getFullYear()}`;
+    return `${date.getDate()} ${MONTHS[date.getMonth() + 1]} ${date.getFullYear()}`;
 }
 
 function formatEventTime(value) {
     if (!value) return '';
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return '';
-    return `Soat ${pad2(date.getHours())}:${pad2(date.getMinutes())}`;
+    return `${t('time_prefix', 'Soat')} ${pad2(date.getHours())}:${pad2(date.getMinutes())}`;
 }
 
 const HERO_SCALE_CLASSES = ['is-compact', 'is-tight', 'is-micro'];
@@ -104,21 +111,21 @@ function createProfileEngine(schema) {
 
         if (layout === LAYOUT_MODES.couple_bride_first) {
             return {
-                primary: values.bride_name || placeholders.primary || 'Kelin',
-                secondary: values.groom_name || placeholders.secondary || 'Kuyov',
+                primary: values.bride_name || placeholders.primary || placeholderI18n.bride || 'Kelin',
+                secondary: values.groom_name || placeholders.secondary || placeholderI18n.groom || 'Kuyov',
             };
         }
 
         if (layout === LAYOUT_MODES.couple) {
             return {
-                primary: values.groom_name || placeholders.primary || 'Kuyov',
-                secondary: values.bride_name || placeholders.secondary || 'Kelin',
+                primary: values.groom_name || placeholders.primary || placeholderI18n.groom || 'Kuyov',
+                secondary: values.bride_name || placeholders.secondary || placeholderI18n.bride || 'Kelin',
             };
         }
 
         if (layout === LAYOUT_MODES.child) {
             return {
-                primary: values.child_name || placeholders.primary || 'Bola ismi',
+                primary: values.child_name || placeholders.primary || placeholderI18n.child_name || 'Bola ismi',
                 secondary: values.hosts || '',
                 tagline: preview.tagline || '',
             };
@@ -126,7 +133,7 @@ function createProfileEngine(schema) {
 
         if (layout === LAYOUT_MODES.celebrant) {
             return {
-                primary: values.celebrant_name || placeholders.primary || 'Ism',
+                primary: values.celebrant_name || placeholders.primary || placeholderI18n.name || 'Ism',
                 secondary: values.milestone || placeholders.secondary || '',
                 tagline: preview.tagline || '',
             };
@@ -134,14 +141,14 @@ function createProfileEngine(schema) {
 
         if (layout === LAYOUT_MODES.graduation) {
             return {
-                primary: values.school_name || placeholders.primary || 'Maktab nomi',
-                secondary: values.class_name || placeholders.secondary || 'Sinf / guruh',
+                primary: values.school_name || placeholders.primary || placeholderI18n.school_name || 'Maktab nomi',
+                secondary: values.class_name || placeholders.secondary || placeholderI18n.class_name || 'Sinf / guruh',
                 tagline: preview.tagline || '',
             };
         }
 
         return {
-            primary: values.primary_name || placeholders.primary || 'Mezbon',
+            primary: values.primary_name || placeholders.primary || placeholderI18n.host || 'Mezbon',
             secondary: values.secondary_name || '',
         };
     };
@@ -167,15 +174,15 @@ function createProfileEngine(schema) {
     const buildReviewRows = (state, rsvpEnabled) => {
         const hero = resolveHero(state.profile);
         const rows = [
-            [preview.review_label || 'Asosiy', buildDisplayTitle(state.profile)],
-            ['Sana', `${formatEventDate(state.event_at)} · ${formatEventTime(state.event_at)}`],
-            ['Joy', state.venue_name],
-            ['Manzil', state.venue_address],
-            ['RSVP', rsvpEnabled ? 'Yoqilgan' : 'O\'chirilgan'],
+            [preview.review_label || t('review_primary', reviewI18n.couple || 'Asosiy'), buildDisplayTitle(state.profile)],
+            [reviewI18n.date || 'Sana', `${formatEventDate(state.event_at)} · ${formatEventTime(state.event_at)}`],
+            [reviewI18n.venue || 'Joy', state.venue_name],
+            [reviewI18n.address || 'Manzil', state.venue_address],
+            [reviewI18n.rsvp || 'RSVP', rsvpEnabled ? (reviewI18n.rsvp_on || 'Yoqilgan') : (reviewI18n.rsvp_off || 'O\'chirilgan')],
         ];
 
         if (layout === LAYOUT_MODES.child && hero.secondary) {
-            rows.splice(1, 0, ['Taklif etuvchilar', hero.secondary]);
+            rows.splice(1, 0, [reviewI18n.hosts || 'Taklif etuvchilar', hero.secondary]);
         }
 
         return rows;
@@ -445,7 +452,7 @@ function initBuilderStudio() {
             setPreviewText('hero_tagline', hero.tagline || '');
 
             if (layout === LAYOUT_MODES.child) {
-                setPreviewText('hero_hosts', hero.secondary ? `${hero.secondary} nomidan` : '');
+                setPreviewText('hero_hosts', hero.secondary ? `${hero.secondary} ${t('child_host_suffix', 'nomidan')}` : '');
             } else {
                 setPreviewText('hero_hosts', hero.secondary || '');
             }
@@ -538,8 +545,8 @@ function initBuilderStudio() {
         if (backBtn) backBtn.disabled = currentStep === 1;
 
         if (nextBtn) {
-            const continueLabel = nextBtn.dataset.continueLabel || 'Davom etish';
-            const saveLabel = nextBtn.dataset.saveLabel || 'Saqlash';
+            const continueLabel = nextBtn.dataset.continueLabel || t('continue', 'Davom etish');
+            const saveLabel = nextBtn.dataset.saveLabel || t('save', 'Saqlash');
             nextBtn.textContent = currentStep === totalSteps ? saveLabel : continueLabel;
         }
 
@@ -561,17 +568,17 @@ function initBuilderStudio() {
         const lng = form.map_lng?.value;
 
         if (dress) {
-            rows.splice(4, 0, ['Dress code', `${dress.name} — ${dress.note || ''}`]);
+            rows.splice(4, 0, [reviewI18n.dress_code || 'Dress code', `${dress.name} — ${dress.note || ''}`]);
         }
 
         if (lat && lng) {
-            rows.push(['Xarita', `${Number(lat).toFixed(5)}, ${Number(lng).toFixed(5)}`]);
+            rows.push([reviewI18n.map || 'Xarita', `${Number(lat).toFixed(5)}, ${Number(lng).toFixed(5)}`]);
         }
 
         const siteHost = bootstrap.slug_host || bootstrap.payments?.site_host || 'taklifnoma.net';
         const slugValue = slugInput?.value?.trim();
         if (slugValue) {
-            rows.push(['Havola', `${siteHost}/l/${slugValue}`]);
+            rows.push([reviewI18n.link || 'Havola', `${siteHost}/l/${slugValue}`]);
         }
 
         reviewList.innerHTML = rows.map(([label, value]) => `
@@ -717,18 +724,18 @@ function initBuilderStudio() {
 
     const buildPlanNotice = (entitlements) => {
         const limit = entitlements.guest_limit === null || entitlements.guest_limit === undefined
-            ? 'cheksiz'
+            ? t('unlimited', 'cheksiz')
             : entitlements.guest_limit;
 
         switch (entitlements.tier) {
             case 'classic':
-                return `Classic tarif: ${limit} mehmon. Fon musiqasi va maxsus havola yo'q.`;
+                return t('plan_notice_classic', 'Classic tarif: :limit mehmon.').replace(':limit', limit);
             case 'luxury':
-                return `Luxury tarif: ${limit} mehmongacha. Kinematik animatsiya, musiqa va rasm galereyasi mavjud.`;
+                return t('plan_notice_luxury', 'Luxury tarif: :limit mehmongacha.').replace(':limit', limit);
             case 'royal':
-                return 'Royal VIP: cheksiz mehmon, sevgi tarixi galereyasi va VIP effektlar.';
+                return t('plan_notice_royal', 'Royal VIP: cheksiz mehmon.');
             default:
-                return `Premium tarif: ${limit} mehmongacha. Musiqa va maxsus havola mavjud.`;
+                return t('plan_notice_premium', 'Premium tarif: :limit mehmongacha.').replace(':limit', limit);
         }
     };
 
@@ -812,9 +819,9 @@ function initBuilderStudio() {
 
         if (previewTierRibbon) {
             const ribbonLabel = animationTier === 'vip'
-                ? 'VIP'
+                ? t('tier_vip', 'VIP')
                 : animationTier === 'cinematic'
-                    ? 'LUXURY'
+                    ? t('tier_luxury', 'LUXURY')
                     : '';
             previewTierRibbon.textContent = ribbonLabel;
             previewTierRibbon.classList.toggle('hidden', !ribbonLabel);
@@ -857,7 +864,7 @@ function initBuilderStudio() {
                     data-variant-index="${index}"
                     role="tab"
                     aria-selected="${index === variantIndex ? 'true' : 'false'}"
-                    aria-label="${variant.title || `Variant ${index + 1}`}"
+                    aria-label="${variant.title || t('variant_label', 'Variant :num').replace(':num', index + 1)}"
                 ></button>
             `).join('');
 
@@ -888,7 +895,7 @@ function initBuilderStudio() {
             url.classList.toggle('is-pending', !isPublished);
             url.textContent = isPublished
                 ? bootstrap.public_url
-                : (bootstrap.checkout_url_pending || 'Faollashtirilgandan keyin beriladi');
+                : (bootstrap.checkout_url_pending || t('checkout_url_pending', 'Faollashtirilgandan keyin beriladi'));
         }
         applyVariant(variantIndex);
         if (alert) {
@@ -934,7 +941,7 @@ function initBuilderStudio() {
         if (publishInput) publishInput.value = publish ? '1' : '0';
         prepareFormForSubmit();
         if (triggerBtn) {
-            setButtonLoading(triggerBtn, true, triggerBtn.dataset.loadingLabel || 'Saqlanmoqda…');
+            setButtonLoading(triggerBtn, true, triggerBtn.dataset.loadingLabel || t('saving', 'Saqlanmoqda…'));
         }
         nextBtn?.classList.add('is-loading');
         form.requestSubmit();
@@ -1099,7 +1106,7 @@ function initBuilderStudio() {
             const results = await response.json();
             const hit = results?.[0];
 
-            if (!hit) throw new Error('Manzil topilmadi');
+            if (!hit) throw new Error(t('geocode_not_found', 'Manzil topilmadi'));
 
             const lat = Number(hit.lat);
             const lng = Number(hit.lon);
@@ -1111,7 +1118,7 @@ function initBuilderStudio() {
                 pickerMapInstance.setView([lat, lng], 16);
             }
         } catch {
-            window.alert('Manzil bo\'yicha joy topilmadi. Xaritadan qo\'lda belgilang.');
+            window.alert(t('geocode_failed', 'Manzil bo\'yicha joy topilmadi. Xaritadan qo\'lda belgilang.'));
         } finally {
             if (button) button.disabled = false;
         }
@@ -1292,7 +1299,7 @@ function initBuilderStudio() {
 
         if (!isComplimentary && !provider) {
             if (alert) {
-                alert.textContent = 'To\'lov usulini tanlang.';
+                alert.textContent = t('payment_select_method', 'To\'lov usulini tanlang.');
                 alert.classList.remove('hidden', 'is-success');
             }
             return;
@@ -1300,7 +1307,7 @@ function initBuilderStudio() {
 
         if (!bootstrap.payments?.generate_url) {
             if (alert) {
-                alert.textContent = 'To\'lov tizimi sozlanmagan.';
+                alert.textContent = t('payment_not_configured', 'To\'lov tizimi sozlanmagan.');
                 alert.classList.remove('hidden', 'is-success');
             }
             return;
@@ -1314,7 +1321,7 @@ function initBuilderStudio() {
         pruneFormDataFiles(formData);
         formData.append('payment_provider', provider);
 
-        setButtonLoading(payBtn, true, payBtn?.dataset.loadingLabel || 'To\'lov…');
+        setButtonLoading(payBtn, true, payBtn?.dataset.loadingLabel || t('paying', 'To\'lov…'));
 
         try {
             const response = await fetch(bootstrap.payments.generate_url, {
@@ -1333,19 +1340,19 @@ function initBuilderStudio() {
                 const message = payload?.message
                     || Object.values(payload?.errors || {}).flat().join(' ')
                     || (response.status === 419
-                        ? 'Sahifa muddati tugadi. Sahifani yangilab, qayta urinib ko\'ring.'
+                        ? t('payment_session_expired', 'Sahifa muddati tugadi.')
                         : null)
                     || (response.status >= 500
-                        ? 'Server xatosi. Birozdan keyin qayta urinib ko\'ring.'
+                        ? t('payment_server_error', 'Server xatosi.')
                         : null)
-                    || 'To\'lovni boshlashda xatolik yuz berdi.';
+                    || t('payment_start_failed', 'To\'lovni boshlashda xatolik yuz berdi.');
                 throw new Error(message);
             }
 
             const redirectUrl = payload?.data?.redirect_url;
 
             if (!redirectUrl) {
-                throw new Error('To\'lov havolasi yaratilmadi.');
+                throw new Error(t('payment_link_failed', 'To\'lov havolasi yaratilmadi.'));
             }
 
             if (payload?.data?.provider === 'complimentary') {
@@ -1380,7 +1387,7 @@ function initBuilderStudio() {
             window.location.href = redirectUrl;
         } catch (error) {
             if (alert) {
-                alert.textContent = error.message || 'To\'lovni boshlashda xatolik yuz berdi.';
+                alert.textContent = error.message || t('payment_start_failed', 'To\'lovni boshlashda xatolik yuz berdi.');
                 alert.classList.remove('hidden', 'is-success');
             }
             setButtonLoading(payBtn, false);

@@ -26,7 +26,7 @@
                 @endphp
                 <article
                     class="template-card reveal {{ $index > 0 ? 'reveal-delay-' . min($index, 6) : '' }}"
-                    aria-label="{{ $template['title'] }} shabloni"
+                    aria-label="{{ $template['title'] }} {{ __('landing.template_aria_suffix') }}"
                 >
                     <div class="template-card__actions">
                         @if ($template['tag'])

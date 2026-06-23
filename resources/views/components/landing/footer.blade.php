@@ -36,7 +36,7 @@
         <div class="landing-footer__card glass-luxury">
             <div class="landing-footer__grid">
                 <div class="landing-footer__brand">
-                    <a href="{{ LocaleManager::home() }}" class="landing-footer__logo" aria-label="Taklifnoma — bosh sahifa">
+                    <a href="{{ LocaleManager::home() }}" class="landing-footer__logo" aria-label="{{ __('nav.home_aria') }}">
                         <x-ui.brand-logo data-logo-id="footer" size="lg" />
                     </a>
                     <p class="landing-footer__tagline">{{ __('landing.footer_tagline') }}</p>

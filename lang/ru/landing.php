@@ -81,4 +81,29 @@ return [
     'footer_rights' => 'Все права защищены.',
     'footer_privacy' => 'Конфиденциальность',
     'footer_terms' => 'Условия использования',
+
+    'template_aria_suffix' => 'шаблон',
+    'meta_default' => 'Платформа цифровых приглашений — Узбекистан',
+
+    'testimonials_label' => 'Доверие',
+    'testimonials_title' => 'Отзывы клиентов',
+    'testimonials_desc' => 'Тысячи семей и организаторов создают незабываемые впечатления с Taklifnoma.',
+    'testimonials_nav_prev' => 'Предыдущий отзыв',
+    'testimonials_nav_next' => 'Следующий отзыв',
+    'testimonials_nav_dots' => 'Навигация по отзывам',
+    'testimonials_dot_aria' => 'Отзыв :name',
+    'testimonials_stars_aria' => ':count звёзд',
+    'testimonials' => [
+        ['name' => 'Дилноза Каримова', 'role' => 'Свадьба · Ташкент', 'initials' => 'ДК', 'gradient' => 'from-luxury-purple to-luxury-purple-light', 'quote' => 'Гости были в восторге от приглашения. RSVP-панель помогла легко управлять 200 гостями. Дизайн действительно премиальный.', 'rating' => 5],
+        ['name' => 'Жасур Тошматов', 'role' => 'Суннат-той · Самарканд', 'initials' => 'ЖТ', 'gradient' => 'from-luxury-emerald to-luxury-emerald-light', 'quote' => 'Музыка и dress-code — отличные функции. Цифровое приглашение современнее и экономичнее печати.', 'rating' => 5],
+        ['name' => 'Малика Рахимова', 'role' => 'Проводы невесты · Бухара', 'initials' => 'МР', 'gradient' => 'from-rose-400 to-luxury-gold-light', 'quote' => 'Создала приглашение за 3 минуты — шаблоны очень красивые. На телефоне выглядит идеально.', 'rating' => 5],
+        ['name' => 'Бобур Назаров', 'role' => 'Корпоратив · Андижан', 'initials' => 'БН', 'gradient' => 'from-royal-700 to-luxury-gold', 'quote' => 'VIP-пакет с премиум-эффектами и галереей истории любви выглядел профессионально. Поддержка отвечает быстро.', 'rating' => 5],
+    ],
+
+    'demo_rsvp_guests' => [
+        ['name' => 'Дилноза Каримова', 'status' => 'attending'],
+        ['name' => 'Жасур Тошматов', 'status' => 'attending'],
+        ['name' => 'Малика Рахимова', 'status' => 'pending'],
+        ['name' => 'Бобур Назаров', 'status' => 'declined'],
+    ],
 ];

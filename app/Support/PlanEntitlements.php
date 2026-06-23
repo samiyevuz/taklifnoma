@@ -113,33 +113,33 @@ class PlanEntitlements
         $labels = [];
 
         if ($plan['guest_limit'] === null) {
-            $labels[] = 'Cheksiz mehmon';
+            $labels[] = __('builder.plan_features.unlimited_guests');
         } else {
-            $labels[] = $plan['guest_limit'].' mehmon';
+            $labels[] = __('builder.plan_features.guests', ['count' => $plan['guest_limit']]);
         }
 
         if ($plan['music_enabled']) {
-            $labels[] = 'Fon musiqasi';
+            $labels[] = __('builder.plan_features.music');
         }
 
         if ($plan['custom_slug']) {
-            $labels[] = 'Maxsus havola';
+            $labels[] = __('builder.plan_features.custom_slug');
         }
 
         if ($plan['telegram_notifications']) {
-            $labels[] = 'Telegram xabarnoma';
+            $labels[] = __('builder.plan_features.telegram');
         }
 
         if ($plan['animation'] === 'cinematic') {
-            $labels[] = 'Kinematik animatsiya';
+            $labels[] = __('builder.plan_features.cinematic');
         }
 
         if ($plan['animation'] === 'vip') {
-            $labels[] = 'VIP animatsiya';
+            $labels[] = __('builder.plan_features.vip_animation');
         }
 
         if ($plan['story_gallery']) {
-            $labels[] = 'Sevgi tarixi galereyasi';
+            $labels[] = __('builder.plan_features.story_gallery');
         }
 
         return $labels;
@@ -148,8 +148,8 @@ class PlanEntitlements
     public static function guestLimitLabel(?int $limit): string
     {
         return $limit === null
-            ? 'Cheksiz mehmon'
-            : $limit.' mehmongacha';
+            ? __('builder.plan_features.unlimited_guests')
+            : __('builder.plan_features.guests_up_to', ['count' => $limit]);
     }
 
     public static function applyPlanToPayload(array $data): array
@@ -191,15 +191,15 @@ class PlanEntitlements
         $errors = [];
 
         if (! $plan['custom_slug'] && isset($data['slug']) && $invitation && $data['slug'] !== $invitation->slug) {
-            $errors['slug'] = 'Tanlangan tarifda maxsus havola mavjud emas. Premium yoki yuqori tarifni tanlang.';
+            $errors['slug'] = __('builder.plan_errors.slug_not_allowed');
         }
 
         if (! $plan['music_enabled'] && (filled($data['music_url'] ?? null) || ! empty($data['music_file']))) {
-            $errors['music_url'] = 'Fon musiqasi faqat Premium va yuqori tariflarda mavjud.';
+            $errors['music_url'] = __('builder.plan_errors.music_not_allowed');
         }
 
         if (! $plan['cover_upload'] && ! empty($data['cover_image'])) {
-            $errors['cover_image'] = 'Muqova yuklash ushbu tarifda cheklangan.';
+            $errors['cover_image'] = __('builder.plan_errors.cover_not_allowed');
         }
 
         return $errors;

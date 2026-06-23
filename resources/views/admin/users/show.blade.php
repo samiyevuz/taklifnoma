@@ -11,13 +11,13 @@
         <div class="admin-stat glass-luxury"><p class="admin-stat__value">{{ $user->invitations_count }}</p><p class="admin-stat__label">{{ __('admin.table.invitations') }}</p></div>
         <div class="admin-stat glass-luxury"><p class="admin-stat__value">{{ $user->payment_invoices_count }}</p><p class="admin-stat__label">{{ __('admin.table.payments') }}</p></div>
         <div class="admin-stat glass-luxury"><p class="admin-stat__value">{{ $user->favorites_count }}</p><p class="admin-stat__label">{{ __('admin.table.favorites') }}</p></div>
-        <div class="admin-stat glass-luxury"><p class="admin-stat__value">{{ $user->hasTelegramLinked() ? '✓' : '—' }}</p><p class="admin-stat__label">Telegram</p></div>
+        <div class="admin-stat glass-luxury"><p class="admin-stat__value">{{ $user->hasTelegramLinked() ? '✓' : '—' }}</p><p class="admin-stat__label">{{ __('admin.telegram') }}</p></div>
     </div>
 
     <div class="admin-card glass-luxury mb-8">
         <h2 class="admin-card__title">{{ __('admin.invitations') }}</h2>
         <table class="admin-table">
-            <thead><tr><th>{{ __('admin.table.event') }}</th><th>{{ __('admin.status') }}</th><th>RSVP</th><th></th></tr></thead>
+            <thead><tr><th>{{ __('admin.table.event') }}</th><th>{{ __('admin.status') }}</th><th>{{ __('admin.table.rsvp') }}</th><th></th></tr></thead>
             <tbody>
                 @foreach ($invitations as $invitation)
                     <tr>

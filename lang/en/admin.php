@@ -91,6 +91,12 @@ return [
     'invitation_status_updated' => 'Invitation status updated.',
     'invitation_deleted' => 'Invitation deleted.',
     'confirm_delete' => 'Are you sure you want to delete?',
+    'details' => 'Details',
+    'unlimited' => 'Unlimited',
+    'enabled' => 'Enabled',
+    'disabled' => 'Disabled',
+    'venue' => 'Venue',
+    'telegram' => 'Telegram',
 
     'stats' => [
         'users_total' => 'Users',
@@ -151,5 +157,7 @@ return [
         'plan_tier' => 'Plan',
         'guest_limit' => 'Guest limit',
         'blade' => 'Blade template',
+        'template' => 'Template',
+        'count' => 'Count',
     ],
 ];

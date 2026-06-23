@@ -30,7 +30,7 @@
         <x-invitation.chrome :invitation="$invitation" />
 
         <main class="invitation-content" id="main-content">
-            <section class="inv-welcome" id="inv-welcome" aria-label="Xush kelibsiz">
+            <section class="inv-welcome" id="inv-welcome" aria-label="{{ __('invitation.welcome_aria') }}">
                 <div class="inv-welcome__ornament" aria-hidden="true">
                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                         <path stroke-linecap="round" d="M12 3c-1.5 2-4 4-4 7a4 4 0 108 0c0-3-2.5-5-4-7z"/>
@@ -196,7 +196,7 @@
                                 class="inv-dress-swatch {{ $index === 0 ? 'is-active' : '' }}"
                                 role="listitem"
                                 data-note="{{ $color['note'] }}"
-                                aria-label="{{ $color['name'] }} rang"
+                                aria-label="{{ $color['name'] }} {{ __('invitation.dress_color_suffix') }}"
                                 aria-pressed="{{ $index === 0 ? 'true' : 'false' }}"
                             >
                                 <span class="inv-dress-swatch__circle" style="background-color: {{ $color['hex'] }}"></span>
@@ -232,7 +232,7 @@
                         novalidate
                     >
                         @csrf
-                        <div class="inv-rsvp-toggle" role="radiogroup" aria-label="Qatnashish holati">
+                        <div class="inv-rsvp-toggle" role="radiogroup" aria-label="{{ __('invitation.rsvp_status_aria') }}">
                             <button type="button" class="inv-rsvp-option is-selected" data-status="attending" aria-pressed="true">
                                 {{ __('invitation.rsvp_attending') }}
                             </button>
@@ -250,9 +250,9 @@
                         <div class="inv-field" id="rsvp-guests-field">
                             <label>{{ __('invitation.rsvp_adults') }}</label>
                             <div class="inv-counter" data-counter="adults" data-min="1" data-max="10">
-                                <button type="button" class="inv-counter__btn" data-action="decrement" aria-label="Kamaytirish">−</button>
+                                <button type="button" class="inv-counter__btn" data-action="decrement" aria-label="{{ __('invitation.decrement') }}">−</button>
                                 <span class="inv-counter__value" id="counter-adults">1</span>
-                                <button type="button" class="inv-counter__btn" data-action="increment" aria-label="Oshirish">+</button>
+                                <button type="button" class="inv-counter__btn" data-action="increment" aria-label="{{ __('invitation.increment') }}">+</button>
                             </div>
                             <input type="hidden" name="adults_count" id="rsvp-adults" value="1">
                         </div>
@@ -260,9 +260,9 @@
                         <div class="inv-field" id="rsvp-children-field">
                             <label>{{ __('invitation.rsvp_children') }}</label>
                             <div class="inv-counter" data-counter="children" data-min="0" data-max="8">
-                                <button type="button" class="inv-counter__btn" data-action="decrement" aria-label="Kamaytirish">−</button>
+                                <button type="button" class="inv-counter__btn" data-action="decrement" aria-label="{{ __('invitation.decrement') }}">−</button>
                                 <span class="inv-counter__value" id="counter-children">0</span>
-                                <button type="button" class="inv-counter__btn" data-action="increment" aria-label="Oshirish">+</button>
+                                <button type="button" class="inv-counter__btn" data-action="increment" aria-label="{{ __('invitation.increment') }}">+</button>
                             </div>
                             <input type="hidden" name="children_count" id="rsvp-children" value="0">
                         </div>
@@ -344,7 +344,7 @@
                         </a>
                         @if ($invitation->yandexMapsUrl())
                             <a href="{{ $invitation->yandexMapsUrl() }}" target="_blank" rel="noopener noreferrer" class="inv-map-modal__link" style="background: linear-gradient(135deg, #fc3f1d, #ff6b4a); color: white;">
-                                Yandex Xarita
+                                {{ __('invitation.yandex_maps') }}
                             </a>
                         @endif
                         <button type="button" class="inv-map-modal__close" id="inv-map-close">{{ __('invitation.close') }}</button>

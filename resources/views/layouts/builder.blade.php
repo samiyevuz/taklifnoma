@@ -15,9 +15,24 @@
             }
         })();
     </script>
-    <meta name="description" content="{{ $metaDescription ?? 'Taklifnoma konstruktori' }}">
+    <meta name="description" content="{{ $metaDescription ?? __('builder.meta_description') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ?? config('app.name', 'Taklifnoma') }}</title>
+    @php
+        $builderI18n = array_merge([
+            'continue' => __('builder.continue'),
+            'save' => __('builder.save'),
+            'checkout_url_pending' => __('builder.checkout_url_pending'),
+        ], __('builder.js'));
+        $builderI18n['review'] = __('builder.review');
+        $builderI18n['placeholders'] = array_merge(
+            $builderI18n['placeholders'] ?? [],
+            __('builder.js.placeholders')
+        );
+    @endphp
+    <script>
+        window.builderI18n = @json($builderI18n);
+    </script>
     @fonts
     @vite(['resources/css/app.css', 'resources/js/builder.js'])
     @stack('head')

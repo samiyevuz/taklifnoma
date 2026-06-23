@@ -6,7 +6,7 @@
 
 <header class="nav-glass" id="site-nav" role="banner">
     <div class="nav-glass__inner mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <a href="{{ LocaleManager::home() }}" class="brand-logo-link shrink-0 no-underline" aria-label="Taklifnoma — bosh sahifa">
+        <a href="{{ LocaleManager::home() }}" class="brand-logo-link shrink-0 no-underline" aria-label="{{ __('nav.home_aria') }}">
             <x-ui.brand-logo
                 data-logo-id="nav"
                 size="md"
@@ -76,7 +76,7 @@
     <nav class="mobile-nav__panel" aria-label="{{ __('nav.mobile_nav') }}">
         <div class="mobile-nav__header">
             <div>
-                <p class="mobile-nav__eyebrow">Taklifnoma</p>
+                <p class="mobile-nav__eyebrow">{{ __('nav.brand_eyebrow') }}</p>
                 <p class="mobile-nav__title">{{ __('nav.menu') }}</p>
             </div>
             <button type="button" class="nav-icon-btn mobile-nav__close" data-close-mobile-nav aria-label="{{ __('nav.close_menu') }}">

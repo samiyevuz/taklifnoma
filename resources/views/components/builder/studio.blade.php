@@ -17,7 +17,7 @@
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M15 19l-7-7 7-7"/></svg>
             </a>
             <div>
-                <p class="section-label mb-1">Konstruktor</p>
+                <p class="section-label mb-1">{{ __('builder.studio_label') }}</p>
                 <h1 class="font-serif text-xl font-semibold text-ink sm:text-2xl">
                     {{ $invitation ? $invitation->coupleTitle() : __('builder.create_title') }}
                 </h1>

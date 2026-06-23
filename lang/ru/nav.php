@@ -22,4 +22,7 @@ return [
     'close_menu' => 'Закрыть меню',
     'menu' => 'Меню',
     'toggle_theme' => 'Переключить тему',
+    'loading' => 'Загрузка',
+    'home_aria' => 'Taklifnoma — главная',
+    'brand_eyebrow' => 'Taklifnoma',
 ];

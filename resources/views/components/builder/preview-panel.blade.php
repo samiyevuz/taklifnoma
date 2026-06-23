@@ -106,7 +106,7 @@
 
                                         <section class="inv-section builder-preview-rsvp" id="builder-preview-rsvp" aria-hidden="true">
                                             <div class="inv-reveal">
-                                                <p class="inv-section-label">RSVP</p>
+                                                <p class="inv-section-label">{{ __('invitation.rsvp') }}</p>
                                                 <h2 class="inv-section-title">{{ __('invitation.rsvp_title') }}</h2>
                                                 <div class="inv-rsvp-card inv-glass">
                                                     <p class="text-center text-sm text-inv-ink-soft">{{ __('invitation.rsvp_desc') }}</p>

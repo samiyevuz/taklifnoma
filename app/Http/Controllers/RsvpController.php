@@ -23,7 +23,7 @@ class RsvpController extends Controller
         if (! $invitation->rsvp_enabled) {
             return response()->json([
                 'success' => false,
-                'message' => 'RSVP ushbu taklifnoma uchun o\'chirilgan.',
+                'message' => __('invitation.rsvp_disabled'),
             ], 403);
         }
 
@@ -41,8 +41,8 @@ class RsvpController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => $remaining === 0
-                        ? "Mehmon limiti to'ldi ({$limit} ta). Taklif egasi Premium tarifga o'tishi mumkin."
-                        : "Faqat {$remaining} ta mehmon qabul qilinadi (limit: {$limit} ta).",
+                        ? __('invitation.rsvp_limit_full', ['limit' => $limit])
+                        : __('invitation.rsvp_limit_remaining', ['remaining' => $remaining, 'limit' => $limit]),
                     'data' => [
                         'guest_limit' => $limit,
                         'remaining_slots' => $remaining,
@@ -68,8 +68,8 @@ class RsvpController extends Controller
         RsvpResponseSubmitted::dispatch($response);
 
         $message = $validated['status'] === RsvpResponse::STATUS_ATTENDING
-            ? "Rahmat, {$response->guest_name}! Javobingiz qabul qilindi."
-            : "Rahmat, {$response->guest_name}. Yaxshi tilaklar tilaymiz.";
+            ? __('invitation.rsvp_thanks_attending', ['name' => $response->guest_name])
+            : __('invitation.rsvp_thanks_declined', ['name' => $response->guest_name]);
 
         return response()->json([
             'success' => true,

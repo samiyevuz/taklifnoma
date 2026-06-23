@@ -17,14 +17,14 @@
             <div class="builder-field"><label for="groom_name">{{ __('builder.groom_name') }}</label><input type="text" id="groom_name" name="groom_name" value="{{ old('groom_name', $data->groom_name ?? '') }}" required></div>
             <div class="builder-field"><label for="bride_name">{{ __('builder.bride_name') }}</label><input type="text" id="bride_name" name="bride_name" value="{{ old('bride_name', $data->bride_name ?? '') }}" required></div>
         </div>
-        <div class="builder-field mt-4"><label for="event_type">{{ __('builder.event_type') }}</label><input type="text" id="event_type" name="event_type" value="{{ old('event_type', $data->event_type ?? 'Nikoh To\'yi') }}" required></div>
+        <div class="builder-field mt-4"><label for="event_type">{{ __('builder.event_type') }}</label><input type="text" id="event_type" name="event_type" value="{{ old('event_type', $data->event_type ?? __('builder.default_event_type')) }}" required></div>
     </fieldset>
 
     <fieldset class="builder-section glass-luxury rounded-2xl p-6">
         <legend class="builder-section__title font-serif text-xl font-semibold text-ink mb-4">{{ __('builder.section_event') }}</legend>
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div class="builder-field"><label for="event_at">{{ __('builder.event_at') }}</label><input type="datetime-local" id="event_at" name="event_at" value="{{ $eventAt }}" required></div>
-            <div class="builder-field"><label for="event_city">{{ __('builder.event_city') }}</label><input type="text" id="event_city" name="event_city" value="{{ old('event_city', $data->event_city ?? 'Toshkent') }}"></div>
+            <div class="builder-field"><label for="event_city">{{ __('builder.event_city') }}</label><input type="text" id="event_city" name="event_city" value="{{ old('event_city', $data->event_city ?? __('builder.default_city')) }}"></div>
         </div>
         <div class="builder-field mt-4"><label for="venue_name">{{ __('builder.venue_name') }}</label><input type="text" id="venue_name" name="venue_name" value="{{ old('venue_name', $data->venue_name ?? '') }}" required></div>
         <div class="builder-field mt-4"><label for="venue_address">{{ __('builder.venue_address') }}</label><input type="text" id="venue_address" name="venue_address" value="{{ old('venue_address', $data->venue_address ?? '') }}" required></div>

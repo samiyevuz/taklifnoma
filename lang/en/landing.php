@@ -81,4 +81,29 @@ return [
     'footer_rights' => 'All rights reserved.',
     'footer_privacy' => 'Privacy',
     'footer_terms' => 'Terms of use',
+
+    'template_aria_suffix' => 'template',
+    'meta_default' => 'Digital invitation platform — Uzbekistan',
+
+    'testimonials_label' => 'Trust',
+    'testimonials_title' => 'What Our Clients Say',
+    'testimonials_desc' => 'Thousands of families and event organizers create unforgettable experiences with Taklifnoma.',
+    'testimonials_nav_prev' => 'Previous review',
+    'testimonials_nav_next' => 'Next review',
+    'testimonials_nav_dots' => 'Review navigation',
+    'testimonials_dot_aria' => ':name review',
+    'testimonials_stars_aria' => ':count stars',
+    'testimonials' => [
+        ['name' => 'Dilnoza Karimova', 'role' => 'Wedding · Tashkent', 'initials' => 'DK', 'gradient' => 'from-luxury-purple to-luxury-purple-light', 'quote' => 'Our guests were amazed when they opened the invitation. The RSVP panel made managing 200 guests easy. The design is truly premium.', 'rating' => 5],
+        ['name' => 'Jasur Toshmatov', 'role' => 'Sunnat celebration · Samarkand', 'initials' => 'JT', 'gradient' => 'from-luxury-emerald to-luxury-emerald-light', 'quote' => 'Background music and dress-code features are excellent. A digital invitation is more modern and cost-effective than printing.', 'rating' => 5],
+        ['name' => 'Malika Rahimova', 'role' => 'Bride farewell · Bukhara', 'initials' => 'MR', 'gradient' => 'from-rose-400 to-luxury-gold-light', 'quote' => 'I created an invitation in 3 minutes — the templates are beautiful. It looks perfect on mobile too.', 'rating' => 5],
+        ['name' => 'Bobur Nazarov', 'role' => 'Corporate event · Andijan', 'initials' => 'BN', 'gradient' => 'from-royal-700 to-luxury-gold', 'quote' => 'The VIP package with premium effects and love story gallery looked professional. Support responds quickly.', 'rating' => 5],
+    ],
+
+    'demo_rsvp_guests' => [
+        ['name' => 'Dilnoza Karimova', 'status' => 'attending'],
+        ['name' => 'Jasur Toshmatov', 'status' => 'attending'],
+        ['name' => 'Malika Rahimova', 'status' => 'pending'],
+        ['name' => 'Bobur Nazarov', 'status' => 'declined'],
+    ],
 ];

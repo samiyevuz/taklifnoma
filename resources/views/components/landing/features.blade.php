@@ -36,49 +36,57 @@
                 <div class="rsvp-panel" id="rsvp-preview">
                     <div class="mb-6 flex items-center justify-between">
                         <div>
-                            <p class="text-xs font-semibold tracking-widest text-luxury-gold-dark uppercase">Jonli Panel</p>
-                            <h3 class="mt-1 font-serif text-xl font-semibold text-ink">RSVP Statistikasi</h3>
+                            <p class="text-xs font-semibold tracking-widest text-luxury-gold-dark uppercase">{{ __('builder.rsvp_live_label') }}</p>
+                            <h3 class="mt-1 font-serif text-xl font-semibold text-ink">{{ __('builder.rsvp_live_title') }}</h3>
                         </div>
                         <span class="flex items-center gap-1.5 rounded-full bg-luxury-emerald/15 px-3 py-1 text-xs font-semibold text-luxury-emerald">
                             <span class="relative flex h-2 w-2">
                                 <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-luxury-emerald opacity-75"></span>
                                 <span class="relative inline-flex h-2 w-2 rounded-full bg-luxury-emerald"></span>
                             </span>
-                            Live
+                            {{ __('builder.rsvp_live_badge') }}
                         </span>
                     </div>
 
                     <div class="mb-6 grid grid-cols-3 gap-3 text-center">
                         <div class="rsvp-stat-box rounded-xl p-3">
                             <p class="font-serif text-2xl font-bold" data-rsvp-count="accepted">142</p>
-                            <p class="mt-0.5 text-xs">Keladi</p>
+                            <p class="mt-0.5 text-xs">{{ __('builder.stats_attending') }}</p>
                         </div>
                         <div class="rsvp-stat-box rounded-xl p-3">
                             <p class="font-serif text-2xl font-bold" data-rsvp-count="declined">18</p>
-                            <p class="mt-0.5 text-xs">Kelmaydi</p>
+                            <p class="mt-0.5 text-xs">{{ __('builder.stats_declined') }}</p>
                         </div>
                         <div class="rsvp-stat-box rounded-xl p-3">
                             <p class="font-serif text-2xl font-bold" data-rsvp-count="pending">37</p>
-                            <p class="mt-0.5 text-xs">Kutilmoqda</p>
+                            <p class="mt-0.5 text-xs">{{ __('builder.stats_pending') }}</p>
                         </div>
                     </div>
 
-                    <p class="mb-2 text-sm font-medium text-ink-soft">Javoblar dinamikasi</p>
+                    <p class="mb-2 text-sm font-medium text-ink-soft">{{ __('builder.rsvp_live_progress') }}</p>
                     <div class="rsvp-bar">
                         <div class="rsvp-bar__fill" id="rsvp-bar-fill" style="width: 72%"></div>
                     </div>
-                    <p class="mt-2 text-right text-xs text-ink-muted"><span id="rsvp-percent">72</span>% tasdiqlangan</p>
+                    <p class="mt-2 text-right text-xs text-ink-muted"><span id="rsvp-percent">72</span>% {{ __('builder.rsvp_live_confirmed') }}</p>
 
                     <ul class="mt-6 space-y-0">
-                        @foreach ([
-                            ['name' => 'Dilnoza Karimova', 'status' => 'Keladi', 'color' => 'text-luxury-emerald'],
-                            ['name' => 'Jasur Toshmatov', 'status' => 'Keladi', 'color' => 'text-luxury-emerald'],
-                            ['name' => 'Malika Rahimova', 'status' => 'Kutilmoqda', 'color' => 'text-luxury-gold-dark'],
-                            ['name' => 'Bobur Nazarov', 'status' => 'Kelmaydi', 'color' => 'text-ink-muted'],
-                        ] as $guest)
+                        @php
+                            $demoStatusLabels = [
+                                'attending' => __('builder.stats_attending'),
+                                'pending' => __('builder.stats_pending'),
+                                'declined' => __('builder.stats_declined'),
+                            ];
+                            $demoStatusColors = [
+                                'attending' => 'text-luxury-emerald',
+                                'pending' => 'text-luxury-gold-dark',
+                                'declined' => 'text-ink-muted',
+                            ];
+                            $demoGuests = __('landing.demo_rsvp_guests');
+                        @endphp
+                        @foreach ($demoGuests as $guest)
                             <li class="rsvp-stat">
                                 <span class="text-sm font-medium text-ink">{{ $guest['name'] }}</span>
-                                <span class="text-xs font-semibold {{ $guest['color'] }}">{{ $guest['status'] }}</span>
+                                <span class="text-xs font-semibold {{ $demoStatusColors[$guest['status']] ?? 'text-ink-muted' }}">{{ $demoStatusLabels[$guest['status']] ?? $guest['status'] }}</span>
                             </li>
                         @endforeach
                     </ul>

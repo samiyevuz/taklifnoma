@@ -195,16 +195,43 @@ class TemplateVariantCatalog
         return array_map(function (array $level) use ($slug, $titlePrefix, $blade, $coverImage) {
             $suffix = $level['suffix'];
             $idSuffix = strtolower(str_replace(' ', '-', $suffix));
+            $transTitle = __("landing.templates.{$slug}.title");
+            $prefix = is_string($transTitle) && $transTitle !== "landing.templates.{$slug}.title"
+                ? $transTitle
+                : $titlePrefix;
+
+            $subtitleKey = "variants.{$slug}.{$idSuffix}";
+            $subtitle = __($subtitleKey);
+            if ($subtitle === $subtitleKey) {
+                $subtitle = $level['subtitle'];
+            }
+
+            $badge = null;
+            if (! empty($level['badge'])) {
+                $badgeKey = match ($level['badge']) {
+                    'Eng mashhur' => 'most_popular',
+                    'Yangi' => 'new',
+                    'VIP' => 'vip',
+                    default => null,
+                };
+
+                if ($badgeKey) {
+                    $transBadge = __("variants.badges.{$badgeKey}");
+                    $badge = $transBadge !== "variants.badges.{$badgeKey}" ? $transBadge : $level['badge'];
+                } else {
+                    $badge = $level['badge'];
+                }
+            }
 
             return [
                 'id' => "{$slug}-{$idSuffix}",
-                'title' => trim("{$titlePrefix} {$suffix}"),
-                'subtitle' => $level['subtitle'],
+                'title' => trim("{$prefix} {$suffix}"),
+                'subtitle' => $subtitle,
                 'price_amount' => (int) $level['price'],
                 'blade' => $blade,
                 'theme' => $level['theme'] ?? 'premium',
                 'cover_image' => $coverImage,
-                'badge' => $level['badge'] ?? null,
+                'badge' => $badge,
             ];
         }, $levels);
     }

@@ -2,9 +2,9 @@
 
 return [
     'nav' => [
-        'dashboard' => 'Admin panel',
+        'dashboard' => 'Boshqaruv paneli',
     ],
-    'panel' => 'Admin panel',
+    'panel' => 'Boshqaruv paneli',
     'dashboard' => 'Boshqaruv',
     'dashboard_title' => 'Admin Boshqaruv Paneli',
     'dashboard_subtitle' => 'Platforma bo\'yicha to\'liq statistika va boshqaruv.',
@@ -91,6 +91,12 @@ return [
     'invitation_status_updated' => 'Taklifnoma holati yangilandi.',
     'invitation_deleted' => 'Taklifnoma o\'chirildi.',
     'confirm_delete' => 'Haqiqatan ham o\'chirmoqchimisiz?',
+    'details' => 'Ma\'lumotlar',
+    'unlimited' => 'Cheksiz',
+    'enabled' => 'Yoqilgan',
+    'disabled' => 'O\'chirilgan',
+    'venue' => 'Joy',
+    'telegram' => 'Telegram',
 
     'stats' => [
         'users_total' => 'Foydalanuvchilar',
@@ -151,5 +157,7 @@ return [
         'plan_tier' => 'Tarif',
         'guest_limit' => 'Mehmon limiti',
         'blade' => 'Blade shablon',
+        'template' => 'Shablon',
+        'count' => 'Soni',
     ],
 ];
