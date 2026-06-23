@@ -96,12 +96,20 @@ function initStickyNav() {
     const nav = document.getElementById('site-nav');
     if (!nav) return;
 
-    const onScroll = throttle(() => {
+    const syncNavState = () => {
         nav.classList.toggle('is-scrolled', window.scrollY > 8);
-    }, 80);
 
-    onScroll();
+        const height = Math.ceil(nav.getBoundingClientRect().height);
+        if (height > 0) {
+            document.documentElement.style.setProperty('--site-nav-height', `${height}px`);
+        }
+    };
+
+    const onScroll = throttle(syncNavState, 80);
+
+    syncNavState();
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', throttle(syncNavState, 120), { passive: true });
 }
 
 function closeLocaleDropdowns() {

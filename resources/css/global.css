@@ -4,6 +4,10 @@
  */
 
 @layer base {
+    :root {
+        --site-nav-height: 5.5rem;
+    }
+
     *,
     *::before,
     *::after {

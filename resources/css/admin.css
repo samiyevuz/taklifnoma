@@ -14,7 +14,7 @@
 
     .admin-sidebar {
         position: sticky;
-        top: 6.5rem;
+        top: var(--site-nav-height, 5.5rem);
         align-self: start;
     }
 

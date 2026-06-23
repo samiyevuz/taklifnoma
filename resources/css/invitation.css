@@ -66,11 +66,13 @@
     }
 
     .invitation-chrome {
-        position: absolute;
+        position: fixed;
         top: max(0.75rem, env(safe-area-inset-top));
         left: 0;
         right: 0;
         z-index: 50;
+        max-width: 430px;
+        margin-inline: auto;
         display: flex;
         align-items: flex-start;
         justify-content: space-between;

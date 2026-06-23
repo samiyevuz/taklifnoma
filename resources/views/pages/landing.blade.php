@@ -5,7 +5,6 @@
         <x-landing.ambient />
 
         <div class="relative z-10">
-            <x-landing.navbar />
             <x-landing.hero />
             <x-landing.templates-grid />
             <x-landing.features />

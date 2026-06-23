@@ -41,6 +41,8 @@
         {{ __('nav.skip_to_content') }}
     </a>
 
+    <x-landing.navbar />
+
     @yield('body')
 
     @stack('scripts')

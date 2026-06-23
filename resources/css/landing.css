@@ -315,7 +315,7 @@
         stroke: rgba(232, 198, 106, 0.35);
     }
 
-    /* ─── Sticky navigation ─── */
+    /* ─── Pinned navigation (always visible on scroll) ─── */
     .nav-glass {
         position: fixed;
         top: 0;
@@ -323,11 +323,15 @@
         right: 0;
         z-index: 100;
         padding: 0.75rem 1rem;
-        transition:
-            transform 0.5s var(--ease-elite),
-            opacity 0.5s var(--ease-elite),
-            background 0.4s var(--ease-elite);
-        transform: translateZ(0);
+        padding-top: max(0.75rem, env(safe-area-inset-top));
+        pointer-events: none;
+        isolation: isolate;
+    }
+
+    .nav-glass__inner,
+    .nav-glass .nav-actions,
+    .nav-glass .brand-logo-link {
+        pointer-events: auto;
     }
 
     .nav-glass__inner {
