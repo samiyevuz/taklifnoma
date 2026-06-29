@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Support\Seo\SeoData;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -14,6 +15,7 @@ class LoginController extends Controller
     {
         return view('auth.login', [
             'title' => 'Kirish — Taklifnoma',
+            'seo' => SeoData::noindex('Kirish — Taklifnoma'),
         ]);
     }
 

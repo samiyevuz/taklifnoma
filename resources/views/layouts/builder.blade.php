@@ -15,9 +15,8 @@
             }
         })();
     </script>
-    <meta name="description" content="{{ $metaDescription ?? __('builder.meta_description') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $title ?? config('app.name', 'Taklifnoma') }}</title>
+    <x-seo.head :seo="$seo ?? null" />
     @php
         $builderI18n = array_merge([
             'continue' => __('builder.continue'),

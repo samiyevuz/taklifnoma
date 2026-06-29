@@ -21,8 +21,7 @@ abstract class TestCase extends BaseTestCase
 
         $manifest = $buildDir.'/manifest.json';
 
-        if (! file_exists($manifest)) {
-            file_put_contents($manifest, json_encode([
+        file_put_contents($manifest, json_encode([
                 'resources/css/app.css' => [
                     'file' => 'assets/app.css',
                     'src' => 'resources/css/app.css',
@@ -33,7 +32,21 @@ abstract class TestCase extends BaseTestCase
                     'src' => 'resources/js/app.js',
                     'isEntry' => true,
                 ],
+                'resources/js/invitation.js' => [
+                    'file' => 'assets/invitation.js',
+                    'src' => 'resources/js/invitation.js',
+                    'isEntry' => true,
+                ],
+                'resources/js/builder.js' => [
+                    'file' => 'assets/builder.js',
+                    'src' => 'resources/js/builder.js',
+                    'isEntry' => true,
+                ],
+                'resources/js/admin.js' => [
+                    'file' => 'assets/admin.js',
+                    'src' => 'resources/js/admin.js',
+                    'isEntry' => true,
+                ],
             ]));
-        }
     }
 }

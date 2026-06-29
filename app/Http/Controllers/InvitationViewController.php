@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Support\InvitationResolver;
-use Illuminate\Http\Request;
+use App\Support\Seo\SeoData;
 use Illuminate\View\View;
 
 class InvitationViewController extends Controller
 {
-    public function show(Request $request, string $slug): View
+    public function show(string $locale, string $slug): View
     {
         return $this->render(InvitationResolver::findPublic($slug));
     }
@@ -20,10 +20,14 @@ class InvitationViewController extends Controller
             ? "templates.{$blade}"
             : 'templates.nikoh-premium';
 
+        $title = $invitation->coupleTitle().' — '.$invitation->event_type;
+        $description = SeoData::invitationDescription($invitation);
+
         return view($view, [
             'invitation' => $invitation,
-            'title' => $invitation->coupleTitle().' — '.$invitation->event_type,
-            'metaDescription' => $invitation->coupleTitle().' '.$invitation->event_type.' taklifnomasi.',
+            'title' => $title,
+            'metaDescription' => $description,
+            'seo' => SeoData::forInvitation($invitation, $title, $description),
         ]);
     }
 }

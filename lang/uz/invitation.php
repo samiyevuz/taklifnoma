@@ -57,6 +57,7 @@ return [
     'yandex_maps' => 'Yandex Xarita',
     'rsvp_desc' => 'Mehmonlar kelishini tasdiqlashi yoki rad etishi mumkin.',
     'meta_description' => 'Nikoh to\'yi taklifnomasi',
+    'meta_description_for' => ':couple — :event taklifnomasi',
     'rsvp_disabled' => 'RSVP ushbu taklifnoma uchun o\'chirilgan.',
     'rsvp_limit_full' => 'Mehmon limiti to\'ldi (:limit ta). Taklif egasi Premium tarifga o\'tishi mumkin.',
     'rsvp_limit_remaining' => 'Faqat :remaining ta mehmon qabul qilinadi (limit: :limit ta).',

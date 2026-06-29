@@ -12,6 +12,7 @@ use App\Support\ComplimentaryAccess;
 use App\Support\InvitationDefaults;
 use App\Support\TemplateCatalog;
 use App\Support\PlanEntitlements;
+use App\Support\Seo\SeoData;
 use App\Support\StoryGallerySlots;
 use App\Support\TemplateVariantCatalog;
 use Illuminate\Http\RedirectResponse;
@@ -47,6 +48,7 @@ class InvitationBuilderController extends Controller
 
         return view('builder.create', [
             'title' => 'Taklifnoma Yaratish — Builder',
+            'seo' => SeoData::noindex('Taklifnoma Yaratish — Builder', __('builder.meta_description')),
             'defaults' => $defaults,
             'bootstrap' => $this->builderBootstrap(null, $defaults, $catalogTemplate),
         ]);
@@ -77,6 +79,10 @@ class InvitationBuilderController extends Controller
 
         return view('builder.edit', [
             'title' => 'Tahrirlash — '.$invitation->displayTitle(),
+            'seo' => SeoData::noindex(
+                'Tahrirlash — '.$invitation->displayTitle(),
+                __('builder.meta_description')
+            ),
             'invitation' => $invitation,
             'rsvpSnapshot' => $this->rsvpDashboardService->snapshot($invitation),
             'bootstrap' => $this->builderBootstrap($invitation),

@@ -1,2 +1,17 @@
 User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /account/
+Disallow: /builder/
+Disallow: /login
+Disallow: /register
+Disallow: /l/
+Disallow: /i/
+Disallow: /*/admin/
+Disallow: /*/account/
+Disallow: /*/builder/
+Disallow: /*/login
+Disallow: /*/register
+Disallow: /*/l/
+Disallow: /*/i/
+
+Sitemap: https://taklifnoma.net/sitemap.xml

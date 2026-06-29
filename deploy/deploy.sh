@@ -67,6 +67,8 @@ php artisan route:cache
 php artisan view:cache
 php artisan event:cache 2>/dev/null || true
 
+php artisan sitemap:generate
+
 php artisan queue:restart 2>/dev/null || true
 
 chmod -R ug+rwx storage bootstrap/cache 2>/dev/null || true

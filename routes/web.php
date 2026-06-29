@@ -40,6 +40,16 @@ Route::post('/payments/webhooks/click', [PaymentController::class, 'handleClickW
 Route::get('/payments/return', [PaymentController::class, 'return'])->name('payments.return');
 Route::post('/telegram/webhook', [TelegramWebhookController::class, 'handle'])->name('telegram.webhook');
 
+Route::get('/sitemap.xml', function () {
+    $path = public_path('sitemap.xml');
+
+    if (! is_file($path)) {
+        abort(404);
+    }
+
+    return response()->file($path, ['Content-Type' => 'application/xml']);
+})->name('sitemap');
+
 /*
 |--------------------------------------------------------------------------
 | Root — redirect to preferred locale

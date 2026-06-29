@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Invitation;
 use App\Support\InvitationDefaults;
+use App\Support\Seo\SeoData;
 use App\Support\TemplateCatalog;
 use Illuminate\View\View;
 
 class TemplatePreviewController extends Controller
 {
-    public function show(string $templateSlug): View
+    public function show(string $locale, string $templateSlug): View
     {
         $template = TemplateCatalog::find($templateSlug);
 
@@ -18,11 +19,14 @@ class TemplatePreviewController extends Controller
         }
 
         $invitation = InvitationDefaults::demoInvitation($templateSlug);
+        $title = $invitation->displayTitle().' — '.$invitation->event_type;
+        $description = SeoData::invitationDescription($invitation);
 
         return view('templates.nikoh-premium', [
             'invitation' => $invitation,
-            'title' => $invitation->displayTitle().' — '.$invitation->event_type,
-            'metaDescription' => $invitation->displayTitle().' '.$invitation->event_type.' taklifnomasi.',
+            'title' => $title,
+            'metaDescription' => $description,
+            'seo' => SeoData::forPreview($templateSlug, $title, $description),
             'isPreview' => true,
         ]);
     }

@@ -57,6 +57,7 @@ return [
     'yandex_maps' => 'Яндекс Карты',
     'rsvp_desc' => 'Гости могут подтвердить или отклонить участие.',
     'meta_description' => 'Свадебное приглашение',
+    'meta_description_for' => ':couple — приглашение на :event',
     'rsvp_disabled' => 'RSVP отключён для этого приглашения.',
     'rsvp_limit_full' => 'Лимит гостей исчерпан (:limit). Владелец может перейти на Premium.',
     'rsvp_limit_remaining' => 'Можно принять только :remaining гостей (лимит: :limit).',

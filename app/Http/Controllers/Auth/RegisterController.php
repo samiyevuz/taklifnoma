@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Support\Seo\SeoData;
 use App\Models\User;
 use App\Support\ComplimentaryAccess;
 use Illuminate\Auth\Events\Registered;
@@ -17,6 +18,7 @@ class RegisterController extends Controller
     {
         return view('auth.register', [
             'title' => 'Ro\'yxatdan o\'tish — Taklifnoma',
+            'seo' => SeoData::noindex('Ro\'yxatdan o\'tish — Taklifnoma'),
         ]);
     }
 

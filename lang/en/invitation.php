@@ -57,6 +57,7 @@ return [
     'yandex_maps' => 'Yandex Maps',
     'rsvp_desc' => 'Guests can confirm or decline attendance.',
     'meta_description' => 'Wedding invitation',
+    'meta_description_for' => ':couple — :event invitation',
     'rsvp_disabled' => 'RSVP is disabled for this invitation.',
     'rsvp_limit_full' => 'Guest limit reached (:limit). The owner can upgrade to Premium.',
     'rsvp_limit_remaining' => 'Only :remaining guests can be accepted (limit: :limit).',
